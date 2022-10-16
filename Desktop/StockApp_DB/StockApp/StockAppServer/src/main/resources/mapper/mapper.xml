@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- User Data 관련 SQL -->
+<mapper namespace="com.user.UserMapper">
+	
+	<!-- 회원가입을 누르면, 입력 받은 회원 데이터를 INSERT -->
+	<insert id="joinUser" parameterType="com.user.UserDTO" useGeneratedKeys="true">  
+	    insert into user_info (name, nick_name, id, password, simple_pwd, email, phone_number, address)
+	    values (#{name}, #{nick_name}, #{id}, #{password}, #{simple_pwd}, #{email}, #{phone_number}, #{address})
+	</insert>
+	
+	<!-- 회원가입 시 중복 확인을 위한 기존 데이터 가져오기 -->
+	<!-- id -->
+	<select id="findSameId" parameterType="string" resultType="string">
+        select id
+        from user_info
+        where id = #{id}
+	</select>
+	
+	<!-- email -->
+	<select id="findSameEmail" parameterType="string" resultType="string">
+        select id
+        from user_info
+        where email = #{email}
+	</select>
+	
+	<!-- nick_name -->
+	<select id="findSameNickName" parameterType="string" resultType="string">
+        select id
+        from user_info
+        where nick_name = #{nick_name}
+	</select>
+	
+	<!-- phone_number -->
+	<select id="findSamePhoneNumber" parameterType="string" resultType="string">
+        select id
+        from user_info
+        where phone_number = #{phone_number}
+	</select>
+		
+	<!-- 로그인 시 입력한 id에 해당하는 id와 비밀번호를 SELECT -->
+	<select id="loginUser" parameterType="string" resultType="com.user.UserDTO">
+        select id, password, user_num
+        from user_info
+        where id = #{id}
+	</select>
+
+</mapper>
