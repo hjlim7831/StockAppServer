@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserAccountMapper {
 	
-	public void insertAcount(UserAccountDto userAccountDto);
+	public void insertAccount(UserAccountDto userAccountDto);
 }

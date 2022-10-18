@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!-- User Account Data 관련 SQL -->
 <mapper namespace="com.user.account.UserAccountMapper">
 	
-	<insert id="insertAcount" parameterType="com.user.account.UserAcountDto" useGeneratedKeys="true">  
+	<!-- 회원가입에 성공하면 통장 정보를 새로 INSERT -->
+	<insert id="insertAccount" parameterType="com.user.account.UserAccountDto" useGeneratedKeys="true">  
 	    insert into account (serial_number, user_num, balance, us, euro, jpy, yuan)
 	    values (#{serial_number}, #{user_num}, #{balance}, #{us}, #{euro}, #{jpy}, #{yuan})
 	</insert>

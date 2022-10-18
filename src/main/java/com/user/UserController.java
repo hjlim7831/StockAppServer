@@ -5,10 +5,12 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 
 import com.user.account.UserAccountService;
 import com.user.info.UserInfoDto;
@@ -16,6 +18,7 @@ import com.user.info.UserInfoService;
 
 @Controller
 @RequestMapping("user")
+@SessionAttributes("loginUser")
 public class UserController {
 	
 	@Autowired
@@ -24,65 +27,42 @@ public class UserController {
 	@Autowired
 	UserAccountService userAccountService;
 	
-	@PostMapping("join") // íšŒì›ê°€ì…
+	@PostMapping("join") // È¸¿ø°¡ÀÔ
 	@ResponseBody
-	public Map<String, Object> joinUser(@RequestParam UserInfoDto userInfoDto) {
-		Map<String, Object> resultJoin = userInfoService.joinUser(userInfoDto);
-		
-		if (resultJoin.get("response").toString().equals("success_join")) {
-			userAccountService.makeAccount(userInfoDto.getUser_num());
-		}
-		
-		return resultJoin;
+	public Map<String, Object> joinUser(UserInfoDto userInfoDto) {
+		Map<String, Object> resultMap = userInfoService.joinUser(userInfoDto);
+
+		return resultMap;
 	}
 	
-	@PostMapping("login") // ë¡œê·¸ì¸
+	@PostMapping("login") // ·Î±×ÀÎ
 	@ResponseBody
-	public Map<String, Object> loginUser(@RequestParam Map<String, Object> map) {
+	public Map<String, Object> loginUser(UserInfoDto userInfoDto) {
+		Map<String, Object> resultMap = userInfoService.loginUser(userInfoDto);
 		
-		String id = map.get("id").toString();
-		String password = map.get("password").toString();
-		
-		HashMap<String, Object> returnMap = new HashMap<>();
-		
-		String response = "";
-		String sentence = "";
-		
-		if (id.equals("") && password.equals("")) {
-			response = "failure_empty_id_pwd";
-			sentence = "ì•„ì´ë””ì™€ ë¹„ë°€ë²ˆí˜¸ë¥¼ ì…ë ¥í•´ ì£¼ì„¸ìš”.";
-		} else if (id.equals("")) {
-			response = "failure_empty_id";
-			sentence = "ì•„ì´ë””ë¥¼ ì…ë ¥í•´ ì£¼ì„¸ìš”.";
-		} else if (password.equals("")) {
-			response = "failure_empty_password";
-			sentence = "ë¹„ë°€ë²ˆí˜¸ë¥¼ ì…ë ¥í•´ ì£¼ì„¸ìš”.";
-		} else {
-			UserInfoDto userInfoDto = userInfoService.loginUser(id);
-			
-			if (userInfoDto == null) {
-				response = "failure_notExist_id";
-				sentence = "ì¡´ì¬í•˜ì§€ ì•ŠëŠ” ì•„ì´ë””ì…ë‹ˆë‹¤.";
-			} else if (!userInfoDto.getPassword().equals(password)) {
-				response = "failure_wrong_password";
-				sentence = "ì˜ëª»ëœ ë¹„ë°€ë²ˆí˜¸ì…ë‹ˆë‹¤.";
-			} else {
-				response = "success_login";
-				sentence = "ë¡œê·¸ì¸ì´ ì™„ë£ŒëìŠµë‹ˆë‹¤.";
-				
-				// ì„¸ì…˜ì— ë¡œê·¸ì¸ ì •ë³´ ( id, user_num ) ì €ì¥
-				// HttpSession session = ;
-			}
+		// ·Î±×ÀÎ ¼º°ø ½Ã, ·Î±×ÀÎ Á¤º¸ ¼¼¼Ç¿¡ ³Ö¾îÁÖ±â
+		if (resultMap.get("response").toString().equals("success_login")) {
+			setSession(userInfoDto);
 		}
 		
-		// APIë¡œ ì‘ë‹µ ë„˜ê²¨ì£¼ê¸°
-		returnMap.put("sentence", sentence);
-		returnMap.put("response", response);
-		return returnMap;
+		return resultMap;
 	}
 	
-	@PostMapping("logout") // ë¡œê·¸ì•„ì›ƒ
-	public void logoutUser(@RequestParam Map<String, Object> map) {
+	@ModelAttribute("loginUser") // session¿¡ ·Î±×ÀÎ µ¥ÀÌÅÍ ÀúÀå
+	public UserInfoDto setSession(UserInfoDto userInfoDto) {
+		return userInfoDto;
+	}
+	
+	@PostMapping("logout") // ·Î±×¾Æ¿ô
+	@ResponseBody
+	public Map<String, Object> logoutUser(SessionStatus sessionStatus) {
+		sessionStatus.setComplete();
 		
+		Map<String, Object> resultMap = new HashMap<>();
+		
+		resultMap.put("response", "success_logout");
+		resultMap.put("contents", "·Î±×¾Æ¿ô µÇ¾ú½À´Ï´Ù.");
+		
+		return resultMap;
 	}
 }

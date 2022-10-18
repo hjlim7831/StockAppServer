@@ -8,11 +8,16 @@ import java.util.regex.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.user.account.UserAccountService;
+
 @Service
 public class UserInfoService {
 
 	@Autowired
 	UserInfoMapper userInfoMapper;
+	
+	@Autowired
+	UserAccountService userAccountService;
 	
 	public Map<String, Object> joinUser(UserInfoDto userInfoDto) {
 		
@@ -30,83 +35,83 @@ public class UserInfoService {
 		String response = "";
 		String sentence = "";
 		
-		// í•„ìˆ˜ ì…ë ¥ê°’(id, password, name, nick_name, email, phone_number) ì¤‘ í•˜ë‚˜ë¼ë„ ì—†ëŠ” ê²½ìš°
+		// ÇÊ¼ö ÀÔ·Â°ª(id, password, name, nick_name, email, phone_number) Áß ÇÏ³ª¶óµµ ¾ø´Â °æ¿ì
 		if (id.equals("") || password.equals("") || name.equals("") || nick_name.equals("") || email.equals("") || phone_number.equals("")) {
 			response = "failure_empty_some";
-			sentence = "ì•„ì´ë””, ë¹„ë°€ë²ˆí˜¸, ì´ë¦„, ë‹‰ë„¤ì„, ì´ë©”ì¼, ì „í™”ë²ˆí˜¸ë¥¼ ëª¨ë‘ ì…ë ¥í•´ ì£¼ì„¸ìš”.";
+			sentence = "¾ÆÀÌµğ, ºñ¹Ğ¹øÈ£, ÀÌ¸§, ´Ğ³×ÀÓ, ÀÌ¸ŞÀÏ, ÀüÈ­¹øÈ£¸¦ ¸ğµÎ ÀÔ·ÂÇØ ÁÖ¼¼¿ä.";
 		}
 		
-		// id (1)5~20ê¸€ì ì˜ë¬¸ì + ìˆ«ì (2)ì¤‘ë³µ í™•ì¸ 
+		// id (1)5~20±ÛÀÚ ¿µ¹®ÀÚ + ¼ıÀÚ (2)Áßº¹ È®ÀÎ 
 		else if (!Pattern.matches("^(?=.*[a-zA-z])(?=.*[0-9])(?!.*[^a-zA-z0-9]).{5,20}$", id)) {
 			response = "failure_wrong_format_id";
-			sentence = "ì•„ì´ë””ëŠ” ì˜ë¬¸ìì™€ ìˆ«ìë¥¼ í•˜ë‚˜ ì´ìƒ í¬í•¨í•´ 5 ~ 20ìë¡œ ì…ë ¥í•´ ì£¼ì„¸ìš”.";
+			sentence = "¾ÆÀÌµğ´Â ¿µ¹®ÀÚ¿Í ¼ıÀÚ¸¦ ÇÏ³ª ÀÌ»ó Æ÷ÇÔÇØ 5 ~ 20ÀÚ·Î ÀÔ·ÂÇØ ÁÖ¼¼¿ä.";
 		} else if (findSameId(id) != null) {
 			response = "failure_duplicate_id";
-			sentence = "ì´ë¯¸ ì¡´ì¬í•˜ëŠ” ì•„ì´ë””ì…ë‹ˆë‹¤.";
+			sentence = "ÀÌ¹Ì Á¸ÀçÇÏ´Â ¾ÆÀÌµğÀÔ´Ï´Ù.";
 		}
 		
-		// password (1)8~15ê¸€ì, ì˜ë¬¸ì + ìˆ«ì + íŠ¹ìˆ˜ë¬¸ì (2)passwordì™€ password_confirm ë™ì¼
+		// password (1)8~15±ÛÀÚ, ¿µ¹®ÀÚ + ¼ıÀÚ + Æ¯¼ö¹®ÀÚ (2)password¿Í password_confirm µ¿ÀÏ
 		else if (!Pattern.matches("^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[`~!@$!%*#^?&\\(\\)\\-_=+])(?!.*[^a-zA-z0-9`~!@$!%*#^?&\\(\\)\\-_=+]).{8,15}$", password)) {
 			response = "failure_wrong_format_pwd";
-			sentence = "ë¹„ë°€ë²ˆí˜¸ëŠ” ì˜ë¬¸ì, ìˆ«ì, íŠ¹ìˆ˜ë¬¸ìë¥¼ í•˜ë‚˜ ì´ìƒ í¬í•¨í•´ 8~15ìë¡œ ì…ë ¥í•´ ì£¼ì„¸ìš”.";
+			sentence = "ºñ¹Ğ¹øÈ£´Â ¿µ¹®ÀÚ, ¼ıÀÚ, Æ¯¼ö¹®ÀÚ¸¦ ÇÏ³ª ÀÌ»ó Æ÷ÇÔÇØ 8~15ÀÚ·Î ÀÔ·ÂÇØ ÁÖ¼¼¿ä.";
 		} else if (!password.equals(password_confirm)) {
 			response = "failure_different_pwd";
-			sentence = "ë¹„ë°€ë²ˆí˜¸ í™•ì¸ì´ í‹€ë ¸ìŠµë‹ˆë‹¤.";
+			sentence = "ºñ¹Ğ¹øÈ£ È®ÀÎÀÌ Æ²·È½À´Ï´Ù.";
 		}
 		
-		// simple_pwd ì™„ë£Œ  (1)6ìë¦¬, ìˆ«ì
+		// simple_pwd ¿Ï·á  (1)6ÀÚ¸®, ¼ıÀÚ
 		else if (!Pattern.matches("^[0-9]{6}$", simple_pwd)) {
 			response = "failure_wrong_format_simple_pwd";
-			sentence = "í•€ë²ˆí˜¸ëŠ” ìˆ«ì 6ìë¦¬ë¡œ ì…ë ¥í•´ ì£¼ì„¸ìš”.";
+			sentence = "ÇÉ¹øÈ£´Â ¼ıÀÚ 6ÀÚ¸®·Î ÀÔ·ÂÇØ ÁÖ¼¼¿ä.";
 		}
 		
-		// name (1)2~10ê¸€ì, ë¬¸ì
-		else if (!Pattern.matches("^[ê°€-í£|a-z|A-Z]{2,10}$", name)) {
+		// name (1)2~10±ÛÀÚ, ¹®ÀÚ
+		else if (!Pattern.matches("^[°¡-ÆR|a-z|A-Z]{2,10}$", name)) {
 			response = "failure_wrong_format_name";
-			sentence = "ì´ë¦„ì€ ë¬¸ì 2 ~ 10ìë¡œ ì…ë ¥í•´ ì£¼ì„¸ìš”.";
+			sentence = "ÀÌ¸§Àº ¹®ÀÚ 2 ~ 10ÀÚ·Î ÀÔ·ÂÇØ ÁÖ¼¼¿ä.";
 		}
 		
-		// nickname (1)1~8ê¸€ì, ë¬¸ì, ìˆ«ì (2)ì¤‘ë³µ í™•ì¸ 
-		else if (!Pattern.matches("^[ã„±-ã…|ê°€-í£|a-z|A-Z|0-9]{1,8}$", nick_name)) {
+		// nickname (1)1~8±ÛÀÚ, ¹®ÀÚ, ¼ıÀÚ (2)Áßº¹ È®ÀÎ 
+		else if (!Pattern.matches("^[¤¡-¤¾|°¡-ÆR|a-z|A-Z|0-9]{1,8}$", nick_name)) {
 			response = "failure_wrong_format_nick_name";
-			sentence = "ë‹‰ë„¤ì„ì€ í•œê¸€, ì˜ì–´, ìˆ«ì 1 ~ 8ìë¦¬ë¡œ ì…ë ¥í•´ ì£¼ì„¸ìš”.";
+			sentence = "´Ğ³×ÀÓÀº ÇÑ±Û, ¿µ¾î, ¼ıÀÚ 1 ~ 8ÀÚ¸®·Î ÀÔ·ÂÇØ ÁÖ¼¼¿ä.";
 		} else if (findSameNickName(nick_name) != null) {
 			response = "failure_duplicate_nick_name";
-			sentence = "ì´ë¯¸ ì¡´ì¬í•˜ëŠ” ë‹‰ë„¤ì„ì…ë‹ˆë‹¤.";
+			sentence = "ÀÌ¹Ì Á¸ÀçÇÏ´Â ´Ğ³×ÀÓÀÔ´Ï´Ù.";
 		}
 		
-		// email (1)ì´ë©”ì¼ í˜•ì‹ (2)ì¤‘ë³µ í™•ì¸ 
+		// email (1)ÀÌ¸ŞÀÏ Çü½Ä (2)Áßº¹ È®ÀÎ 
 		else if (!Pattern.matches("^[a-zA-Z0-9+-\\_.]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$", email)) {
 			response = "failure_wrong_format_email";
-			sentence = "ì´ë©”ì¼ í˜•ì‹ì— ë§ì¶° ì…ë ¥í•´ ì£¼ì„¸ìš”.";
+			sentence = "ÀÌ¸ŞÀÏ Çü½Ä¿¡ ¸ÂÃç ÀÔ·ÂÇØ ÁÖ¼¼¿ä.";
 		} else if (findSameEmail(email) != null) {
 			response = "failure_duplicate_email";
-			sentence = "ì´ë¯¸ ì•„ì´ë””ê°€ ì¡´ì¬í•˜ëŠ” ì´ë©”ì¼ì…ë‹ˆë‹¤.";
+			sentence = "ÀÌ¹Ì ¾ÆÀÌµğ°¡ Á¸ÀçÇÏ´Â ÀÌ¸ŞÀÏÀÔ´Ï´Ù.";
 		}
 		
-		// phone_number (1)10~11ìë¦¬, ìˆ«ì (2)ì¤‘ë³µ í™•ì¸ 
+		// phone_number (1)10~11ÀÚ¸®, ¼ıÀÚ (2)Áßº¹ È®ÀÎ 
 		else if (!Pattern.matches("^[0-9]{10,11}$", phone_number)) {
 			response = "failure_wrong_format_phone_number";
-			sentence = "ì „í™”ë²ˆí˜¸ëŠ” 01011112222ì²˜ëŸ¼ ìˆ«ì 11ìë¦¬ë¡œ ì…ë ¥í•´ ì£¼ì„¸ìš”.";
+			sentence = "ÀüÈ­¹øÈ£´Â 01011112222Ã³·³ ¼ıÀÚ 11ÀÚ¸®·Î ÀÔ·ÂÇØ ÁÖ¼¼¿ä.";
 		} else if (findSamePhoneNumber(phone_number) != null) {
 			response = "failure_duplicate_phone_number";
-			sentence = "ì´ë¯¸ ì•„ì´ë””ê°€ ì¡´ì¬í•˜ëŠ” ì „í™”ë²ˆí˜¸ì…ë‹ˆë‹¤.";
+			sentence = "ÀÌ¹Ì ¾ÆÀÌµğ°¡ Á¸ÀçÇÏ´Â ÀüÈ­¹øÈ£ÀÔ´Ï´Ù.";
 		}
 		
 		// address
 
 		else {
-			// simple_pwd ì •ìˆ˜í˜•ìœ¼ë¡œ ë³€í˜•
-			// int simple_pwd = Integer.valueOf(simple_pwd_string);
-			
-			// user_num ìƒì„±
+			// user_num »ı¼º
 			String user_num = UUID.randomUUID().toString().replace("-", "");
 			userInfoDto.setUser_num(user_num);
 			
 			userInfoMapper.insertUser(userInfoDto);
 			
 			response = "success_join";
-			sentence = "íšŒì›ê°€ì…ì´ ì™„ë£ŒëìŠµë‹ˆë‹¤.";
+			sentence = "È¸¿ø°¡ÀÔÀÌ ¿Ï·áµÆ½À´Ï´Ù.";
+			
+			// È¸¿ø°¡ÀÔ ¼º°ø ½Ã, ÅëÀå °³¼³ÇÏ±â
+			userAccountService.makeAccount(user_num);
 		}
 
 		returnMap.put("sentence", sentence);
@@ -115,8 +120,46 @@ public class UserInfoService {
 		return returnMap;
 	}
 	
-	public UserInfoDto loginUser(String id) {
-		return userInfoMapper.selectUser(id);
+	public HashMap<String, Object> loginUser(UserInfoDto userInfoDto) {
+		
+		String id = userInfoDto.getId();
+		String password = userInfoDto.getPassword();
+		
+		HashMap<String, Object> returnMap = new HashMap<>();
+		
+		String response = "";
+		String sentence = "";
+		
+		if (id.equals("") && password.equals("")) {
+			response = "failure_empty_id_pwd";
+			sentence = "¾ÆÀÌµğ¿Í ºñ¹Ğ¹øÈ£¸¦ ÀÔ·ÂÇØ ÁÖ¼¼¿ä.";
+		} else if (id.equals("")) {
+			response = "failure_empty_id";
+			sentence = "¾ÆÀÌµğ¸¦ ÀÔ·ÂÇØ ÁÖ¼¼¿ä.";
+		} else if (password.equals("")) {
+			response = "failure_empty_password";
+			sentence = "ºñ¹Ğ¹øÈ£¸¦ ÀÔ·ÂÇØ ÁÖ¼¼¿ä.";
+		} else {
+			// DB¿¡¼­ ÀÔ·ÂÇÑ id¿¡ ÇØ´çÇÏ´Â Á¤º¸ °¡Á®¿À±â
+			UserInfoDto selectUserInfoDto = userInfoMapper.selectUser(id);
+			
+			if (selectUserInfoDto == null) {
+				response = "failure_notExist_id";
+				sentence = "Á¸ÀçÇÏÁö ¾Ê´Â ¾ÆÀÌµğÀÔ´Ï´Ù.";
+			} else if (!selectUserInfoDto.getPassword().equals(password)) {
+				response = "failure_wrong_password";
+				sentence = "Àß¸øµÈ ºñ¹Ğ¹øÈ£ÀÔ´Ï´Ù.";
+			} else {
+				response = "success_login";
+				sentence = "·Î±×ÀÎÀÌ ¿Ï·áµÆ½À´Ï´Ù.";
+			}
+		}
+		
+		// API·Î ÀÀ´ä ³Ñ°ÜÁÖ±â
+		returnMap.put("sentence", sentence);
+		returnMap.put("response", response);
+		
+		return returnMap;
 	}
 	
 	public String findSameId(String id) {

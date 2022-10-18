@@ -1,25 +1,23 @@
 package com.user.info;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-@Data
 @Setter
 @Getter
 @ToString
 public class UserInfoDto {
+	private String user_num;
 	private String name;
 	private String nick_name;
 	private String id;
 	private String password;
 	private String password_confirm;
+	private String simple_pwd;
 	private String email;
 	private String phone_number;
 	private String address;
-	private String simple_pwd;
-	private String user_num;
 	
 	public UserInfoDto() {
 		
