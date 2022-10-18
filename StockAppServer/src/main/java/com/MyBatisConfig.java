@@ -1,4 +1,4 @@
-package com.user;
+package com;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
