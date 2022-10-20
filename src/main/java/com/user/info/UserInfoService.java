@@ -12,12 +12,16 @@ import com.user.account.UserAccountService;
 
 @Service
 public class UserInfoService {
-
+	
 	@Autowired
 	UserInfoMapper userInfoMapper;
 	
 	@Autowired
 	UserAccountService userAccountService;
+	
+	public UserInfoService() {
+		// TODO Auto-generated constructor stub
+	}
 	
 	public Map<String, Object> joinUser(UserInfoDto userInfoDto) {
 		
