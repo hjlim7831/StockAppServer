@@ -30,7 +30,7 @@ public class UserInfoService {
 		String email = userInfoDto.getEmail();
 		String phone_number = userInfoDto.getPhone_number();
 
-		HashMap<String, Object> returnMap = new HashMap<>();
+		HashMap<String, Object> resultMap = new HashMap<>();
 		
 		String response = "";
 		String contents = "";
@@ -115,10 +115,10 @@ public class UserInfoService {
 			contents = "회원가입이 완료됐습니다.";
 		}
 
-		returnMap.put("contents", contents);
-		returnMap.put("response", response);
+		resultMap.put("contents", contents);
+		resultMap.put("response", response);
 		
-		return returnMap;
+		return resultMap;
 	}
 	
 	public HashMap<String, Object> loginUser(UserInfoDto userInfoDto) {
@@ -126,7 +126,7 @@ public class UserInfoService {
 		String id = userInfoDto.getId();
 		String password = userInfoDto.getPassword();
 		
-		HashMap<String, Object> returnMap = new HashMap<>();
+		HashMap<String, Object> resultMap = new HashMap<>();
 		
 		String response = "";
 		String contents = "";
@@ -153,14 +153,15 @@ public class UserInfoService {
 			} else {
 				response = "success_login";
 				contents = "로그인이 완료됐습니다.";
+				resultMap.put("user_num", selectUserInfoDto.getUser_num());
 			}
 		}
 		
 		// API로 응답 넘겨주기
-		returnMap.put("contents", contents);
-		returnMap.put("response", response);
+		resultMap.put("contents", contents);
+		resultMap.put("response", response);
 		
-		return returnMap;
+		return resultMap;
 	}
 	
 	public String findSameId(String id) {

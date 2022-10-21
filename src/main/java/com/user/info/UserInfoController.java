@@ -38,6 +38,9 @@ public class UserInfoController {
 		Map<String, Object> resultMap = userInfoService.loginUser(userInfoDto);
 		
 		if (resultMap.get("response").toString().equals("success_join")) {
+			userInfoDto.setUser_num((String) resultMap.get("user_num"));
+			resultMap.remove("user_num");
+			
 			model.addAttribute("loginUser", userInfoDto);
 		}
 		

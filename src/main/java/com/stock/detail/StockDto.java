@@ -1,12 +1,8 @@
 package com.stock.detail;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
-@Setter
-@Getter
-@ToString
+@Data
 public class StockDto {
 	private String stock_code;
 	private String company_name;
@@ -17,8 +13,4 @@ public class StockDto {
 	private String representative;
 	private String homepage;
 	private String region;
-	
-	
-	
-
 }
