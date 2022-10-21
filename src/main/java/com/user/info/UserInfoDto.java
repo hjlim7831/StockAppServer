@@ -1,12 +1,14 @@
 package com.user.info;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 @Setter
 @Getter
 @ToString
+@NoArgsConstructor
 public class UserInfoDto {
 	private String user_num;
 	private String name;
@@ -18,11 +20,7 @@ public class UserInfoDto {
 	private String email;
 	private String phone_number;
 	private String address;
-	
-	public UserInfoDto() {
-		
-	}
-	
+
 	public UserInfoDto(String id, String user_num) {
 		this.id = id;
 		this.user_num = user_num;

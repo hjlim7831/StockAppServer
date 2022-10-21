@@ -7,5 +7,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserAccountMapper {
 	
-	public void insertAccount(UserAccountDto userAccountDto);
+	void insertAccount(UserAccountDto userAccountDto);
+	UserAccountDto selectAccountByNum(String user_num);
+	int selectBalanceByNum(String user_num);
 }
