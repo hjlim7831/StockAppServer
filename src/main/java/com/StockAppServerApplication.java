@@ -9,4 +9,5 @@ public class StockAppServerApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(StockAppServerApplication.class, args);
 	}
+
 }

@@ -51,10 +51,6 @@ dependencies {
 	// WebSocket
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-websocket', version: '2.7.2'
 	
-	// simple json
-	implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
-	
-	
 	// Jackson
 	implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.13.3'
 	implementation group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-yaml', version: '2.13.3'
