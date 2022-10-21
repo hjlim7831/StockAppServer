@@ -1,18 +1,12 @@
 package com.search.recentRecord;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
-@Setter
-@Getter
-@ToString
+@Data
+@AllArgsConstructor
 public class SearchRecordDto {
+
 	private String keyword;
 	private String date;
-
-	public SearchRecordDto(String keyword, String date) {
-		this.keyword = keyword;
-		this.date = date;
-	}
 }

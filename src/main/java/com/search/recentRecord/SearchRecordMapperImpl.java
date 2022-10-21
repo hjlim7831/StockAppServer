@@ -1,5 +1,7 @@
 package com.search.recentRecord;
 
+import java.util.ArrayList;
+
 import javax.annotation.Resource;
 
 public class SearchRecordMapperImpl implements SearchRecordMapper {
@@ -9,6 +11,10 @@ public class SearchRecordMapperImpl implements SearchRecordMapper {
 	
 	@Override
 	public void insertSearchRecord(SearchRecordDto searchRecordDto) {
-		searchRecordSessionDto.getSearchRecordDto().add(0, searchRecordDto);;
+		if (searchRecordSessionDto.getSearchRecordDtoList() == null) {
+			searchRecordSessionDto.setSearchRecordDtoList(new ArrayList<>());
+		}
+		
+		searchRecordSessionDto.getSearchRecordDtoList().add(0, searchRecordDto);
 	}
 }
