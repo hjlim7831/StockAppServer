@@ -2,7 +2,7 @@ package com.search.viewCntRank;
 
 import java.util.List;
 
-import com.stock.detail.StockDto;
+import com.stock.detail.dto.StockDto;
 
 public interface ViewCntRankMapper {
 	

@@ -4,8 +4,6 @@
 <!-- User Account Data 관련 SQL -->
 <mapper namespace="com.search.result.SearchResultMapper">
 	
-	<!-- 회원가입에 성공하면 통장 정보를 새로 INSERT -->
-	
 	<select id="selectAllStock" resultType="com.stock.detail.StockDto">
 		SELECT stock_code, company_name FROM stock_list
 	</select>

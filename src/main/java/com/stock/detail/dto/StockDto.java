@@ -1,4 +1,4 @@
-package com.stock.detail;
+package com.stock.detail.dto;
 
 import lombok.Data;
 

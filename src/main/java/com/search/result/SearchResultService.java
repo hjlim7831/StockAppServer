@@ -11,7 +11,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.stock.detail.StockDto;
+import com.stock.detail.dto.StockDto;
 
 @Service
 public class SearchResultService {
