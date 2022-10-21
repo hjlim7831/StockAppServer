@@ -16,7 +16,7 @@ import com.stock.detail.StockDto;
 @Service
 public class SearchResultService {
 
-	// stockDto¸¦ ÀÚÄ«µå À¯»çµµ·Î ÀçÁ¤·ÄÇÏ±â À§ÇÑ wrapper class »ı¼º
+	// stockDtoë¥¼ ìì¹´ë“œ ìœ ì‚¬ë„ë¡œ ì¬ì •ë ¬í•˜ê¸° ìœ„í•œ wrapper class ìƒì„±
 	class StockWrapper implements Comparable<StockWrapper> {
 		StockDto stockDto;
 		double similarity;
@@ -30,7 +30,7 @@ public class SearchResultService {
 			this.similarity = similarity;
 		}
 
-		// ³»¸²Â÷¼ø Á¤·Ä
+		// ë‚´ë¦¼ì°¨ìˆœ ì •ë ¬
 		@Override
 		public int compareTo(StockWrapper o) {
 			return Double.compare(o.similarity, this.similarity);
@@ -43,18 +43,18 @@ public class SearchResultService {
 
 	public List<StockDto> getSearchResultList(String keyWord) {
 
-		// Á¤±Ô½ÄÀ¸·Î °Ë»ö¾î¿¡¼­ ÇÑ±Û, ¿µ¾î, ¼ıÀÚ, ¶ç¾î¾²±â¸¦ Á¦¿ÜÇÑ ¸ğµç ±ÛÀÚ Á¦°Å
+		// ì •ê·œì‹ìœ¼ë¡œ ê²€ìƒ‰ì–´ì—ì„œ í•œê¸€, ì˜ì–´, ìˆ«ì, ë„ì–´ì“°ê¸°ë¥¼ ì œì™¸í•œ ëª¨ë“  ê¸€ì ì œê±°
 		String match = "[^\uAC00-\uD7A30-9a-zA-Z\\s]";
 		String replacedKey = keyWord.replaceAll(match, "");
 
-		// ÀÚÄ«µå À¯»çµµ·Î Á¤·ÄÇÒ stockList °¡Á®¿À±â
+		// ìì¹´ë“œ ìœ ì‚¬ë„ë¡œ ì •ë ¬í•  stockList ê°€ì ¸ì˜¤ê¸°
 		List<StockDto> list = searchResultMapper.selectAllStock();
 
 		int listLen = list.size();
 
 		StockWrapper[] wrapList = new StockWrapper[listLen];
 
-		// ÀÚÄ«µå À¯»çµµ·Î ÀçÁ¤·ÄÇÏ±â
+		// ìì¹´ë“œ ìœ ì‚¬ë„ë¡œ ì¬ì •ë ¬í•˜ê¸°
 		for (int i = 0; i < listLen; i++) {
 			String company_name = list.get(i).getCompany_name();
 			double similarity = jaccardSimilarity(replacedKey, company_name);
@@ -73,7 +73,7 @@ public class SearchResultService {
 
 	}
 
-	// ´Ü¾îµé »çÀÌÀÇ ÀÚÄ«µåÀ¯»çµµ °è»ê ¸Ş¼­µå
+	// ë‹¨ì–´ë“¤ ì‚¬ì´ì˜ ìì¹´ë“œìœ ì‚¬ë„ ê³„ì‚° ë©”ì„œë“œ
 	public double jaccardSimilarity(String str1, String str2) {
 		Map<Character, Integer> map1 = new HashMap<>();
 		Map<Character, Integer> map2 = new HashMap<>();
@@ -94,7 +94,7 @@ public class SearchResultService {
 		for (int i = 0; i < len2; i++) {
 			char target = str2.charAt(i);
 			if (map2.containsKey(target)) {
-				int tmpNum = map1.get(target);
+				int tmpNum = map2.get(target);
 				map2.put(target, tmpNum + 1);
 			} else {
 				map2.put(target, 1);
@@ -114,6 +114,10 @@ public class SearchResultService {
 
 		Set<Character> union = new HashSet<>(set1);
 		union.addAll(set2);
+//		System.out.println(sub);
+//		System.out.println(uni);
+//		System.out.println(map1);
+//		System.out.println(map2);
 
 		for (Character c : union) {
 			int num1 = 0;

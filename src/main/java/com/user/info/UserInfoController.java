@@ -25,14 +25,14 @@ public class UserInfoController {
 	@Autowired
 	UserAccountService userAccountService;
 
-	@PostMapping("join") // È¸¿ø°¡ÀÔ
+	@PostMapping("join") // íšŒì›ê°€ì…
 	@ResponseBody
 	public Map<String, Object> joinUser(UserInfoDto userInfoDto) {
 		Map<String, Object> resultMap = userInfoService.joinUser(userInfoDto);
 		return resultMap;
 	}
 	
-	@PostMapping("login") // ·Î±×ÀÎ
+	@PostMapping("login") // ë¡œê·¸ì¸
 	@ResponseBody
 	public Map<String, Object> loginUser(UserInfoDto userInfoDto, Model model) {
 		Map<String, Object> resultMap = userInfoService.loginUser(userInfoDto);
@@ -44,13 +44,13 @@ public class UserInfoController {
 		return resultMap;
 	}
 	
-	@PostMapping("logout") // ·Î±×¾Æ¿ô
+	@PostMapping("logout") // ë¡œê·¸ì•„ì›ƒ
 	@ResponseBody
 	public Map<String, Object> logoutUser(SessionStatus sessionStatus) {
 		sessionStatus.setComplete();
 		
 		Map<String, Object> resultMap = new HashMap<>();
-		resultMap.put("contents", "·Î±×¾Æ¿ô µÇ¾ú½À´Ï´Ù.");
+		resultMap.put("contents", "ë¡œê·¸ì•„ì›ƒ ë˜ì—ˆìŠµë‹ˆë‹¤.");
 		resultMap.put("response", "success_logout");
 		
 		return resultMap;

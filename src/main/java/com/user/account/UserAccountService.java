@@ -13,11 +13,11 @@ public class UserAccountService {
 	
 	public void makeAccount(String user_num) {
 		
-		// °èÁÂ ¹øÈ£ ¸¸µé±â
+		// ê³„ì¢Œ ë²ˆí˜¸ ë§Œë“¤ê¸°
 		Random rd = new Random();
 		String serial_number = (rd.nextInt(900)+100)+"-"+(rd.nextInt(90)+10)+"-"+(rd.nextInt(9000)+1000);
 		
-		// °èÁÂ »ı¼ºÇÏ±â
+		// ê³„ì¢Œ ìƒì„±í•˜ê¸°
 		UserAccountDto userAccountDto = new UserAccountDto(serial_number, user_num, 5000000, 0, 0, 0, 0);
 		userAccountMapper.insertAccount(userAccountDto);
 		
