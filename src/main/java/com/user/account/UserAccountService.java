@@ -10,7 +10,7 @@ public class UserAccountService {
 	
 	@Autowired
 	UserAccountMapper userAccountMapper;
-	
+
 	public void makeAccount(String user_num) {
 		
 		// 계좌 번호 만들기
@@ -22,5 +22,13 @@ public class UserAccountService {
 		userAccountMapper.insertAccount(userAccountDto);
 		
 		return;
+	}
+	
+	public UserAccountDto lookupAccount(String user_num) {
+		return userAccountMapper.selectAccountByNum(user_num);
+	}
+	
+	public int lookupBalance(String user_num) {
+		return userAccountMapper.selectBalanceByNum(user_num);
 	}
 }
