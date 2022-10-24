@@ -8,7 +8,8 @@ import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
-
+import org.springframework.stereotype.Component;
+@Component
 public class JsoupNewsComponent {
 	String stockNewsUrl;
 	StringBuilder sb;
@@ -47,14 +48,18 @@ public class JsoupNewsComponent {
 		Elements titleElems = document.select("body > div > table.type5 > tbody > tr > td.title > a");
 		Elements infoElems = document.select("body > div > table.type5 > tbody > tr > td.info");
 		Elements dateElems = document.select("body > div > table.type5 > tbody > tr > td.date");
-
+		Elements urlElems = document.select("body > div > table.type5 > tbody > tr > td.title > a");
+				
 		List<NewsDto> list = new ArrayList<NewsDto>();
 
 		for (int i = 0; i < titleElems.size(); i++) {
+			StringBuilder sb = new StringBuilder();
 			NewsDto news = new NewsDto();
 			news.title = titleElems.get(i).text();
 			news.info = infoElems.get(i).text();
 			news.date = dateElems.get(i).text();
+			String url = sb.append("https://finance.naver.com").append(urlElems.get(i).attr("href")).toString();
+			news.url = url;
 			list.add(news);
 		}
 

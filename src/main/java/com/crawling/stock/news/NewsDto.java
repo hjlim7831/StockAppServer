@@ -7,5 +7,6 @@ public class NewsDto {
 	String title;
 	String info;
 	String date;
+	String url;
 	
 }

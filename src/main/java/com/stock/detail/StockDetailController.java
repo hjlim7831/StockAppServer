@@ -1,12 +1,14 @@
 package com.stock.detail;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.crawling.stock.news.NewsDto;
 import com.stock.detail.dto.StockDto;
-import com.stock.detail.dto.StockNewsDto;
 import com.stock.detail.dto.StockRelationsDto;
 
 @RestController
@@ -27,7 +29,7 @@ public class StockDetailController {
 	}
 	
 	@PostMapping("detail-news")
-	public StockNewsDto stockDetailNews(String stock_code) {
+	public List<NewsDto> stockDetailNews(String stock_code) {
 		return stockDetailService.stockDetailNews(stock_code);
 	}
 }
