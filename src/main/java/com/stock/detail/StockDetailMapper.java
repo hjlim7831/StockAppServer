@@ -10,5 +10,6 @@ import com.stock.detail.dto.StockRelationsDto;
 @Repository
 public interface StockDetailMapper {
 	StockDto selectStockByCode(String stock_code);
+	
 	StockRelationsDto selectRelationsByCode(String stock_code);
 }
