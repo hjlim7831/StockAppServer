@@ -1,4 +1,4 @@
-package com.crawling.stock.news;
+package com.data.stock.crawling.news;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ public class JsoupNewsComponent {
 	/**
 	 * 
 	 * @param stock_code 크롤링 해올 주식의 코드
-	 * @return NewsDto(뉴스 제목, 정보제공, 날짜) 리스트 반환.
+	 * @return NewsDto(뉴스 제목, 정보제공, 날짜, url) 리스트 반환.
 	 */
 	public List<NewsDto> getNewsList(String stock_code) {
 		urlSetter(stock_code);
@@ -43,7 +43,11 @@ public class JsoupNewsComponent {
 
 		return null;
 	}
-
+	/**
+	 * document 구조를 이용해 뉴스별 뉴스 제목, 정보제공, 날짜, url 가져오기
+	 * @param document
+	 * @return
+	 */
 	private List<NewsDto> documentParse(Document document) {
 		Elements titleElems = document.select("body > div > table.type5 > tbody > tr > td.title > a");
 		Elements infoElems = document.select("body > div > table.type5 > tbody > tr > td.info");

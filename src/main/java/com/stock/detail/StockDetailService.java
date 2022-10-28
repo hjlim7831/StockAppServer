@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.crawling.stock.news.JsoupNewsComponent;
-import com.crawling.stock.news.NewsDto;
+import com.data.stock.crawling.news.JsoupNewsComponent;
+import com.data.stock.crawling.news.NewsDto;
 import com.stock.detail.dto.StockDto;
 import com.stock.detail.dto.StockRelationsDto;
 
@@ -25,7 +25,7 @@ public class StockDetailService {
 	
 	
 	public StockRelationsDto stockDetailRelations (String stock_code) {
-		return stockDetailMapper.selectRelationsByCode(stock_code);
+		return null;
 	}
 	
 	public List<NewsDto> stockDetailNews(String stock_code) {

@@ -9,4 +9,8 @@
 		select * from stock_list
 		where stock_code = #{stock_code}
 	</select>
+	
+	<select id="selectAllStock" resultType="com.stock.detail.StockDto">
+		SELECT stock_code, company_name, category, product  FROM stock_list
+	</select>
 </mapper>

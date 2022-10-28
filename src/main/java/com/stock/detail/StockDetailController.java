@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.crawling.stock.news.NewsDto;
+import com.data.stock.crawling.news.NewsDto;
 import com.stock.detail.dto.StockDto;
 import com.stock.detail.dto.StockRelationsDto;
 
