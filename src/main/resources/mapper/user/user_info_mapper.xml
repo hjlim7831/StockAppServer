@@ -11,28 +11,28 @@
 	</insert>
 	
 	<!-- 회원가입 시 중복 확인을 위한 기존 데이터 가져오기 -->
-	<!-- id -->
+	<!-- id로 사용자 id를 SELECT -->
 	<select id="selectId" parameterType="string" resultType="string">
         select id
         from user
         where id = #{id}
 	</select>
 	
-	<!-- email -->
+	<!-- email로 사용자 id를 SELECT  -->
 	<select id="selectEmail" parameterType="string" resultType="string">
         select id
         from user
         where email = #{email}
 	</select>
 	
-	<!-- nick_name -->
+	<!-- nick_name로 사용자 id를 SELECT -->
 	<select id="selectNickName" parameterType="string" resultType="string">
         select id
         from user
         where nick_name = #{nick_name}
 	</select>
 	
-	<!-- phone_number -->
+	<!-- phone_number로 사용자 id를 SELECT -->
 	<select id="selectPhoneNumber" parameterType="string" resultType="string">
         select id
         from user

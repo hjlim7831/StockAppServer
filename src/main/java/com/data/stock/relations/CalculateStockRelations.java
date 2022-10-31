@@ -1,5 +1,7 @@
 package com.data.stock.relations;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -11,7 +13,9 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
 import com.stock.detail.StockDetailMapper;
 import com.stock.detail.dto.StockDto;
@@ -37,6 +41,12 @@ public class CalculateStockRelations {
 		public int compareTo(StockWrapper o) {
 			return Double.compare(o.similarity, this.similarity);
 		}
+
+		@Override
+		public String toString() {
+			return "StockWrapper [stockDto=" + stockDto + ", similarity=" + similarity + "]";
+		}
+		
 
 	}
 
@@ -78,15 +88,15 @@ public class CalculateStockRelations {
 				StockWrapper[] wrapList = new StockWrapper[sSize];
 
 				// 2개 이상이면 이제 프로덕트로 유사도 계산해서 상위 두개 보여주기
-				String[] targetStockProducts = targetStock.getProduct().replace(" ", "").split(",");
+				String[] targetStockProducts = targetStock.getProduct().replace(" ", "").split(",|\\(|\\)|/");
+//				System.out.println(Arrays.deepToString(targetStockProducts));
 				for (int j = 0; j < sSize; j++) {
 					StockDto compStock = sameCategoryStockList.get(j);
-					
-					// 나누는 기준 , / ( )
-					String[] compStockProducts = compStock.getProduct().replace(" ", "").split(",");
+
+					String[] compStockProducts = compStock.getProduct().replace(" ", "").split(",|\\(|\\)|/");
 
 					double similarity = jaccardSimilarity(targetStockProducts, compStockProducts);
-					wrapList[i] = new StockWrapper(compStock, similarity);
+					wrapList[j] = new StockWrapper(compStock, similarity);
 
 				}
 				Arrays.sort(wrapList);
@@ -99,9 +109,19 @@ public class CalculateStockRelations {
 				jsonObject.add(targetStock_code, putListToJson(resList));
 
 			}
+			Gson gson = new Gson();
+			
+			try {
+				gson.toJson(jsonObject, new FileWriter(".\\src\\main\\resources\\relations.json"));
+			} catch (JsonIOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 		}
-		System.out.println(jsonObject.toString());
 		
 		
 		
@@ -121,6 +141,10 @@ public class CalculateStockRelations {
 
 		for (int i = 0; i < len1; i++) {
 			String target = strArr1[i];
+			if (target.equals("")){
+				continue;
+			}
+			
 			if (map1.containsKey(target)) {
 				int tmpNum = map1.get(target);
 				map1.put(target, tmpNum + 1);
@@ -131,6 +155,10 @@ public class CalculateStockRelations {
 
 		for (int i = 0; i < len2; i++) {
 			String target = strArr2[i];
+			if (target.equals("")){
+				continue;
+			}
+
 			if (map2.containsKey(target)) {
 				int tmpNum = map2.get(target);
 				map2.put(target, tmpNum + 1);

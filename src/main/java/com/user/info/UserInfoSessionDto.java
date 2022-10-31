@@ -1,7 +1,6 @@
-package com.search.recentRecord;
+package com.user.info;
 
 import java.io.Serializable;
-import java.util.List;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -15,13 +14,12 @@ import lombok.Data;
 @Component
 @Data
 @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
-public class SearchRecordSessionDto implements Serializable {
+public class UserInfoSessionDto implements Serializable {
 	
-	// session에 저장할 최근 검색 목록
-	
+	// Session에 저장할 로그인 정보
 	@JsonIgnore
 	static final long serialVersionUID = 1L;
 	
-	private String response; // 응답 (검색 기록 있으면 success, 없으면 failure)
-	private List<SearchRecordDto> searchRecordDtoList; // 최근 검색 목록
+	private String user_num; // 사용자 고유번호
+	private String id;       // 사용자 아이디
 }

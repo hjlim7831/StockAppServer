@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
@@ -13,4 +14,21 @@
 	<select id="selectAllStock" resultType="com.stock.detail.StockDto">
 		SELECT stock_code, company_name, category, product  FROM stock_list
 	</select>
+=======
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--  -->
+<mapper namespace="com.stock.detail.StockDetailMapper">
+	
+	<!--  -->
+	<select id="selectStockByCode" parameterType="string" resultType="com.stock.detail.dto.StockDto">
+		select * from stock_list
+		where stock_code = #{stock_code}
+	</select>
+	
+	<select id="selectAllStock" resultType="com.stock.detail.dto.StockDto">
+		SELECT stock_code, company_name, cartegory as category, product  FROM stock_list
+	</select>
+>>>>>>> refs/remotes/origin/Jeeyoun
 </mapper>

@@ -1,25 +1,27 @@
 package com.user.info;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-@Setter
-@Getter
-@ToString
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
 @NoArgsConstructor
+@JsonIgnoreProperties({"name", "nick_name", "password", "password_confirm", "simple_pwd", "email", "phone_number", "address"})
 public class UserInfoDto {
-	private String user_num;
-	private String name;
-	private String nick_name;
-	private String id;
-	private String password;
-	private String password_confirm;
-	private String simple_pwd;
-	private String email;
-	private String phone_number;
-	private String address;
+	
+	// DB `user` table과 호환
+	// JSON으로 변환 시, user_num과 id만 반환
+	private String user_num;          // 사용자 고유번호 
+	private String name;			  // 이름
+	private String nick_name;         // 닉네임
+	private String id;                // 아이디
+	private String password;          // 비밀번호
+	private String password_confirm;  // 비밀번호 확인
+	private String simple_pwd;        // pin 번호
+	private String email;             // 이메일
+	private String phone_number;      // 전화번호
+	private String address;           // 주소
 
 	public UserInfoDto(String id, String user_num) {
 		this.id = id;
@@ -38,5 +40,4 @@ public class UserInfoDto {
 		this.address = address;
 		this.simple_pwd = simple_pwd;
 	}
-
 }
