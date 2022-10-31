@@ -11,7 +11,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.stock.detail.StockDto;
+import com.stock.detail.dto.StockDto;
 
 @Service
 public class SearchResultService {
@@ -41,7 +41,7 @@ public class SearchResultService {
 	@Autowired
 	SearchResultMapper searchResultMapper;
 
-	public List<StockDto> getSearchResultList(String keyWord) {
+	public Map<String, Object> getSearchResultList(String keyWord) {
 
 		// 정규식으로 검색어에서 한글, 영어, 숫자, 띄어쓰기를 제외한 모든 글자 제거
 		String match = "[^\uAC00-\uD7A30-9a-zA-Z\\s]";
@@ -52,24 +52,41 @@ public class SearchResultService {
 
 		int listLen = list.size();
 
-		StockWrapper[] wrapList = new StockWrapper[listLen];
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		String response;
+		List<StockDto> contents;
+
+
+		StockWrapper[] wrapArr = new StockWrapper[listLen];
 
 		// 자카드 유사도로 재정렬하기
 		for (int i = 0; i < listLen; i++) {
 			String company_name = list.get(i).getCompany_name();
 			double similarity = jaccardSimilarity(replacedKey, company_name);
-			wrapList[i] = new StockWrapper(list.get(i), similarity);
+			wrapArr[i] = new StockWrapper(list.get(i), similarity);
 		}
 
-		Arrays.sort(wrapList);
+		Arrays.sort(wrapArr);
 
-		List<StockDto> resList = new ArrayList<>();
+		contents = new ArrayList<>();
 
 		for (int i = 0; i < listLen; i++) {
-			resList.add(wrapList[i].stockDto);
+			if (wrapArr[i].similarity != 0)
+				contents.add(wrapArr[i].stockDto);
 		}
+		
+		if(contents.size() == 0) {
+			response = "failure_none_search_data";
+			
+		}else {
+			response = "success_search_data";
+			
+		}
+		
+		resultMap.put("contents", contents);
+		resultMap.put("response", response);
 
-		return resList;
+		return resultMap;
 
 	}
 

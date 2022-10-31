@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.stock.detail.StockDto;
+import com.stock.detail.dto.StockDto;
 
 @RestController
 @RequestMapping("search")
@@ -18,6 +18,7 @@ public class ViewCntController {
 
 	@GetMapping("view-cnt-ranking")
 	public List<StockDto> viewCntRankTop5() {
+		System.out.println(viewCntService);
 		return viewCntService.getViewCntTop5StockList();
 	}
 

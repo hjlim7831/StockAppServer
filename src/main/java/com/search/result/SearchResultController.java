@@ -1,6 +1,7 @@
 package com.search.result;
 
-import java.util.List;
+import java.util.Date;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -8,7 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.stock.detail.StockDto;
+import com.search.recentRecord.SearchRecordDto;
+import com.search.recentRecord.SearchRecordService;
+
 
 @RestController
 @RequestMapping("search")
@@ -16,11 +19,14 @@ public class SearchResultController {
 
 	@Autowired
 	SearchResultService searchResultService;
+	
+	@Autowired
+	SearchRecordService searchRecordService;
 
 	@GetMapping("result")
-	public List<StockDto> searchResult(Model model, String keyWord) {
+	public Map<String,Object> searchResult(Model model, String keyWord) {
+		if (!keyWord.equals("")) searchRecordService.insertSearchRecord(new SearchRecordDto(keyWord, new Date()));
 		return searchResultService.getSearchResultList(keyWord);
-		
 	}
 
 }

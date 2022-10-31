@@ -1,6 +1,5 @@
 package com.search.recentRecord;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,22 +16,22 @@ public class SearchRecordController {
 
 	@Resource
 	private SearchRecordSessionDto searchRecordSessionDto;
-	
-	// ÃÖ±Ù °Ë»ö ¸ñ·Ï Á¶È¸ÇÏ±â
-	@GetMapping("record")
+
+	@GetMapping("record") // ìµœê·¼ ê²€ìƒ‰ ëª©ë¡ ì¡°íšŒ
 	public Map<String, Object> searchRecordLookup() {
 		Map<String, Object> resultMap = new HashMap<>();
-		String response = "succes_lookup_search_record";
 		
-		// ÃÖ±Ù °Ë»ö 
-		if (searchRecordSessionDto.getSearchRecordDtoList() == null) {
-			searchRecordSessionDto.setSearchRecordDtoList(new ArrayList<>());
-		}
+		if (searchRecordSessionDto.getSearchRecordDtoList() == null) { // ë§Œì•½ ê²€ìƒ‰í•œ ì ì´ ì—†ë‹¤ë©´
+			searchRecordSessionDto.setResponse("failure_no_record");   // responseë¥¼ failureë¡œ ìˆ˜ì •
+		} 
 		
+		// sessionì— ì €ì¥í•´ ë‘” ê²€ìƒ‰ ëª©ë¡(contents)ì™€ ì‘ë‹µ(response) ê°€ì ¸ì˜¤ê¸°
 		List<SearchRecordDto> contents = searchRecordSessionDto.getSearchRecordDtoList();
+		String response = searchRecordSessionDto.getResponse();
+		
 		resultMap.put("contents", contents);
 		resultMap.put("response", response);
 		
-		return resultMap; // Å¬·¡½º ÀÚ·áÇü ³» ¸®½ºÆ® JSON º¯È¯, ±â·Ï ¸î °³±îÁö ³²±æÁö »ı°¢
+		return resultMap;
 	}
 }
