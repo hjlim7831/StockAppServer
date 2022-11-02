@@ -41,7 +41,7 @@ public class UserInfoService {
 		String contents = "";
 		
 		// 필수 입력값(id, password, name, nick_name, email, phone_number) 중 하나라도 없는 경우
-		if (id.equals("") || password.equals("") || name.equals("") || nick_name.equals("") || email.equals("") || phone_number.equals("")) {
+		if (id == null || id.equals("") || password == null || password.equals("") || name == null || name.equals("") || nick_name == null || nick_name.equals("") || email == null || email.equals("") || phone_number == null || phone_number.equals("")) {
 			response = "failure_empty_some";
 			contents = "아이디, 비밀번호, 이름, 닉네임, 이메일, 전화번호를 모두 입력해 주세요.";
 		}
@@ -137,19 +137,19 @@ public class UserInfoService {
 		String contents = "";
 		
 		// id와 password가 모두 빈 상태로 들어왔다.
-		if (id.equals("") && password.equals("")) {
+		if ((id == null || id.equals("")) && (password == null ||password.equals(""))) {
 			response = "failure_empty_id_pwd";
 			contents = "아이디와 비밀번호를 입력해 주세요.";
 		}
 		
 		// id만 빈 상태로 들어왔다.
-		else if (id.equals("")) {
+		else if (id == null || id.equals("")) {
 			response = "failure_empty_id";
 			contents = "아이디를 입력해 주세요.";
 		}
 		
 		// password만 빈 상태로 들어왔다.
-		else if (password.equals("")) {
+		else if (password == null ||password.equals("")) {
 			response = "failure_empty_password";
 			contents = "비밀번호를 입력해 주세요.";
 		}
