@@ -2,16 +2,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!-- User Stock Data 관련 SQL -->
-<mapper namespace="com.user.stock.UserStockMapper">
+<mapper namespace="com.user.stock.holding.UserStockHoldingMapper">
 	
 	<!-- 사용자의 보유 주식 전체를 SELECT -->
-	<select id="selectAllUserStock" parameterType="string" resultType="com.user.stock.UserStockDto">
+	<select id="selectAllUserStock" parameterType="string" resultType="com.user.stock.holding.UserStockHoldingDto">
 		select stock_code, now_price, stock_cnt from my_list
 		where user_num = #{user_num}
 	</select>
 	
 	<!-- 사용자의 stock_code 보유 현황을 SELECT -->
-	<select id="selectOneUserStock" parameterType="com.user.stock.UserStockDto" resultType="com.user.stock.UserStockDto">
+	<select id="selectOneUserStock" parameterType="com.user.stock.holding.UserStockHoldingDto" resultType="com.user.stock.holding.UserStockHoldingDto">
 		select now_price, stock_cnt from my_list
 		where user_num = #{user_num} and stock_code = #{stock_code}
 	</select>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- Stock Debut Data 관련 SQL -->
+<mapper namespace="com.stock.debut.StockDebutMapper">
+	
+	<!-- 모든 상장 예정 주식 정보 가져오기 -->
+	<select id="selectAllDebutStock" resultType="com.stock.debut.StockDebutDto">
+		SELECT company_name, new_listing_date, diff FROM new_stock_list
+		ORDER BY new_listing_date
+	</select>
+
+</mapper>

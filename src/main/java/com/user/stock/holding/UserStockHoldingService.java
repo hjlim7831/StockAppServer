@@ -1,4 +1,4 @@
-package com.user.stock;
+package com.user.stock.holding;
 
 import java.util.HashMap;
 import java.util.List;
@@ -12,13 +12,13 @@ import org.springframework.stereotype.Service;
 import com.user.info.UserInfoSessionDto;
 
 @Service
-public class UserStockService {
+public class UserStockHoldingService {
 	
 	@Resource // session에 저장해 둔 사용자 정보 가져오기
 	UserInfoSessionDto userInfoSessionDto;
 	
 	@Autowired
-	UserStockMapper userStockMapper;
+	UserStockHoldingMapper userStockMapper;
 
 	public Map<String, Object> lookupUserStockAll() { // 사용자의 모든 보유 주식 조회
 		Map<String, Object> resultMap = new HashMap<>();
@@ -29,7 +29,7 @@ public class UserStockService {
 		String user_num = userInfoSessionDto.getUser_num();
 		
 		// session에서 가져온 user_num의 전체 보유 주식 목록을 contents에 저장
-		List<UserStockDto> contents = userStockMapper.selectAllUserStock(user_num);
+		List<UserStockHoldingDto> contents = userStockMapper.selectAllUserStock(user_num);
 		
 		if (contents.size() == 0) { // 만약 List에 주식이 하나도 없다면 보유 주식이 없다.
 			response = "failure_not_having_stock";
@@ -46,7 +46,7 @@ public class UserStockService {
 		Map<String, Object> resultMap = new HashMap<>();
 		
 		// 전달 받은 stock_code와 session에 저장된 user_num으로 UserStockDto 생성
-		UserStockDto userStockDto = new UserStockDto(stock_code, userInfoSessionDto.getUser_num());
+		UserStockHoldingDto userStockDto = new UserStockHoldingDto(stock_code, userInfoSessionDto.getUser_num());
 		
 		String response = "success_lookup_user_stock";
 		

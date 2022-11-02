@@ -16,16 +16,20 @@ public class StockTradeService {
 	
 	@Resource // session에 저장해 둔 로그인 정보 가져오기
 	private UserInfoSessionDto userInfoSessionDto;
-
+	
+	@Resource
+	private StockTradeSessionDto stockTradeSessionDto;
+	
 	@Autowired
 	UserAccountMapper userAccountMapper;
 	
 	public Map<String, Object> trade(StockTradeDto stockTradeDto) {
+		
 		int trade_id = stockTradeDto.getTrade_id();
 		String stock_code = stockTradeDto.getStock_code();
 		int share = stockTradeDto.getShare();
-		int stock_price = stockTradeDto.getStock_price();
-		String user_num = stockTradeDto.getUser_num();
+		int stock_price = stockTradeSessionDto.getStock_price();
+		String user_num = userInfoSessionDto.getUser_num();
 		int balance = userAccountMapper.selectBalanceByNum(user_num);
 		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
@@ -61,6 +65,26 @@ public class StockTradeService {
 			}
 		}
 
+		return resultMap;
+	}
+
+	public Map<String, Object> tradePrice(String stock_code) {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		
+		String response = "";
+		StockTradeSessionDto contents = null;
+		
+		int stock_price = 0; // 현재 주가 가져와서 저장
+		
+		// stock_code의 현재 주가를 가져올 수 없는 경우
+		
+		// stock_code의 현재 주가를 가져온 경우
+		stockTradeSessionDto.setStock_price(stock_price); // 세션에 stock_price 저장
+		stockTradeSessionDto.setStock_code(stock_code);   // 세션에 stock_code 저장
+		
+		resultMap.put("response", response);
+		resultMap.put("contents", contents);
+		
 		return resultMap;
 	}
 }
