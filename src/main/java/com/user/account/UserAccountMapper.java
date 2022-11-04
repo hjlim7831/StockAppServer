@@ -3,8 +3,6 @@ package com.user.account;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
-import com.stock.trade.StockTradeDto;
-
 @Mapper
 @Repository
 public interface UserAccountMapper {
@@ -19,5 +17,5 @@ public interface UserAccountMapper {
 	int selectBalanceByNum(String user_num);
 	
 	// parameter로 받은 stockTradeDto로 원화 잔고 update
-	void updateBalanceByUserNum(StockTradeDto stockTradeDto);
+	void updateBalanceByUserNum(double balance, String user_num);
 }

@@ -22,5 +22,5 @@ public class StockTradeSessionDto implements Serializable {
 	static final long serialVersionUID = 1L;
 	
 	private String stock_code;
-	private int stock_price;		
+	private double stock_price;		
 }

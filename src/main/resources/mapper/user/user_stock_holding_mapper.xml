@@ -11,9 +11,28 @@
 	</select>
 	
 	<!-- 사용자의 stock_code 보유 현황을 SELECT -->
-	<select id="selectOneUserStock" parameterType="com.user.stock.holding.UserStockHoldingDto" resultType="com.user.stock.holding.UserStockHoldingDto">
+	<select id="selectOneUserStock" parameterType="string" resultType="com.user.stock.holding.UserStockHoldingDto">
 		select now_price, stock_cnt from my_list
 		where user_num = #{user_num} and stock_code = #{stock_code}
 	</select>
+	
+	<!-- 사용자의 stock_code 보유 주식 UPDATE -->
+	<update id="updateOneUserStock" parameterType="com.stock.trade.StockTradeDto">
+		update my_list
+		set now_price = #{now_price}, stock_cnt = #{stock_cnt}
+		where user_num = #{user_num} and stock_code = #{stock_code}
+	</update>
+	
+	<!-- 사용자의 보유 주식 추가 INSERT -->
+	<insert id="insertOneUserStock" parameterType="com.stock.trade.StockTradeDto">
+		insert into my_list
+		values (#{stock_code}, #{user_num}, #{now_price}, #{stock_cnt})
+	</insert>
+	
+	<!-- 사용자의 보유 주식 삭제 DELETE -->
+	<delete id="deleteOneUserStock" parameterType="string">
+		delete from my_list
+		where user_num = #{user_num} and stock_code = #{stock_code}
+	</delete>
 	
 </mapper>

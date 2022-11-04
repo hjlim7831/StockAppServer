@@ -76,7 +76,7 @@ public class UserAccountService {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
 		String response;
-		int contents;
+		double contents;
 
 		if (loginCheck()) { // 로그인 돼 있는 상태
 			response = "success_lookup_account";
