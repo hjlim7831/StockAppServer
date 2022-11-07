@@ -11,7 +11,7 @@
 	</select>
 	
 	<select id="selectAllStock" resultType="com.stock.detail.dto.StockDto">
-		SELECT stock_code, company_name, category, product FROM stock_list
+		SELECT stock_code, company_name, cartegory, product FROM stock_list
 	</select>
 
 </mapper>

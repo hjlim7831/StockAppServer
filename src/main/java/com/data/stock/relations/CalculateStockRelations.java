@@ -1,5 +1,6 @@
 package com.data.stock.relations;
 
+import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,7 +16,6 @@ import org.springframework.stereotype.Component;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
 import com.stock.detail.StockDetailMapper;
 import com.stock.detail.dto.StockDto;
@@ -63,8 +63,7 @@ public class CalculateStockRelations {
 		for (int i = 0; i < listSize; i++) {
 			StockDto targetStock = stockList.get(i);
 			String targetStock_code = targetStock.getStock_code();
-			String targetStockCategory = targetStock.getCategory();
-
+			String targetStockCategory = targetStock.getCartegory();
 			// Category 같은 주식들 쭉 뽑기
 			List<StockDto> sameCategoryStockList = new ArrayList<>();
 			for (int j = 0; j < listSize; j++) {
@@ -75,7 +74,7 @@ public class CalculateStockRelations {
 					continue;
 				}
 
-				if (targetStockCategory.equals(compStock.getCategory())) {
+				if (targetStockCategory.equals(compStock.getCartegory())) {
 					sameCategoryStockList.add(compStock);
 				}
 			}
@@ -111,16 +110,27 @@ public class CalculateStockRelations {
 			}
 			Gson gson = new Gson();
 			
+//			try {
+//				gson.toJson(jsonObject, new FileWriter(".\\src\\main\\resources\\relations.json"));
+//			} catch (JsonIOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+			
+			BufferedWriter writer;
 			try {
-				gson.toJson(jsonObject, new FileWriter(".\\src\\main\\resources\\relations.json"));
-			} catch (JsonIOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				writer = new BufferedWriter(new FileWriter(".\\src\\main\\resources\\relations.json"));
+				gson.toJson(jsonObject,writer);
+				writer.close();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
+			
+	
 		}
 		
 		
