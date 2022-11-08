@@ -1,9 +1,9 @@
-package com.data.stock.crawling.realtime;
+package com.data.stock.crawling.realtime.dto;
 
 import lombok.Data;
 
 @Data
-public class MajorIndexDto {
+public class RealtimeMajorIndexDto {
 	private String ms; // 상태
 	private String nv; // 현재 가격
 	private String cv; // 증감

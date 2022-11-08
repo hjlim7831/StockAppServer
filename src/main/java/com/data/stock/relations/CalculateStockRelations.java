@@ -63,7 +63,7 @@ public class CalculateStockRelations {
 		for (int i = 0; i < listSize; i++) {
 			StockDto targetStock = stockList.get(i);
 			String targetStock_code = targetStock.getStock_code();
-			String targetStockCategory = targetStock.getCartegory();
+			String targetStockCategory = targetStock.getCategory();
 			// Category 같은 주식들 쭉 뽑기
 			List<StockDto> sameCategoryStockList = new ArrayList<>();
 			for (int j = 0; j < listSize; j++) {
@@ -74,7 +74,7 @@ public class CalculateStockRelations {
 					continue;
 				}
 
-				if (targetStockCategory.equals(compStock.getCartegory())) {
+				if (targetStockCategory.equals(compStock.getCategory())) {
 					sameCategoryStockList.add(compStock);
 				}
 			}

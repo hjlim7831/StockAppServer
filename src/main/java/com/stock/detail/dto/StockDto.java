@@ -6,7 +6,7 @@ import lombok.Data;
 public class StockDto {
 	private String stock_code;
 	private String company_name;
-	private String cartegory;
+	private String category;
 	private String product;
 	private String public_day;
 	private String closing_month;
