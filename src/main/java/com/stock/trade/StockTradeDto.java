@@ -6,13 +6,13 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class StockTradeDto {
-	private String user_num;
-	private int trade_id;
+	private int trade_id;        // 매수 0, 매도 1
 	
-	private String stock_code;
-	private int share;
-	private int stock_price;
+	private String stock_code;   // 매매할 주식 코드
+	private int share;           // 매매할 주식 수
 	
-	private int after_trade_balance;
-	private int after_trade_share;
+	private double now_price;    // 매매 이후 구매 가격
+	private int stock_cnt;       // 매매 이후 보유 주식 수
+	
+	private String user_num;     // 사용자 고유 번호
 }

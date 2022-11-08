@@ -9,21 +9,23 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 @RestController
 @RequestMapping("stock")
 public class StockTradeController {
 	
 	@Autowired
-	StockTradeService userStockTradeService;
+	StockTradeService stockTradeService;
 	
 	@PostMapping("{stock_code}/trade") // stock_code 매매
-	public Map<String, Object> trade(@PathVariable String stock_code, StockTradeDto userStockTradeDto) {
-		userStockTradeDto.setStock_code(stock_code); // URL로 전달받은 stock_code 넣어주기
-		return userStockTradeService.trade(userStockTradeDto);
+	public Map<String, Object> trade(@PathVariable String stock_code, StockTradeDto stockTradeDto) {
+		stockTradeDto.setStock_code(stock_code); // URL로 전달받은 stock_code 넣어주기
+		return stockTradeService.trade(stockTradeDto);
 	}
 	
-	@GetMapping("{stock_code}/price")
-	public Map<String, Object> tradePrice(@PathVariable String stock_code) {
-		return userStockTradeService.tradePrice(stock_code);
+	@GetMapping("{stock_code}/price") // stock_code 현재 주가
+	public Map<String, Object> tradePrice(@PathVariable String stock_code) throws JsonProcessingException {
+		return stockTradeService.tradePrice(stock_code);
 	}
 }

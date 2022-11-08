@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.data.stock.crawling.news.NewsDto;
+import com.google.gson.JsonElement;
 import com.stock.detail.dto.StockDto;
-import com.stock.detail.dto.StockRelationsDto;
 
 @RestController
 @RequestMapping("stock")
@@ -27,7 +27,8 @@ public class StockDetailController {
 	}
 
 	@GetMapping("{stock_code}/relations")
-	public StockRelationsDto stockDetailRelations(@PathVariable String stock_code) throws FileNotFoundException {
+	public String stockDetailRelations(@PathVariable String stock_code) {
+
 		return stockDetailService.stockDetailRelations(stock_code);
 	}
 
@@ -35,4 +36,6 @@ public class StockDetailController {
 	public List<NewsDto> stockDetailNews(@PathVariable String stock_code) {
 		return stockDetailService.stockDetailNews(stock_code);
 	}
+	
+	
 }

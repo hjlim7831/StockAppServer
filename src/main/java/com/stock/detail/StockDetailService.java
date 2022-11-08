@@ -12,33 +12,44 @@ import org.springframework.stereotype.Service;
 import com.data.stock.crawling.news.JsoupNewsComponent;
 import com.data.stock.crawling.news.NewsDto;
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.stock.detail.dto.StockDto;
-import com.stock.detail.dto.StockRelationsDto;
+
 
 @Service
 public class StockDetailService {
-	
+
 	@Autowired
 	JsoupNewsComponent jsoupNewsComponent;
-	
+
 	@Autowired
 	StockDetailMapper stockDetailMapper;
-	
+
 	public StockDto stockDetailInfo(String stock_code) {
 		return stockDetailMapper.selectStockByCode(stock_code);
 	}
 
-	public StockRelationsDto stockDetailRelations (String stock_code) throws FileNotFoundException {
-		
-		Reader reader = new FileReader(".\\src\\main\\resources\\relations.json");
+	public String stockDetailRelations(String stock_code) {
 		Gson gson = new Gson();
-		StockRelationsDto[] stockReltationsDto = gson.fromJson(reader, StockRelationsDto[].class);
-		System.out.println(stockReltationsDto);
-		return null;
+		Reader reader;
+		JsonElement res;
+		try {
+			reader = new FileReader(".\\src\\main\\resources\\relations.json");	
+			JsonObject obj = gson.fromJson(reader, JsonObject.class);
+			res = obj.get(stock_code);
+			return res.toString();
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			return null;
+		}
+		
 	}
-	
+
 	public List<NewsDto> stockDetailNews(String stock_code) {
 		return jsoupNewsComponent.getNewsList(stock_code);
 	}
+
 
 }

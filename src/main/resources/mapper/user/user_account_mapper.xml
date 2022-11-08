@@ -17,15 +17,15 @@
 	</select>
 	
 	<!-- 한 회원의 통장 잔고 조회 SELECT  -->
-	<select id="selectBalanceByNum" parameterType="string" resultType="int">
+	<select id="selectBalanceByNum" parameterType="string" resultType="double">
 		select balance from account
 		where user_num = #{user_num}
 	</select>
 	
 	<!-- 한 회원의 통장 잔고 수정 UPDATE -->
-	<update id="updateBalanceByUserNum" parameterType="com.stock.trade.StockTradeDto" >
+	<update id="updateBalanceByUserNum" parameterType="map" >
 		UPDATE account
-		SET balance = #{after_trade_balance}
+		SET balance = #{balance}
 		WHERE user_num = #{user_num}
 	</update>
 	
