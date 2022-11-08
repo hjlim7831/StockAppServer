@@ -16,6 +16,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.stock.detail.dto.StockDto;
 
+
 @Service
 public class StockDetailService {
 

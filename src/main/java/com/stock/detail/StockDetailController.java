@@ -1,6 +1,7 @@
 
 package com.stock.detail;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,7 @@ public class StockDetailController {
 
 	@GetMapping("{stock_code}/relations")
 	public String stockDetailRelations(@PathVariable String stock_code) {
+
 		return stockDetailService.stockDetailRelations(stock_code);
 	}
 

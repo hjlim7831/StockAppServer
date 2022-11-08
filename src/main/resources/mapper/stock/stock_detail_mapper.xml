@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<!--  -->
+<!-- Stock Detail Data 관련 SQL -->
 <mapper namespace="com.stock.detail.StockDetailMapper">
 	
-	<!--  -->
+	<!-- stock_code에 해당하는 1개의 주식 정보 SELECT -->
 	<select id="selectStockByCode" parameterType="string" resultType="com.stock.detail.dto.StockDto">
-		select * from stock_list
+		select stock_code, company_name, cartegory as category, product, public_day, closing_month, representative, homepage, region from stock_list
 		where stock_code = #{stock_code}
 	</select>
 	
+	<!-- 모든 주식 종목의 정보 SELECT  -->
 	<select id="selectAllStock" resultType="com.stock.detail.dto.StockDto">
-		SELECT stock_code, company_name, cartegory, product FROM stock_list
+
+		SELECT stock_code, company_name, cartegory as category, product FROM stock_list
 	</select>
 
 </mapper>
