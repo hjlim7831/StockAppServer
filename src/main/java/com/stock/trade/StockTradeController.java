@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 @RestController
 @RequestMapping("stock")
 public class StockTradeController {
@@ -23,7 +25,7 @@ public class StockTradeController {
 	}
 	
 	@GetMapping("{stock_code}/price") // stock_code 현재 주가
-	public Map<String, Object> tradePrice(@PathVariable String stock_code) {
+	public Map<String, Object> tradePrice(@PathVariable String stock_code) throws JsonProcessingException {
 		return stockTradeService.tradePrice(stock_code);
 	}
 }

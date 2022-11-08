@@ -8,6 +8,9 @@ import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.data.stock.crawling.realtime.RealtimeComponent;
+import com.data.stock.crawling.realtime.dto.RealtimePriceDto;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.user.account.UserAccountMapper;
 import com.user.info.UserInfoSessionDto;
 import com.user.stock.holding.UserStockHoldingDto;
@@ -27,6 +30,9 @@ public class StockTradeService {
 	
 	@Autowired
 	UserStockHoldingMapper userStockHoldingMapper;
+	
+	@Autowired
+	RealtimeComponent realtimeComponent;
 	
 	public Map<String, Object> trade(StockTradeDto stockTradeDto) {
 		Map<String, Object> resultMap = new HashMap<String, Object>(); // 응답 저장하기
@@ -114,28 +120,23 @@ public class StockTradeService {
 		return resultMap;
 	}
 
-	public Map<String, Object> tradePrice(String stock_code) {
+	public Map<String, Object> tradePrice(String stock_code) throws JsonProcessingException {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
-		String response;
-		StockTradeSessionDto contents;
+		// 실시간 주가 정보 가져오기
+		RealtimePriceDto realtimeDto = realtimeComponent.getRealtimePrice(stock_code);
 		
-		int stock_price = 0;    // 현재 주가 가져와서 저장 (미완) !추가 필요!
-		
-		if (stock_price == 0) { // stock_code의 현재 주가를 가져올 수 없는 경우
-			response = "failure_to_find_stock";
-			contents = null;
-		} else {                // stock_code의 현재 주가를 가져온 경우
-			stockTradeSessionDto.setStock_price(stock_price); // 세션에 stock_price 저장
+		if (realtimeDto == null) { // 가져올 주가 정보가 없는 경우
+			resultMap.put("response", "failure_to_find_stock");
+			resultMap.put("contents", null);
+		} else { // 주가 정보를 가져온 경우
+			stockTradeSessionDto.setStock_price(realtimeDto.getNow()); // 세션에 stock_price 저장
 			stockTradeSessionDto.setStock_code(stock_code);   // 세션에 stock_code 저장
 			
-			response = "success_get_trade_price";
-			contents = stockTradeSessionDto;
+			resultMap.put("response", "success_get_trade_price");
+			resultMap.put("contents", realtimeDto);
 		}
-		
-		resultMap.put("response", response);
-		resultMap.put("contents", contents);
-		
+
 		return resultMap;
 	}
 }
