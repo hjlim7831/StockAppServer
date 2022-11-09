@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- Stock Debut Data 관련 SQL -->
+<mapper namespace="com.stock.category.StockCategoryMapper">
+	
+	<!-- 모든 상장 예정 주식 정보 가져오기 -->
+	<select id="selectCategoryStocks" parameterType="string" resultType="com.stock.detail.dto.StockDto">
+		SELECT stock_code, company_name, cartegory as category FROM stock_list
+		<!-- if문 써서 접근 -->
+		<if test="category_name == 'it'">
+		WHERE cartegory LIKE "%인터넷%"
+		</if>
+		<if test="category_name == 'ctr'">
+		WHERE cartegory LIKE "%건설%"
+		</if>
+		<if test="category_name == 'bio'">
+		WHERE cartegory LIKE "%생물학%"
+		</if>
+		<if test="category_name == 'chem'">
+		WHERE cartegory LIKE "%화학제품%"
+		</if>
+		<if test="category_name == 'ent'">
+		WHERE cartegory LIKE "%녹음업%"
+		</if>
+	</select>
+
+</mapper>

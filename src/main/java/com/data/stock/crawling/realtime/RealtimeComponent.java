@@ -74,8 +74,11 @@ public class RealtimeComponent {
 		
         return RealtimeExchangeDto;
 	}
-	
-	public static RealtimeMajorIndexDto[] getMajorIndexRealtime() {
+	/**
+	 * 실시간 주요 지수들을 가져오는 함수
+	 * @return KOSPI, KOSDAQ, KPI200을 DTO array로 담아 전달
+	 */
+	public RealtimeMajorIndexDto[] getMajorIndexRealtime() {
 		// KOSPI, KOSDAQ, KPI200
 		String urlLink = "https://polling.finance.naver.com/api/realtime?query=SERVICE_INDEX:KOSPI,KOSDAQ,KPI200";
 		RealtimeMajorIndexDto[] miArr = new RealtimeMajorIndexDto[3];
