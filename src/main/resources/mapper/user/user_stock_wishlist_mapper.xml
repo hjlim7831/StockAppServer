@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- User Stock Data 관련 SQL -->
+<mapper namespace="com.user.stock.wishlist.UserStockWishlistMapper">
+	
+	<select id="selectWishlist" parameterType="string" resultType="string">
+		SELECT stock_code FROM wish_list
+		WHERE user_num = #{user_num}
+	</select>
+	
+	<select id="selectWishlistByStockCode" parameterType="string" resultType="string">
+		SELECT stock_code FROM wish_list
+		WHERE user_num = #{user_num} AND stock_code = #{stock_code}
+	</select>
+	
+	<insert id="insertWishlist" parameterType="string">
+		INSERT INTO wish_list
+		VALUES (#{user_num}, #{stock_code})
+	</insert>
+	
+	<delete id="deleteWishlist" parameterType="string">
+		DELETE FROM wish_list
+		WHERE user_num = #{user_num} AND stock_code = #{stock_code}
+	</delete>
+	
+</mapper>
