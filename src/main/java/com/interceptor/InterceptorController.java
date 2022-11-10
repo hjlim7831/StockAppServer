@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("error")
-public class LoginInterceptorController {
+public class InterceptorController {
 
 	@GetMapping("no-login")
 	public Map<String, Object> noLogin() {

@@ -130,13 +130,13 @@ public class StockTradeService {
 			resultMap.put("response", "failure_to_find_stock");
 			resultMap.put("contents", "존재하지 않는 주식 종목입니다.");
 		} else { // 주가 정보를 가져온 경우
-			double now_price = realtimePriceDto.getNow();
+			double now = realtimePriceDto.getNow();
 			
-			stockTradeSessionDto.setStock_price(now_price); // 세션에 stock_price 저장
+			stockTradeSessionDto.setStock_price(now); // 세션에 stock_price 저장
 			stockTradeSessionDto.setStock_code(stock_code); // 세션에 stock_code 저장
 			
 			Map<String, Object> priceMap = new HashMap<String, Object>();
-			priceMap.put("now_price", now_price);
+			priceMap.put("now", now);
 			
 			resultMap.put("response", "success_get_trade_price");
 			resultMap.put("contents", priceMap);

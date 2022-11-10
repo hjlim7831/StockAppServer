@@ -76,6 +76,7 @@ public class RealtimeComponent {
 		
         return RealtimeExchangeDto;
 	}
+	
 	/**
 	 * 실시간 주요 지수들을 가져오는 함수
 	 * @return KOSPI, KOSDAQ, KPI200을 DTO array로 담아 전달
