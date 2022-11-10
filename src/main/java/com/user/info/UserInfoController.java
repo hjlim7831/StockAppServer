@@ -28,12 +28,12 @@ public class UserInfoController {
 		return userInfoService.joinUser(userInfoDto);
 	}
 	
-	@PostMapping("login") // 로그인 (로그아웃이 돼 있다고 가정)
+	@PostMapping("login") // 로그인
 	public Map<String, Object> loginUser(UserInfoDto userInfoDto, Model model) {
 		return userInfoService.loginUser(userInfoDto);
 	}
 	
-	@PostMapping("logout") // 로그아웃 (로그인이 돼 있다고 가정)
+	@PostMapping("logout") // 로그아웃
 	public Map<String, Object> logoutUser() {
 		return userInfoService.logoutUser();
 	}

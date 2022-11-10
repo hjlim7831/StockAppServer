@@ -13,9 +13,35 @@ public class WebMvcConfig implements WebMvcConfigurer{
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(new StockCloseInterceptor())
-				.addPathPatterns("/stock/*/trade");
+				
+				// 주식 매매 창
+				.addPathPatterns("/stock/*/trade", "/stock/*/price");
+		
 		registry.addInterceptor(new LoginInterceptor())
-				.excludePathPatterns("user/login", "user/join", "user/login-session", "search/**");
+				.addPathPatterns("/**")
+				
+				// 로그인, 회원가입, 로그인 여부 조회
+				.excludePathPatterns("/user/login", "user/join")
+				
+				// 메인 페이지 (로그아웃 버전)
+				.excludePathPatterns("/stock/major-index", "stock/category/**", "stock/recommend", "stock/is-close")
+				
+				// 테스트용
+				.excludePathPatterns("/stock/*/price")
+				
+				// 주식 상세 페이지
+				.excludePathPatterns("/stock/*/info", "/stock/*/graph", "/stock/*/realtime", "/stock/*/relations", "/stock/*/news")
+				
+				// 상장 예정 주식
+				.excludePathPatterns("/stock/debut")
+				
+				// 검색
+				.excludePathPatterns("/search/**")
+				
+				// Interceptor
+				.excludePathPatterns("/error/**")
+				
+				// Swagger
+				.excludePathPatterns("/swagger-ui.html", "/v2/api-docs", "/swagger-resources/**", "/webjars/**");
 	}
-	
 }

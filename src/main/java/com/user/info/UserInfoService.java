@@ -204,22 +204,9 @@ public class UserInfoService {
 	
 	public Map<String, Object> loginCheck() { // 로그인 여부 확인
 		Map<String, Object> resultMap = new HashMap<>();
-		
-		String response;
-		UserInfoDto contents;
 
-		if (userInfoSessionDto.getUser_num() == null) { // 로그인 안 돼 있는 상태
-			response = "logout";
-			contents = null;
-		}
-		
-		else { // 로그인 돼 있는 상태
-			response = "login";
-			contents = new UserInfoDto(userInfoSessionDto.getId(), userInfoSessionDto.getUser_num());
-		}
-
-		resultMap.put("response", response);
-		resultMap.put("contents", contents);
+		resultMap.put("response", "success_have_login_data");
+		resultMap.put("contents", new UserInfoDto(userInfoSessionDto.getId(), userInfoSessionDto.getUser_num()));
 		
 		return resultMap;
 	}
