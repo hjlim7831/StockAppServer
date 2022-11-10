@@ -27,7 +27,7 @@ public class WebMvcConfig implements WebMvcConfigurer{
 				.excludePathPatterns("/stock/major-index", "stock/category/**", "stock/recommend", "stock/is-close")
 				
 				// 테스트용
-				.excludePathPatterns("/stock/*/price")
+				.excludePathPatterns("/testApikey")
 				
 				// 주식 상세 페이지
 				.excludePathPatterns("/stock/*/info", "/stock/*/graph", "/stock/*/realtime", "/stock/*/relations", "/stock/*/news")
