@@ -27,11 +27,12 @@ public class StockCloseInterceptor implements HandlerInterceptor {
 		System.out.println(ed);
 		
 		if (zt.isAfter(st) && zt.isBefore(ed)) {
-			return true;
-		}else {
-			return false;
+			response.sendRedirect("/error/stock-close");
+			
 		}
-
+		
+		
+		return true;
 	}
 
 }

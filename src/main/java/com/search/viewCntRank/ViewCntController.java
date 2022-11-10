@@ -18,7 +18,6 @@ public class ViewCntController {
 
 	@GetMapping("view-cnt-ranking")
 	public List<StockDto> viewCntRankTop5() {
-		System.out.println(viewCntService);
 		return viewCntService.getViewCntTop5StockList();
 	}
 
