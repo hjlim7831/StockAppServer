@@ -25,6 +25,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+
 @Component
 public class RealtimeComponent {
 	
@@ -34,7 +35,8 @@ public class RealtimeComponent {
 	 * 
 	 * @param stock_code 실시간 주가를 가져올 주식 종목의 코드
 	 * **/
-	public RealtimePriceDto getRealtimePrice(String stock_code) throws JsonProcessingException {
+	public RealtimePriceDto getRealtimePrice(String stock_code) {
+
 		// 실시간 주가를 가져올 URL
 		String url = "http://api.finance.naver.com/service/itemSummary.nhn?itemcode=" + stock_code;
 		
@@ -48,9 +50,9 @@ public class RealtimeComponent {
 		ResponseEntity<RealtimePriceDto> resultMap = restTemplate.exchange(uri.toString(), HttpMethod.GET, entity, RealtimePriceDto.class);
 		
 		// Body에 있는 데이터만 가져와 RealtimeExchangeDto 배열에 저장
-		RealtimePriceDto realtimeDto = resultMap.getBody();
-		
-        return realtimeDto;
+		RealtimePriceDto realtimePriceDto = resultMap.getBody();
+
+        return realtimePriceDto;
 	}
 	
 	/**
@@ -74,8 +76,11 @@ public class RealtimeComponent {
 		
         return RealtimeExchangeDto;
 	}
-	
-	public static RealtimeMajorIndexDto[] getMajorIndexRealtime() {
+	/**
+	 * 실시간 주요 지수들을 가져오는 함수
+	 * @return KOSPI, KOSDAQ, KPI200을 DTO array로 담아 전달
+	 */
+	public RealtimeMajorIndexDto[] getMajorIndexRealtime() {
 		// KOSPI, KOSDAQ, KPI200
 		String urlLink = "https://polling.finance.naver.com/api/realtime?query=SERVICE_INDEX:KOSPI,KOSDAQ,KPI200";
 		RealtimeMajorIndexDto[] miArr = new RealtimeMajorIndexDto[3];
