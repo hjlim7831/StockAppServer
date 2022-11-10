@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.data.stock.crawling.realtime.RealtimeComponent;
 import com.user.info.UserInfoSessionDto;
 
 @Service
@@ -19,22 +20,39 @@ public class UserStockHoldingService {
 	
 	@Autowired
 	UserStockHoldingMapper userStockHoldingMapper;
-
+	
+	@Autowired
+	RealtimeComponent realtimeComponent;
+	
 	public Map<String, Object> lookupUserStockAll() { // 사용자의 모든 보유 주식 조회
 		Map<String, Object> resultMap = new HashMap<>();
-		
-		String response = "success_lookup_user_stock";
 
 		// session에서 가져온 user_num의 전체 보유 주식 목록을 contents에 저장
-		List<UserStockHoldingDto> contents = userStockHoldingMapper.selectAllUserStock(userInfoSessionDto.getUser_num());
+		List<UserStockHoldingDto> userStockHoldingDtoList = userStockHoldingMapper.selectAllUserStock(userInfoSessionDto.getUser_num());
 		
-		if (contents == null || contents.size() == 0) { // 만약 List에 주식이 하나도 없다면 보유 주식이 없다.
-			response = "failure_not_having_stock";
-			contents = null;
+		if (userStockHoldingDtoList == null || userStockHoldingDtoList.size() == 0) { // 만약 List에 주식이 하나도 없다면 보유 주식이 없다.
+			resultMap.put("response", "failure_not_having_stock");
+		} else {
+			resultMap.put("response", "success_lookup_user_stock");
+			
+			for (int i=0; i<userStockHoldingDtoList.size(); i++) {
+				
+				UserStockHoldingDto userStockHoldingDto = userStockHoldingDtoList.get(i);
+				
+				String stock_code = userStockHoldingDto.getStock_code();
+				int stock_cnt = userStockHoldingDto.getStock_cnt();
+				
+				double before_now_price = userStockHoldingDto.getNow_price();
+				double now = realtimeComponent.getRealtimePrice(stock_code).getNow();
+				double now_price = (now*stock_cnt) - before_now_price;
+				double earnings_ratio = ((now_price - before_now_price)/before_now_price)*100;
+				
+				userStockHoldingDtoList.get(i).setNow_price(now_price);
+				userStockHoldingDtoList.get(i).setEarnings_ratio(earnings_ratio);
+			}
 		}
-		
-		resultMap.put("response", response);
-		resultMap.put("contents", contents);
+
+		resultMap.put("contents", userStockHoldingDtoList);
 		
 		return resultMap;
 	}
