@@ -46,10 +46,10 @@ public class UserStockHoldingService {
 		int contents = 0;
 		
 		// DB에서 user_num의 stock_code 보유량 가져오기
-		UserStockHoldingDto userStockHoldingDtobyDB = userStockHoldingMapper.selectOneUserStock(userInfoSessionDto.getUser_num(), stock_code);
+		UserStockHoldingDto userStockHoldingDto = userStockHoldingMapper.selectOneUserStock(userInfoSessionDto.getUser_num(), stock_code);
 		
-		if (userStockHoldingDtobyDB == null) response = "failure_not_holding_this_stock";  // 보유량이 없는 경우
-		else contents = userStockHoldingDtobyDB.getStock_cnt();   // user_num의 stock_code 보유량을 contents에 저장
+		if (userStockHoldingDto == null) response = "success_get_holding_this_stock";  // 보유량이 없는 경우
+		else contents = userStockHoldingDto.getStock_cnt();   // user_num의 stock_code 보유량을 contents에 저장
 
 		resultMap.put("response", response);
 		resultMap.put("contents", contents);

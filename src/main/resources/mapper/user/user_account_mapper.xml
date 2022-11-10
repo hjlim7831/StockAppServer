@@ -23,7 +23,7 @@
 	</select>
 	
 	<!-- 한 회원의 통장 잔고 수정 UPDATE -->
-	<update id="updateBalanceByUserNum" parameterType="map" >
+	<update id="updateBalanceByUserNum" parameterType="map">
 		UPDATE account
 		SET balance = #{balance}
 		WHERE user_num = #{user_num}

@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import com.data.stock.crawling.realtime.RealtimeComponent;
 import com.data.stock.crawling.realtime.dto.RealtimePriceDto;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.user.account.UserAccountMapper;
 import com.user.info.UserInfoSessionDto;
 import com.user.stock.holding.UserStockHoldingDto;
@@ -38,7 +37,7 @@ public class StockTradeService {
 		Map<String, Object> resultMap = new HashMap<String, Object>(); // 응답 저장하기
 		
 		int trade_id = stockTradeDto.getTrade_id();                   // 매도(1)인지 매수(0)인지
-		String stock_code = stockTradeDto.getStock_code();            // 거래할 주식 코드 
+		String stock_code = stockTradeDto.getStock_code();            // 거래할 주식 코드
 		int share = stockTradeDto.getShare();                         // 거래할 주식 개수
 		
 		if (share <= 0) { // 만약 매매하고자 하는 주식 수가 0이하 경우
@@ -54,6 +53,7 @@ public class StockTradeService {
 		
 		// DB에 있는 user_num, stock_code에 해당하는 정보 가져오기
 		UserStockHoldingDto userStockHoldingDto = userStockHoldingMapper.selectOneUserStock(user_num, stock_code);
+		
 		double now_price = 0; // 보유 주식 구매 시 가격
 		int stock_cnt = 0;    // 보유 주식 수
 		
@@ -107,34 +107,39 @@ public class StockTradeService {
 			}
 			
 			// balance 반영
-			userAccountMapper.updateBalanceByUserNum(balance + (stock_price*share), user_num);
+			userAccountMapper.updateBalanceByUserNum(balance - (stock_price*share), user_num);
 			
 			resultMap.put("response", "success_to_sell");
 			resultMap.put("contents", "매도가 완료됐습니다.");
 			
 		} else { // 매수도 매도도 아닌 경우
 			resultMap.put("response", "failure_wrong_trade_id");
-			resultMap.put("contents", "거래 방식이 매수(0) 또는 매도(1)가 아닙니다.");
+			resultMap.put("contents", "거래 방식은 매수 또는 매도를 선택해 주세요.");
 		}
 
 		return resultMap;
 	}
 
-	public Map<String, Object> tradePrice(String stock_code) throws JsonProcessingException {
+	public Map<String, Object> tradePrice(String stock_code) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
 		// 실시간 주가 정보 가져오기
-		RealtimePriceDto realtimeDto = realtimeComponent.getRealtimePrice(stock_code);
+		RealtimePriceDto realtimePriceDto = realtimeComponent.getRealtimePrice(stock_code);
 		
-		if (realtimeDto == null) { // 가져올 주가 정보가 없는 경우
+		if (realtimePriceDto == null) { // 가져올 주가 정보가 없는 경우
 			resultMap.put("response", "failure_to_find_stock");
-			resultMap.put("contents", null);
+			resultMap.put("contents", "존재하지 않는 주식 종목입니다.");
 		} else { // 주가 정보를 가져온 경우
-			stockTradeSessionDto.setStock_price(realtimeDto.getNow()); // 세션에 stock_price 저장
-			stockTradeSessionDto.setStock_code(stock_code);   // 세션에 stock_code 저장
+			double now_price = realtimePriceDto.getNow();
+			
+			stockTradeSessionDto.setStock_price(now_price); // 세션에 stock_price 저장
+			stockTradeSessionDto.setStock_code(stock_code); // 세션에 stock_code 저장
+			
+			Map<String, Object> priceMap = new HashMap<String, Object>();
+			priceMap.put("now_price", now_price);
 			
 			resultMap.put("response", "success_get_trade_price");
-			resultMap.put("contents", realtimeDto);
+			resultMap.put("contents", priceMap);
 		}
 
 		return resultMap;
