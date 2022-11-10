@@ -34,7 +34,7 @@ public class RealtimeComponent {
 	 * 
 	 * @param stock_code 실시간 주가를 가져올 주식 종목의 코드
 	 * **/
-	public RealtimePriceDto getRealtimePrice(String stock_code) throws JsonProcessingException {
+	public RealtimePriceDto getRealtimePrice(String stock_code){
 		// 실시간 주가를 가져올 URL
 		String url = "http://api.finance.naver.com/service/itemSummary.nhn?itemcode=" + stock_code;
 		

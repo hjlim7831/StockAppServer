@@ -16,12 +16,8 @@ public class StockCategoryController {
 	StockCategoryService stockCategoryService;
 
 	@GetMapping("category/{category_name}")
-	public Map<String, Object> categoryStocks(@PathVariable String category_name){
-		
-		stockCategoryService.categoryStocks(category_name);
-		
-		
-		return null;
+	public Object[] categoryStocks(@PathVariable String category_name){
+		return stockCategoryService.categoryStocks(category_name);
 	}
 	
 }
