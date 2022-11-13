@@ -16,14 +16,9 @@ public class UserStockWishlistController {
 	@Autowired
 	UserStockWishlistService userStockWishlistService;
 	
-	@GetMapping("wishlist")
-	public Map<String, Object> lookupWishlist() {
-		return userStockWishlistService.lookupWishlist();
-	}
-	
-	@GetMapping("wishlist/{sorting-method}")
-	public Map<String, Object> lookupMainWishlist() {
-		return null;
+	@GetMapping("wishlist/{sorting_method}")
+	public Map<String, Object> lookupWishlist(@PathVariable String sorting_method) {
+		return userStockWishlistService.lookupWishlist(sorting_method);
 	}
 	
 	@PostMapping("wishlist/{stock_code}/0")

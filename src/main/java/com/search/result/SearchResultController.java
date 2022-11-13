@@ -1,6 +1,7 @@
 package com.search.result;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ public class SearchResultController {
 
 	@GetMapping("result")
 	public Map<String,Object> searchResult(Model model, String keyWord) {
-		if (!keyWord.equals("")) searchRecordService.insertSearchRecord(new SearchRecordDto(keyWord, new Date()));
+		if (!keyWord.equals("")) searchRecordService.insertSearchRecord(new SearchRecordDto(keyWord, LocalDateTime.now(ZoneId.of("Asia/Seoul"))));
 		return searchResultService.getSearchResultList(keyWord);
 	}
 

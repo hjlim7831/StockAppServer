@@ -27,7 +27,7 @@ public class UserInfoDto {
 		this.id = id;
 		this.user_num = user_num;
 	}
-
+	
 	public UserInfoDto(String id, String password, String password_confirm, String simple_pwd, String name, String nick_name, String email,
 			String phone_number, String address) {
 		this.name = name;

@@ -29,8 +29,8 @@ public class UserInfoController {
 	}
 	
 	@PostMapping("login") // 로그인
-	public Map<String, Object> loginUser(UserInfoDto userInfoDto, Model model) {
-		return userInfoService.loginUser(userInfoDto);
+	public Map<String, Object> loginUser(String id, String password, Model model) {
+		return userInfoService.loginUser(id, password);
 	}
 	
 	@PostMapping("logout") // 로그아웃

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserStockWishlistMapper {
 	
-	List<String> selectWishlist(String user_num);
+	List<UserStockWishlistDto> selectWishlist(String user_num);
 	
 	String selectWishlistByStockCode(String user_num, String stock_code);
 	

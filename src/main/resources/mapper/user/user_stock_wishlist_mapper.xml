@@ -4,8 +4,10 @@
 <!-- User Stock Data 관련 SQL -->
 <mapper namespace="com.user.stock.wishlist.UserStockWishlistMapper">
 	
-	<select id="selectWishlist" parameterType="string" resultType="string">
-		SELECT stock_code FROM wish_list
+	<select id="selectWishlist" parameterType="string" resultType="com.user.stock.wishlist.UserStockWishlistDto">
+		SELECT stock_code,
+			(SELECT company_name, view_cnt FROM stock_list WHERE stock_list.stock_code = wish_list.stock_code)
+		FROM wish_list
 		WHERE user_num = #{user_num}
 	</select>
 	

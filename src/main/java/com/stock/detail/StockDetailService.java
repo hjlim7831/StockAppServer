@@ -18,7 +18,8 @@ import com.data.stock.crawling.realtime.dto.RealtimePriceDto;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.stock.detail.dto.StockDto;
+import com.stock.detail.dto.StockDataDto;
+import com.stock.detail.dto.StockInfoDto;
 
 
 @Service
@@ -33,8 +34,20 @@ public class StockDetailService {
 	@Autowired
 	StockDetailMapper stockDetailMapper;
 
-	public StockDto stockDetailInfo(String stock_code) {
-		return stockDetailMapper.selectStockByCode(stock_code);
+	public Map<String, Object> stockDetailInfo(String stock_code) {
+		Map<String, Object> resultMap = new HashMap<>();
+		
+		StockInfoDto stockInfoDto = stockDetailMapper.selectStockByCode(stock_code);
+		
+		if (stockInfoDto == null) {
+			resultMap.put("response", "failure_to_find_stock");
+			resultMap.put("contents", "존재하지 않는 주식 종목입니다.");
+		} else {
+			resultMap.put("response", "success_lookup_stock_info");
+			resultMap.put("contents", stockInfoDto);
+		}
+				
+		return resultMap;
 	}
 
 	public Map<String, Object> stockDetailRealtime(String stock_code) {
@@ -52,6 +65,22 @@ public class StockDetailService {
 
 			resultMap.put("response", "success_get_realtime_stock_info");
 			resultMap.put("contents", realtime);
+		}
+		
+		return resultMap;
+	}
+	
+	public Map<String, Object> stockDetailGraph(String stock_code) {
+		Map<String, Object> resultMap = new HashMap<>();
+
+		List<StockDataDto> stockDataDtoList = stockDetailMapper.selectStockByDate(stock_code);
+		
+		if (stockDataDtoList == null) {
+			resultMap.put("response", "failure_not_exist_stock");
+			resultMap.put("contents", "존재하지 않는 주식 종목입니다.");
+		} else {
+			resultMap.put("response", "success_get_stock_graph_data");
+			resultMap.put("contents", stockDataDtoList);
 		}
 		
 		return resultMap;
@@ -77,6 +106,7 @@ public class StockDetailService {
 	public List<NewsDto> stockDetailNews(String stock_code) {
 		return jsoupNewsComponent.getNewsList(stock_code);
 	}
+
 
 
 

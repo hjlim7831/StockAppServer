@@ -5,7 +5,7 @@
 <mapper namespace="com.stock.detail.StockDetailMapper">
 	
 	<!-- stock_code에 해당하는 1개의 주식 정보 SELECT -->
-	<select id="selectStockByCode" parameterType="string" resultType="com.stock.detail.dto.StockDto">
+	<select id="selectStockByCode" parameterType="string" resultType="com.stock.detail.dto.StockInfoDto">
 		select stock_code, company_name, cartegory as category, product, public_day, closing_month, representative, homepage, region from stock_list
 		where stock_code = #{stock_code}
 	</select>
@@ -15,5 +15,11 @@
 
 		SELECT stock_code, company_name, cartegory as category, product FROM stock_list
 	</select>
-
+	
+	<!-- 수정 필요 -->
+	<select id="selectStockByDate" parameterType="string" resultType="com.stock.detail.dto.StockDataDto">
+		SELECT stock_date, open_price, high_price, low_price, close_price FROM stock_data
+		WHERE (stock_code=#{stock_code}) AND (stock_date BETWEEN DATE_FORMAT(DATE_ADD(NOW(), INTERVAL -2 MONTH), "%Y%m%d") AND DATE_FORMAT(DATE_ADD(NOW(), INTERVAL -1 MONTH), "%Y%m%d"));
+	</select>
+	
 </mapper>

@@ -8,7 +8,8 @@ import lombok.Data;
 public class UserStockHoldingDto {
 	
 	// DB `my_list` table과 호환
-	private String stock_code; // 주식 종목 코드
+	private String stock_code;     // 주식 종목 코드
+	private String company_name;   // 해당 종목 회사 이름
 	
 	@JsonIgnore
 	private String user_num;       // 사용자 고유 번호
