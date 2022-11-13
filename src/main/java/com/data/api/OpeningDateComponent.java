@@ -92,9 +92,9 @@ public class OpeningDateComponent {
 	private boolean readOpeningDate(JsonObject obj, String det) {
 //		System.out.println(obj);
 		if (obj.getAsJsonObject("body").get(det) == null) {
-			return false;
-		}else {
 			return true;
+		}else {
+			return false;
 		}
 
 	}
