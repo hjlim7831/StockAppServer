@@ -9,18 +9,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("user")
+@RequestMapping("user/stock")
 public class UserStockHoldingController {
 	
 	@Autowired
 	UserStockHoldingService userStockHoldingService;
 	
-	@GetMapping("stock/holding") // 사용자의 보유 주식 조회하기
-	public Map<String, Object> lookupUserStockAll() {
-		return userStockHoldingService.lookupUserStockAll();
+	/**
+	 * sorting_method에 따른 사용자의 보유 주식 조회하기
+	 * @param sorting_method ("all", "cnt_desc", "rate_desc", "rate_asc", "price_desc")
+	 * **/
+	@GetMapping("holding/{sorting_method}")
+	public Map<String, Object> lookupUserStock(@PathVariable String sorting_method) {
+		return userStockHoldingService.lookupUserStock(sorting_method);
 	}
 	
-	@GetMapping("stock/holding/{stock_code}") // 사용자의 stock_code 종목 보유 현황 조회하기 
+	/**
+	 * stock_code 종목에 대한 사용자의 보유 현황 조회하기
+	 * @param stock_code (숫자 6자리)
+	 * **/
+	@GetMapping("holding/{stock_code}/check") // 사용자의 stock_code 종목 보유 현황 조회하기 
 	public Map<String, Object> lookupUserStockOne(@PathVariable String stock_code) {
 		return userStockHoldingService.lookupUserStockOne(stock_code);
 	}

@@ -1,6 +1,6 @@
 package com.search.recentRecord;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SearchRecordDto {
 	
-	private String keyword; // 검색한 keyword
-	private Date date;      // 검색한 날짜
+	private String keyword;      // 검색한 keyword
+	private LocalDateTime date;  // 검색한 날짜
 }

@@ -6,7 +6,9 @@
 	
 	<!-- 사용자의 보유 주식 전체를 SELECT -->
 	<select id="selectAllUserStock" parameterType="string" resultType="com.user.stock.holding.UserStockHoldingDto">
-		select stock_code, now_price, stock_cnt from my_list
+		select stock_code, 
+			(SELECT company_name FROM stock_list WHERE stock_list.stock_code = my_list.stock_code) as company_name,
+			now_price, stock_cnt from my_list
 		where user_num = #{user_num}
 	</select>
 	

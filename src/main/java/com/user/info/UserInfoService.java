@@ -126,11 +126,8 @@ public class UserInfoService {
 		return resultMap;
 	}
 	
-	public Map<String, Object> loginUser(UserInfoDto userInfoDto) { // 로그인
-		
-		String id = userInfoDto.getId();
-		String password = userInfoDto.getPassword();
-		
+	public Map<String, Object> loginUser(String id, String password) { // 로그인
+
 		Map<String, Object> resultMap = new HashMap<>();
 		
 		String response = "";
@@ -157,16 +154,16 @@ public class UserInfoService {
 		// id와 password 모두 입력된 상태로 들어왔다.
 		else {
 			// DB에서 입력한 id에 해당하는 정보 가져오기
-			UserInfoDto selectUserInfoDto = userInfoMapper.selectUser(id);
+			UserInfoDto userInfoDto = userInfoMapper.selectUser(id);
 			
 			// id가 존재하지 않는 경우
-			if (selectUserInfoDto == null) {
+			if (userInfoDto == null) {
 				response = "failure_notExist_id";
 				contents = "존재하지 않는 아이디입니다.";
 			}
 			
 			// id가 존재하고, 비밀번호는 틀린 경우
-			else if (!selectUserInfoDto.getPassword().equals(password)) {
+			else if (!userInfoDto.getPassword().equals(password)) {
 				response = "failure_wrong_password";
 				contents = "잘못된 비밀번호입니다.";
 			}
@@ -177,8 +174,8 @@ public class UserInfoService {
 				contents = "로그인이 완료됐습니다.";
 				
 				// 로그인 정보 Session에 저장
-				userInfoSessionDto.setUser_num(selectUserInfoDto.getUser_num());
-				userInfoSessionDto.setId(selectUserInfoDto.getId());
+				userInfoSessionDto.setUser_num(userInfoDto.getUser_num());
+				userInfoSessionDto.setId(userInfoDto.getId());
 			}
 		}
 
