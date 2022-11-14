@@ -3,15 +3,15 @@ package com.user.info;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
+/**
+ *  DB `user` table과 호환되는 DTO입니다.
+ *  JSON으로 변환 시, user_num과 id만 반환됩니다.
+ * **/
 @Data
-@NoArgsConstructor
 @JsonIgnoreProperties({"name", "nick_name", "password", "password_confirm", "simple_pwd", "email", "phone_number", "address"})
 public class UserInfoDto {
-	
-	// DB `user` table과 호환
-	// JSON으로 변환 시, user_num과 id만 반환
+
 	private String user_num;          // 사용자 고유번호 
 	private String name;			  // 이름
 	private String nick_name;         // 닉네임
