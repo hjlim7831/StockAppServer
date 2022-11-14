@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Arrays;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -20,7 +19,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.data.stock.crawling.realtime.dto.RealtimeExchangeDto;
 import com.data.stock.crawling.realtime.dto.RealtimeMajorIndexDto;
 import com.data.stock.crawling.realtime.dto.RealtimePriceDto;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;

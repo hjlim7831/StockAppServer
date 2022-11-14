@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- User Stock Data 관련 SQL -->
+<mapper namespace="com.user.stock.wishlist.UserStockWishlistMapper">
+	
+	<!-- 사용자의 관심 주식을 전부 SELECT -->
+	<select id="selectWishlist" parameterType="string" resultType="com.user.stock.wishlist.UserStockWishlistDto">
+		SELECT stock_code,
+			(SELECT company_name, view_cnt FROM stock_list WHERE stock_list.stock_code = wish_list.stock_code)
+		FROM wish_list
+		WHERE user_num = #{user_num}
+	</select>
+	
+	<!-- 사용자의 관심 주식에서 stock_code에 해당하는 주식 SELECT -->
+	<select id="selectWishlistByStockCode" parameterType="string" resultType="string">
+		SELECT stock_code FROM wish_list
+		WHERE user_num = #{user_num} AND stock_code = #{stock_code}
+	</select>
+	
+	<!-- stock_code를 관심 주식에 추가하는 INSERT -->
+	<insert id="insertWishlist" parameterType="string">
+		INSERT INTO wish_list
+		VALUES (#{user_num}, #{stock_code})
+	</insert>
+	
+	<!-- stock_code를 관심 주식에서 제거하는 INSERT -->
+	<delete id="deleteWishlist" parameterType="string">
+		DELETE FROM wish_list
+		WHERE user_num = #{user_num} AND stock_code = #{stock_code}
+	</delete>
+	
+</mapper>
