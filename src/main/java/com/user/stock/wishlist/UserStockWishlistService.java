@@ -50,7 +50,7 @@ public class UserStockWishlistService {
 			if (sorting_method.equals("view_cnt_desc")) Collections.sort(userStockWishlistDtoList, new ViewCntComparator().reversed());
 			else if (sorting_method.equals("now_desc")) Collections.sort(userStockWishlistDtoList, new NowComparator().reversed());
 			else if (sorting_method.equals("now_asc")) Collections.sort(userStockWishlistDtoList, new NowComparator());
-			else if (sorting_method.equals("rate_desc")) Collections.sort(userStockWishlistDtoList, new RateComparator());
+			else if (sorting_method.equals("rate_desc")) Collections.sort(userStockWishlistDtoList, new RateComparator().reversed());
 			else if (sorting_method.equals("rate_asc")) Collections.sort(userStockWishlistDtoList, new RateComparator());
 			else if (sorting_method.equals("all")) {
 				resultMap.put("response", "successs_lookup_wishlist_all");
@@ -78,25 +78,43 @@ public class UserStockWishlistService {
 		}
 
 	}
-	
+
 	public Map<String, Object> addWishlist(String stock_code) {
 		String user_num = userInfoSessionDto.getUser_num();
-		userStockWishlistMapper.insertWishlist(user_num, stock_code);
-		
 		Map<String, Object> resultMap = new HashMap<>();
-		resultMap.put("response", "success_add_wishlist");
-		resultMap.put("contents", "관심 종목에 추가됐습니다.");
+		
+		String rlt = userStockWishlistMapper.selectWishlistByStockCode(user_num, stock_code);
+		if (!(rlt == null || rlt.equals(""))) {
+			resultMap.put("response", "failure_add_wishlist");
+			resultMap.put("contents", "이미 관심 종목에 존재하는 주식 종목입니다.");
+		} else {
+			int result = userStockWishlistMapper.insertWishlist(user_num, stock_code);
+			if (result >= 1) {
+				resultMap.put("response", "success_add_wishlist");
+				resultMap.put("contents", "관심 종목에 추가됐습니다.");
+			} else {
+				resultMap.put("response", "failure_add_wishlist");
+				resultMap.put("contents", "관심 종목에 추가하지 못했습니다.");
+			}
+		}
+		
 		
 		return resultMap;
 	}
 	
 	public Map<String, Object> removeWishlist(String stock_code) {
 		String user_num = userInfoSessionDto.getUser_num();
-		userStockWishlistMapper.deleteWishlist(user_num, stock_code);
-		
+		int result = userStockWishlistMapper.deleteWishlist(user_num, stock_code);
+
 		Map<String, Object> resultMap = new HashMap<>();
-		resultMap.put("response", "success_delete_wishlist");
-		resultMap.put("contents", "관심 종목에서 제거됐습니다.");
+		
+		if (result >= 1) {
+			resultMap.put("response", "success_delete_wishlist");
+			resultMap.put("contents", "관심 종목에서 제거됐습니다.");
+		} else {
+			resultMap.put("response", "failure_delete_wishlist");
+			resultMap.put("contents", "관심 종목에서 제거하지 못했습니다.");
+		}
 		
 		return resultMap;
 	}
@@ -107,7 +125,7 @@ public class UserStockWishlistService {
 		String user_num = userInfoSessionDto.getUser_num();
 		String rlt = userStockWishlistMapper.selectWishlistByStockCode(user_num, stock_code);
 		
-		if (rlt == null || rlt == "") {
+		if (rlt == null || rlt.equals("")) {
 			resultMap.put("response", "success_no_wishlist");
 			resultMap.put("contents", false);
 		} else {

@@ -110,14 +110,24 @@ public class UserInfoService {
 			String user_num = UUID.randomUUID().toString().replace("-", "");
 			userInfoDto.setUser_num(user_num);
 			
-			// 회원 가입 성공 시, DB에 회원 정보 넣기
-			userInfoMapper.insertUser(userInfoDto);
+			// DB에 회원 정보 넣기
+			int result_join = userInfoMapper.insertUser(userInfoDto);
 			
-			// 회원가입 성공 시, 통장 개설하기
-			userAccountService.makeAccount(user_num);
-			
-			response = "success_join";
-			contents = "회원가입이 완료됐습니다.";
+			if (result_join == 1) {
+				// 회원가입 성공 시, 통장 개설하기
+				int result_account = userAccountService.makeAccount(user_num);
+				
+				if (result_account == 1) {
+					response = "success_join";
+					contents = "회원가입이 완료됐습니다.";
+				} else {
+					response = "failure_do_not_make_account";
+					contents = "회원가입은 됐으나, 통장을 생성하지 못했습니다.";
+				}
+			} else {
+				response = "failure_join";
+				contents = "회원가입에 실패했습니다.";
+			}
 		}
 
 		resultMap.put("response", response);
@@ -176,6 +186,7 @@ public class UserInfoService {
 				// 로그인 정보 Session에 저장
 				userInfoSessionDto.setUser_num(userInfoDto.getUser_num());
 				userInfoSessionDto.setId(userInfoDto.getId());
+				userInfoSessionDto.setNick_name(userInfoDto.getNick_name());
 			}
 		}
 
@@ -203,7 +214,7 @@ public class UserInfoService {
 		Map<String, Object> resultMap = new HashMap<>();
 
 		resultMap.put("response", "success_have_login_data");
-		resultMap.put("contents", new UserInfoDto(userInfoSessionDto.getId(), userInfoSessionDto.getUser_num()));
+		resultMap.put("contents", new UserInfoDto(userInfoSessionDto.getId(), userInfoSessionDto.getUser_num(), userInfoSessionDto.getNick_name()));
 		
 		return resultMap;
 	}

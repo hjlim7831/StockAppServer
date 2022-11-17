@@ -5,7 +5,7 @@
 <mapper namespace="com.user.info.UserInfoMapper">
 	
 	<!-- 회원가입을 누르면, 입력 받은 회원 데이터를 INSERT -->
-	<insert id="insertUser" parameterType="com.user.info.UserInfoDto" useGeneratedKeys="true">  
+	<insert id="insertUser" parameterType="com.user.info.UserInfoDto">  
 	    insert into user (user_num, name, nick_name, id, password, simple_pwd, email, phone_number, address)
 	    values (#{user_num}, #{name}, #{nick_name}, #{id}, #{password}, #{simple_pwd}, #{email}, #{phone_number}, #{address})
 	</insert>
@@ -41,7 +41,7 @@
 		
 	<!-- 로그인 시 입력한 id에 해당하는 id와 비밀번호를 SELECT -->
 	<select id="selectUser" parameterType="string" resultType="com.user.info.UserInfoDto">
-        select id, password, user_num
+        select id, password, user_num, nick_name
         from user
         where id = #{id}
 	</select>
