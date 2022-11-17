@@ -18,9 +18,9 @@ public class UserAccountService {
 	private UserInfoSessionDto userInfoSessionDto;
 	
 	@Autowired
-	UserAccountMapper userAccountMapper;
+	private UserAccountMapper userAccountMapper;
 	
-	public void makeAccount(String user_num) { // 새로 가입한 사용자의 통장 생성
+	public int makeAccount(String user_num) { // 새로 가입한 사용자의 통장 생성
 		
 		// 통장번호 000-00-0000으로 랜덤 생성하기
 		Random rd = new Random();
@@ -30,9 +30,9 @@ public class UserAccountService {
 		UserAccountDto userAccountDto = new UserAccountDto(serial_number, user_num, 5000000, 0, 0, 0, 0);
 		
 		// DB에 만든 통장 정보 넣어주기
-		userAccountMapper.insertAccount(userAccountDto);
+		int result = userAccountMapper.insertAccount(userAccountDto);
 		
-		return;
+		return result;
 	}
 	
 	public Map<String, Object> lookupAccount() { // 사용자의 통장 정보 조회
@@ -55,7 +55,8 @@ public class UserAccountService {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
 		String response = "success_lookup_account";
-		double contents = userAccountMapper.selectBalanceByNum(userInfoSessionDto.getUser_num());
+		Map<String, Object> contents = new HashMap<String, Object>();
+		contents.put("balance", userAccountMapper.selectBalanceByNum(userInfoSessionDto.getUser_num()));
 		
 		resultMap.put("contents", contents);
 		resultMap.put("response", response);

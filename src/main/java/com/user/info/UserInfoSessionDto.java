@@ -20,6 +20,7 @@ public class UserInfoSessionDto implements Serializable {
 	@JsonIgnore
 	static final long serialVersionUID = 1L;
 	
-	private String user_num; // 사용자 고유번호
-	private String id;       // 사용자 아이디
+	private String user_num;  // 사용자 고유번호
+	private String id;        // 사용자 아이디
+	private String nick_name; // 닉네임
 }

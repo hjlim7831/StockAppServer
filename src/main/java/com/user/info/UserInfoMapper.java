@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 public interface UserInfoMapper {
 	
 	// parameter로 받은 사용자 정보를 넘겨 받아 insert
-	public void insertUser(UserInfoDto userInfoDto);
+	public int insertUser(UserInfoDto userInfoDto);
 	
 	// parameter로 받은 id에 해당하는 id 정보를 select
 	public String selectId(String id);

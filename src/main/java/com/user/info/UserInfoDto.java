@@ -2,30 +2,53 @@ package com.user.info;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  *  DB `user` table과 호환되는 DTO입니다.
  *  JSON으로 변환 시, user_num과 id만 반환됩니다.
  * **/
 @Data
-@JsonIgnoreProperties({"name", "nick_name", "password", "password_confirm", "simple_pwd", "email", "phone_number", "address"})
+@NoArgsConstructor
+@JsonIgnoreProperties({"name", "password", "password_confirm", "simple_pwd", "email", "phone_number", "address"})
 public class UserInfoDto {
+	
+	@ApiModelProperty(value = "사용자 고유 번호", hidden = true)
+	private String user_num;
+	
+	@ApiModelProperty(value = "이름", required = true)
+	private String name;
+	
+	@ApiModelProperty(value = "닉네임", required = true)
+	private String nick_name;
+	
+	@ApiModelProperty(value = "아이디", required = true)
+	private String id;
+	
+	@ApiModelProperty(value = "비밀번호", required = true)
+	private String password;
+	
+	@ApiModelProperty(value = "비밀번호 확인", required = true)
+	private String password_confirm;
+	
+	@ApiModelProperty(value = "pin 번호", required = true)
+	private String simple_pwd;
+	
+	@ApiModelProperty(value = "이메일 주소", required = true)
+	private String email;
+	
+	@ApiModelProperty(value = "전화번호", required = true)
+	private String phone_number;
+	
+	@ApiModelProperty(value = "주소", required = false)
+	private String address;
 
-	private String user_num;          // 사용자 고유번호 
-	private String name;			  // 이름
-	private String nick_name;         // 닉네임
-	private String id;                // 아이디
-	private String password;          // 비밀번호
-	private String password_confirm;  // 비밀번호 확인
-	private String simple_pwd;        // pin 번호
-	private String email;             // 이메일
-	private String phone_number;      // 전화번호
-	private String address;           // 주소
-
-	public UserInfoDto(String id, String user_num) {
+	public UserInfoDto(String id, String user_num, String nick_name) {
 		this.id = id;
 		this.user_num = user_num;
+		this.nick_name = nick_name;
 	}
 	
 	public UserInfoDto(String id, String password, String password_confirm, String simple_pwd, String name, String nick_name, String email,

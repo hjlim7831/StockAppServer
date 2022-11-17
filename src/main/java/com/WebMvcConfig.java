@@ -20,11 +20,11 @@ public class WebMvcConfig implements WebMvcConfigurer{
 		registry.addInterceptor(new LoginInterceptor())
 				.addPathPatterns("/**")
 				
-				// 로그인, 회원가입, 로그인 여부 조회
-				.excludePathPatterns("/user/login", "user/join")
+				// 로그인, 회원가입
+				.excludePathPatterns("/user/login", "/user/join")
 				
 				// 메인 페이지 (로그아웃 버전)
-				.excludePathPatterns("/stock/major-index", "stock/category/**", "stock/recommend", "stock/is-close")
+				.excludePathPatterns("/stock/major-index", "/stock/category/**", "/stock/recommend", "/stock/is-close")
 				
 				// 테스트용
 				.excludePathPatterns("/testApikey")
@@ -42,6 +42,6 @@ public class WebMvcConfig implements WebMvcConfigurer{
 				.excludePathPatterns("/error/**")
 				
 				// Swagger
-				.excludePathPatterns("/swagger-ui.html", "/v2/api-docs", "/swagger-resources/**", "/webjars/**");
+				.excludePathPatterns("/swagger-ui/index.html", "/swagger-ui.html", "/v2/api-docs", "/swagger-resources/**", "/webjars/**");
 	}
 }

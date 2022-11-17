@@ -6,10 +6,10 @@
 	
 	<!-- 사용자의 관심 주식을 전부 SELECT -->
 	<select id="selectWishlist" parameterType="string" resultType="com.user.stock.wishlist.UserStockWishlistDto">
-		SELECT stock_code,
-			(SELECT company_name, view_cnt FROM stock_list WHERE stock_list.stock_code = wish_list.stock_code)
-		FROM wish_list
-		WHERE user_num = #{user_num}
+		SELECT wl.stock_code, sl.company_name, sl.view_cnt
+		FROM (SELECT stock_code FROM wish_list WHERE user_num = "055ebe8af8fa4ec897343560a553ad15") AS wl
+		LEFT JOIN stock_list AS sl
+		ON wl.stock_code = sl.stock_code;
 	</select>
 	
 	<!-- 사용자의 관심 주식에서 stock_code에 해당하는 주식 SELECT -->
