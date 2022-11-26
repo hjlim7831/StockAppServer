@@ -11,22 +11,20 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.stock.detail.dto.StockDto;
-
 @Service
 public class SearchResultService {
 
 	// stockDto를 자카드 유사도로 재정렬하기 위한 wrapper class 생성
 	class StockWrapper implements Comparable<StockWrapper> {
-		StockDto stockDto;
+		SearchResultDto searchResultDto;
 		double similarity;
 
 		public StockWrapper() {
 
 		}
 
-		public StockWrapper(StockDto stockDto, double similarity) {
-			this.stockDto = stockDto;
+		public StockWrapper(SearchResultDto searchResultDto, double similarity) {
+			this.searchResultDto = searchResultDto;
 			this.similarity = similarity;
 		}
 
@@ -42,47 +40,46 @@ public class SearchResultService {
 	SearchResultMapper searchResultMapper;
 
 	public Map<String, Object> getSearchResultList(String keyWord) {
-
-		// 정규식으로 검색어에서 한글, 영어, 숫자, 띄어쓰기를 제외한 모든 글자 제거
-		String match = "[^\uAC00-\uD7A30-9a-zA-Z\\s]";
-		String replacedKey = keyWord.replaceAll(match, "");
-
-		// 자카드 유사도로 정렬할 stockList 가져오기
-		List<StockDto> list = searchResultMapper.selectAllStock();
-
-		int listLen = list.size();
-
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		String response;
-		List<StockDto> contents;
+		List<SearchResultDto> contents = new ArrayList<>();
 
+		if (keyWord != null) {
 
-		StockWrapper[] wrapArr = new StockWrapper[listLen];
+			// 정규식으로 검색어에서 한글, 영어, 숫자, 띄어쓰기를 제외한 모든 글자 제거
+			String match = "[^\uAC00-\uD7A30-9a-zA-Z\\s]";
+			String replacedKey = keyWord.replaceAll(match, "");
 
-		// 자카드 유사도로 재정렬하기
-		for (int i = 0; i < listLen; i++) {
-			String company_name = list.get(i).getCompany_name();
-			double similarity = jaccardSimilarity(replacedKey, company_name);
-			wrapArr[i] = new StockWrapper(list.get(i), similarity);
+			// 자카드 유사도로 정렬할 stockList 가져오기
+			List<SearchResultDto> list = searchResultMapper.selectAllStock();
+
+			int listLen = list.size();
+
+			StockWrapper[] wrapArr = new StockWrapper[listLen];
+
+			// 자카드 유사도로 재정렬하기
+			for (int i = 0; i < listLen; i++) {
+				String company_name = list.get(i).getCompany_name();
+				double similarity = jaccardSimilarity(replacedKey, company_name);
+				wrapArr[i] = new StockWrapper(list.get(i), similarity);
+			}
+
+			Arrays.sort(wrapArr);
+
+			for (int i = 0; i < listLen; i++) {
+				if (wrapArr[i].similarity != 0)
+					contents.add(wrapArr[i].searchResultDto);
+			}
 		}
 
-		Arrays.sort(wrapArr);
+		if (contents.size() == 0) {
+			response = "success_none_search_data";
 
-		contents = new ArrayList<>();
-
-		for (int i = 0; i < listLen; i++) {
-			if (wrapArr[i].similarity != 0)
-				contents.add(wrapArr[i].stockDto);
-		}
-		
-		if(contents.size() == 0) {
-			response = "failure_none_search_data";
-			
-		}else {
+		} else {
 			response = "success_search_data";
-			
+
 		}
-		
+
 		resultMap.put("contents", contents);
 		resultMap.put("response", response);
 

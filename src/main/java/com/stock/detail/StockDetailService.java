@@ -103,8 +103,14 @@ public class StockDetailService {
 		
 	}
 
-	public List<NewsDto> stockDetailNews(String stock_code) {
-		return jsoupNewsComponent.getNewsList(stock_code);
+	public Map<String, Object> stockDetailNews(String stock_code) {
+		Map<String, Object> resultMap = new HashMap<>();
+		List<NewsDto> contents = jsoupNewsComponent.getNewsList(stock_code);
+		String response = String.format("success_get_news_list_of_%s",stock_code);
+		resultMap.put("contents", contents);
+		resultMap.put("response", response);
+		
+		return resultMap;
 	}
 
 

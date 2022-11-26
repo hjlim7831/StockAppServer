@@ -4,7 +4,7 @@
 <!-- Search Result Data 관련 SQL -->
 <mapper namespace="com.search.result.SearchResultMapper">
 
-	<select id="selectAllStock" resultType="com.stock.detail.dto.StockDto">
+	<select id="selectAllStock" resultType="com.search.result.SearchResultDto">
 		SELECT stock_code, company_name FROM stock_list
 	</select>
 
