@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
@@ -19,20 +20,23 @@ public class UserStockWishlistController {
 	@Autowired
 	UserStockWishlistService userStockWishlistService;
 	
+	@GetMapping("wishlist")
 	@ApiOperation(value = "사용자의 wishlist를 정렬 방식에 따라 조회")
-	@GetMapping("wishlist/{sorting_method}")
-	public Map<String, Object> lookupWishlist(@PathVariable String sorting_method) {
+	@ApiImplicitParam(name = "sorting_method", value = "정렬 방식 (all, view_cnt_desc, rate_desc, rate_asc, now_desc, now_asc)", required = true)
+	public Map<String, Object> lookupWishlist(String sorting_method) {
 		return userStockWishlistService.lookupWishlist(sorting_method);
 	}
 	
-	@ApiOperation(value = "사용자의 wishlist에 해당 주식 종목 추가")
 	@PostMapping("wishlist/{stock_code}")
+	@ApiOperation(value = "사용자의 wishlist에 해당 주식 종목 추가")
+	@ApiImplicitParam(name = "stock_code", value = "주식 종목 코드 (숫자 6자리)", required = true)
 	public Map<String, Object> addWishlist(@PathVariable String stock_code) {
 		return userStockWishlistService.addWishlist(stock_code);
 	}
 	
-	@ApiOperation(value = "사용자의 wishlist에 해당 주식 종목 삭제")
 	@DeleteMapping("wishlist/{stock_code}")
+	@ApiOperation(value = "사용자의 wishlist에 해당 주식 종목 삭제")
+	@ApiImplicitParam(name = "stock_code", value = "주식 종목 코드 (숫자 6자리)", required = true)
 	public Map<String, Object> removeWishlist(@PathVariable String stock_code) {
 		return userStockWishlistService.removeWishlist(stock_code);
 	}
