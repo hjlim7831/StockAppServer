@@ -19,27 +19,27 @@ public class StockDetailController {
 	@Autowired
 	StockDetailService stockDetailService;
 
-	@GetMapping("{stock_code}/info")
+	@GetMapping("info/{stock_code}")
 	public Map<String, Object> stockDetailInfo(@PathVariable String stock_code) {
 		return stockDetailService.stockDetailInfo(stock_code);
 	}
 	
-	@GetMapping("{stock_code}/realtime")
+	@GetMapping("realtime/{stock_code}")
 	public Map<String, Object> stockDetailRealtime(@PathVariable String stock_code) {
 		return stockDetailService.stockDetailRealtime(stock_code);
 	}
 	
-	@GetMapping("{stock_code}/graph")
+	@GetMapping("graph/{stock_code}")
 	public Map<String, Object> stockDetailGraph(@PathVariable String stock_code) {
 		return stockDetailService.stockDetailGraph(stock_code);
 	}
 	
-	@GetMapping("{stock_code}/relations")
-	public String stockDetailRelations(@PathVariable String stock_code) {
+	@GetMapping("relations/{stock_code}")
+	public Map<String, Object> stockDetailRelations(@PathVariable String stock_code) {
 		return stockDetailService.stockDetailRelations(stock_code);
 	}
 
-	@GetMapping("{stock_code}/news")
+	@GetMapping("news/{stock_code}")
 	public List<NewsDto> stockDetailNews(@PathVariable String stock_code) {
 		return stockDetailService.stockDetailNews(stock_code);
 	}

@@ -3,6 +3,7 @@ package com.user.stock.wishlist;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,19 +26,19 @@ public class UserStockWishlistController {
 	}
 	
 	@ApiOperation(value = "사용자의 wishlist에 해당 주식 종목 추가")
-	@PostMapping("wishlist/{stock_code}/0")
+	@PostMapping("wishlist/{stock_code}")
 	public Map<String, Object> addWishlist(@PathVariable String stock_code) {
 		return userStockWishlistService.addWishlist(stock_code);
 	}
 	
 	@ApiOperation(value = "사용자의 wishlist에 해당 주식 종목 삭제")
-	@PostMapping("wishlist/{stock_code}/1")
+	@DeleteMapping("wishlist/{stock_code}")
 	public Map<String, Object> removeWishlist(@PathVariable String stock_code) {
 		return userStockWishlistService.removeWishlist(stock_code);
 	}
 	
 	@ApiOperation(value = "사용자의 wishlist에 해당 주식 종목이 있는지 확인")
-	@GetMapping("wishlist/{stock_code}/check")
+	@GetMapping("wishlist/{stock_code}")
 	public Map<String, Object> checkWishlist(@PathVariable String stock_code) {
 		return userStockWishlistService.checkWishlist(stock_code);
 	}
