@@ -7,12 +7,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import com.data.api.OpeningDateComponent;
 
+@Configurable
 public class StockCloseInterceptor implements HandlerInterceptor {
-
+	
 	@Autowired
 	OpeningDateComponent openingDateComponent;
 
@@ -28,8 +30,7 @@ public class StockCloseInterceptor implements HandlerInterceptor {
 
 		ZonedDateTime st = ZonedDateTime.of(year, mo, day, 9, 0, 0, 0, ZoneId.of("Asia/Seoul"));
 		ZonedDateTime ed = ZonedDateTime.of(year, mo, day, 15, 30, 0, 0, ZoneId.of("Asia/Seoul"));
-		
-		System.out.println(openingDateComponent);
+
 		if (openingDateComponent.isOpeningDate() && zt.isAfter(st) && zt.isBefore(ed)) {
 			return true;
 		}
