@@ -7,7 +7,7 @@
 	
 	<!-- 회원가입에 성공하면 통장 정보를 새로 INSERT -->
 	
-	<select id="selectViewCntTop5Stock" resultType="com.stock.detail.dto.StockDto">
+	<select id="selectViewCntTop5Stock" resultType="com.search.result.SearchResultDto">
 		SELECT stock_code, company_name, view_cnt FROM stock_list
 		ORDER BY view_cnt DESC
 		LIMIT 5	

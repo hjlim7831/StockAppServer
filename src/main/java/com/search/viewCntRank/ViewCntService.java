@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.stock.detail.dto.StockDto;
+import com.search.result.SearchResultDto;
 
 @Service
 public class ViewCntService {
@@ -13,7 +13,7 @@ public class ViewCntService {
 	@Autowired
 	ViewCntRankMapper viewCntRankMapper;
 
-	public List<StockDto> getViewCntTop5StockList() {
+	public List<SearchResultDto> getViewCntTop5StockList() {
 		return viewCntRankMapper.selectViewCntTop5Stock();
 	}
 
