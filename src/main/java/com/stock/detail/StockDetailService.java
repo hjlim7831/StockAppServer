@@ -3,11 +3,17 @@ package com.stock.detail;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.Reader;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,11 +21,9 @@ import com.data.stock.crawling.news.JsoupNewsComponent;
 import com.data.stock.crawling.news.NewsDto;
 import com.data.stock.crawling.realtime.RealtimeComponent;
 import com.data.stock.crawling.realtime.dto.RealtimePriceDto;
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.stock.detail.dto.StockDataDto;
 import com.stock.detail.dto.StockInfoDto;
+import com.stock.detail.dto.StockRelationDto;
 
 
 @Service
@@ -86,21 +90,43 @@ public class StockDetailService {
 		return resultMap;
 	}
 	
-	public String stockDetailRelations(String stock_code) {
-		Gson gson = new Gson();
-		Reader reader;
-		JsonElement res;
+	public Map<String, Object> stockDetailRelations(String stock_code) {
+		Map<String, Object> resultMap = new HashMap<>();
+		
 		try {
-			reader = new FileReader(".\\src\\main\\resources\\relations.json");	
-			JsonObject obj = gson.fromJson(reader, JsonObject.class);
-			res = obj.get(stock_code);
-			return res.toString();
+			JSONParser parser = new JSONParser();
+			Reader reader = new FileReader(".\\src\\main\\resources\\relations.json");	
+			JSONObject jsonObject = (JSONObject) parser.parse(reader);
+			JSONArray jsonArray = (JSONArray) jsonObject.get(stock_code);
+			
+			List<StockRelationDto> stockRelationsDtoList = new ArrayList<>();
+			for (int i=0; i<jsonArray.size(); i++) {
+				JSONObject relation = (JSONObject) jsonArray.get(i);
+				
+				long number = (long) relation.get("number");
+				String code = (String) relation.get("code");
+				String name = (String) relation.get("name");
+				
+				stockRelationsDtoList.add(new StockRelationDto(number, code, name));
+			}
+			
+			if (stockRelationsDtoList.size() < 1) {
+				resultMap.put("response", "success_get_no_relations");
+				resultMap.put("contents", stockRelationsDtoList);
+			} else {
+				resultMap.put("response", "success_get_relations");
+				resultMap.put("contents", stockRelationsDtoList);
+			}
 			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-			return null;
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ParseException e) {
+			e.printStackTrace();
 		}
 		
+		return resultMap;
 	}
 
 	public List<NewsDto> stockDetailNews(String stock_code) {
