@@ -1,5 +1,6 @@
 package com;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -10,9 +11,14 @@ import com.interceptor.StockCloseInterceptor;
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer{
 	
+	@Bean
+    public StockCloseInterceptor stockCloseInterceptor() {
+        return new StockCloseInterceptor();
+    }
+	
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(new StockCloseInterceptor())
+		registry.addInterceptor(stockCloseInterceptor())
 				
 				// 주식 매매 창
 				.addPathPatterns("/stock/trade/*", "/stock/price/*");
