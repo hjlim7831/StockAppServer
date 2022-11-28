@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- User Account Data 관련 SQL -->
+<mapper namespace="com.search.viewCntRank.ViewCntRankMapper">
+
+	
+	<!-- 회원가입에 성공하면 통장 정보를 새로 INSERT -->
+	
+	<select id="selectViewCntTop5Stock" resultType="com.search.result.SearchResultDto">
+		SELECT stock_code, company_name, view_cnt FROM stock_list
+		ORDER BY view_cnt DESC
+		LIMIT 5	
+	</select>
+
+</mapper>

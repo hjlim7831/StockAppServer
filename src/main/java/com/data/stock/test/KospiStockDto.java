@@ -1,4 +1,4 @@
-package com.data.stock;
+package com.data.stock.test;
 
 
 import lombok.AllArgsConstructor;

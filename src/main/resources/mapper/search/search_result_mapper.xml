@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- Search Result Data 관련 SQL -->
+<mapper namespace="com.search.result.SearchResultMapper">
+
+	<select id="selectAllStock" resultType="com.search.result.SearchResultDto">
+		SELECT stock_code, company_name FROM stock_list
+	</select>
+
+</mapper>

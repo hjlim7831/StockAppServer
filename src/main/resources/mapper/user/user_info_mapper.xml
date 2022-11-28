@@ -5,34 +5,34 @@
 <mapper namespace="com.user.info.UserInfoMapper">
 	
 	<!-- 회원가입을 누르면, 입력 받은 회원 데이터를 INSERT -->
-	<insert id="insertUser" parameterType="com.user.UserDTO" useGeneratedKeys="true">  
-	    insert into user (name, nick_name, id, password, simple_pwd, email, phone_number, address)
-	    values (#{name}, #{nick_name}, #{id}, #{password}, #{simple_pwd}, #{email}, #{phone_number}, #{address})
+	<insert id="insertUser" parameterType="com.user.info.UserInfoDto">  
+	    insert into user (user_num, name, nick_name, id, password, simple_pwd, email, phone_number, address)
+	    values (#{user_num}, #{name}, #{nick_name}, #{id}, #{password}, #{simple_pwd}, #{email}, #{phone_number}, #{address})
 	</insert>
 	
 	<!-- 회원가입 시 중복 확인을 위한 기존 데이터 가져오기 -->
-	<!-- id -->
+	<!-- id로 사용자 id를 SELECT -->
 	<select id="selectId" parameterType="string" resultType="string">
         select id
         from user
         where id = #{id}
 	</select>
 	
-	<!-- email -->
+	<!-- email로 사용자 id를 SELECT  -->
 	<select id="selectEmail" parameterType="string" resultType="string">
         select id
         from user
         where email = #{email}
 	</select>
 	
-	<!-- nick_name -->
+	<!-- nick_name로 사용자 id를 SELECT -->
 	<select id="selectNickName" parameterType="string" resultType="string">
         select id
         from user
         where nick_name = #{nick_name}
 	</select>
 	
-	<!-- phone_number -->
+	<!-- phone_number로 사용자 id를 SELECT -->
 	<select id="selectPhoneNumber" parameterType="string" resultType="string">
         select id
         from user
@@ -40,8 +40,8 @@
 	</select>
 		
 	<!-- 로그인 시 입력한 id에 해당하는 id와 비밀번호를 SELECT -->
-	<select id="selectUser" parameterType="string" resultType="com.user.UserDTO">
-        select id, password, user_num
+	<select id="selectUser" parameterType="string" resultType="com.user.info.UserInfoDto">
+        select id, password, user_num, nick_name
         from user
         where id = #{id}
 	</select>
