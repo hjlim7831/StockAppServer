@@ -9,7 +9,7 @@ import com.search.result.SearchResultDto;
 
 @Mapper
 @Repository
-public interface ViewCntRankMapper {
+public interface SearchViewCntRankMapper {
 	
 	/**
 	 * 검색 기능에서 주식 종목별 조회수 TOP5 조회

@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.ApiImplicitParam;
+
 @RestController
 @RequestMapping("stock")
 public class StockCategoryController {
@@ -17,6 +19,8 @@ public class StockCategoryController {
 	StockCategoryService stockCategoryService;
 
 	@GetMapping("category/{category_name}")
+	@ApiImplicitParam(name = "category_name", value = "주식 종목 종류 (it[IT], ctr[건설], bio[바이오], chem[화학], ent[엔터])", required = true)
+
 	public Map<String, Object> categoryStocks(@PathVariable String category_name){
 		Map<String, Object> resultMap = new HashMap<>();
 		String response = String.format("success_get_category_%s_stock", category_name);

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!-- User Account Data 관련 SQL -->
-<mapper namespace="com.search.viewCntRank.ViewCntRankMapper">
+<mapper namespace="com.search.viewCntRank.SearchViewCntRankMapper">
 
 	
 	<!-- 회원가입에 성공하면 통장 정보를 새로 INSERT -->

@@ -28,7 +28,8 @@ public class StockCloseInterceptor implements HandlerInterceptor {
 
 		ZonedDateTime st = ZonedDateTime.of(year, mo, day, 9, 0, 0, 0, ZoneId.of("Asia/Seoul"));
 		ZonedDateTime ed = ZonedDateTime.of(year, mo, day, 15, 30, 0, 0, ZoneId.of("Asia/Seoul"));
-
+		
+		System.out.println(openingDateComponent);
 		if (openingDateComponent.isOpeningDate() && zt.isAfter(st) && zt.isBefore(ed)) {
 			return true;
 		}

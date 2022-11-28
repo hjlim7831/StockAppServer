@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("error")
 public class InterceptorController {
 
-	@GetMapping("no-login")
+	@RequestMapping("no-login")
 	public Map<String, Object> noLogin() {
 		Map<String, Object> resultMap = new HashMap<>();
 
@@ -21,7 +21,7 @@ public class InterceptorController {
 		return resultMap;
 	}
 
-	@GetMapping("stock-close")
+	@RequestMapping("stock-close")
 	public Map<String, Object> stockClose() {
 		Map<String,Object> resultMap = new HashMap<>();
 		

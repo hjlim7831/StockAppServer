@@ -15,7 +15,7 @@ public class WebMvcConfig implements WebMvcConfigurer{
 		registry.addInterceptor(new StockCloseInterceptor())
 				
 				// 주식 매매 창
-				.addPathPatterns("/stock/*/trade", "/stock/*/price");
+				.addPathPatterns("/stock/trade/*", "/stock/price/*");
 		
 		registry.addInterceptor(new LoginInterceptor())
 				.addPathPatterns("/**")
@@ -30,7 +30,7 @@ public class WebMvcConfig implements WebMvcConfigurer{
 				.excludePathPatterns("/testApikey")
 				
 				// 주식 상세 페이지
-				.excludePathPatterns("/stock/*/info", "/stock/*/graph", "/stock/*/realtime", "/stock/*/relations", "/stock/*/news")
+				.excludePathPatterns("/stock/info/*", "/stock/graph/*", "/stock/realtime/*", "/stock/relations/*", "/stock/news/*")
 				
 				// 상장 예정 주식
 				.excludePathPatterns("/stock/debut")

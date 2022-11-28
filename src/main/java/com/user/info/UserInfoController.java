@@ -33,7 +33,7 @@ public class UserInfoController {
 	}
 
 	@PostMapping("login")
-	@ApiOperation(value = "로그인 (JWT)")
+	@ApiOperation(value = "로그인")
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "id", value = "아이디", required = true),
 		@ApiImplicitParam(name = "password", value = "비밀번호", required = true)

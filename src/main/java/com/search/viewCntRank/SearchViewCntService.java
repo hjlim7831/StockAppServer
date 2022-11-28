@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service;
 import com.search.result.SearchResultDto;
 
 @Service
-public class ViewCntService {
+public class SearchViewCntService {
 
 	@Autowired
-	ViewCntRankMapper viewCntRankMapper;
+	SearchViewCntRankMapper viewCntRankMapper;
 
 	public List<SearchResultDto> getViewCntTop5StockList() {
 		return viewCntRankMapper.selectViewCntTop5Stock();

@@ -13,10 +13,10 @@ import com.search.result.SearchResultDto;
 
 @RestController
 @RequestMapping("search")
-public class ViewCntController {
+public class SearchViewCntController {
 
 	@Autowired
-	ViewCntService viewCntService;
+	SearchViewCntService viewCntService;
 
 	@GetMapping("view-cnt-ranking")
 	public Map<String, Object> viewCntRankTop5() {
