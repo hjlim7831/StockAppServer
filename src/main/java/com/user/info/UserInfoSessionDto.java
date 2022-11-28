@@ -9,6 +9,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Component
@@ -20,7 +21,12 @@ public class UserInfoSessionDto implements Serializable {
 	@JsonIgnore
 	static final long serialVersionUID = 1L;
 	
-	private String user_num;  // 사용자 고유번호
-	private String id;        // 사용자 아이디
-	private String nick_name; // 닉네임
+	@ApiModelProperty(value = "사용자 고유 번호")
+	private String user_num;
+	
+	@ApiModelProperty(value = "사용자 ID")
+	private String id;
+	
+	@ApiModelProperty(value = "사용자 닉네임")
+	private String nick_name;
 }

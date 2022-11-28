@@ -16,14 +16,14 @@ public class UserAccountController {
 	@Autowired
 	UserAccountService userAccountService;
 	
-	@ApiOperation(value = "사용자의 전체 통장 정보 조회")
 	@GetMapping("account")
+	@ApiOperation(value = "사용자의 전체 통장 정보 조회")
 	public Map<String, Object> lookupAccount() {
 		return userAccountService.lookupAccount();
 	}
 	
-	@ApiOperation(value = "사용자의 원화 잔고 조회")
 	@GetMapping("balance")
+	@ApiOperation(value = "사용자의 원화 잔고 조회")
 	public Map<String, Object> lookupBalance() {
 		return userAccountService.lookupBalance();
 	}

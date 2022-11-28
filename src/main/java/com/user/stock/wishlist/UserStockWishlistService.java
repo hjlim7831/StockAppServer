@@ -78,7 +78,7 @@ public class UserStockWishlistService {
 		}
 
 	}
-
+	
 	public Map<String, Object> addWishlist(String stock_code) {
 		String user_num = userInfoSessionDto.getUser_num();
 		Map<String, Object> resultMap = new HashMap<>();
