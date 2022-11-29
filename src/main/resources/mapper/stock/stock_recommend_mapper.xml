@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- Stock Debut Data 관련 SQL -->
+<mapper namespace="com.stock.recommend.StockRecommendMapper">
+	
+	<select id="selectUserWishlist" parameterType="String" resultType="String">
+		SELECT stock_code FROM wish_list
+	</select>
+	
+	<select id="selectUserStockHolding" parameterType="String" resultType="String">
+		SELECT stock_code FROM my_list
+	</select>
+	
+	<select id="selectNumberOfUsers" resultType="int">
+		SELECT COUNT(*) FROM user;
+	</select>
+	
+</mapper>
