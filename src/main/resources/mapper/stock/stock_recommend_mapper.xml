@@ -16,4 +16,26 @@
 		SELECT COUNT(*) FROM user;
 	</select>
 	
+	<select id="selectUserHaveHoldingWish" resultType="int">
+		SELECT COUNT(user_num)
+		FROM
+			((SELECT DISTINCT user_num FROM my_list)
+			UNION
+			(SELECT DISTINCT user_num FROM wish_list)) AS b
+	</select>
+	
+	<select id="selectStockPopular" resultType="com.search.result.SearchResultDto">
+		SELECT b.stock_code, b.company_name
+		FROM
+			(SELECT stock_code, COUNT(user_num) AS popular
+				FROM wish_list
+				GROUP BY stock_code
+    			ORDER BY popular DESC
+				LIMIT 5
+    		) AS a
+    	JOIN
+    		(SELECT stock_code, company_name FROM stock_list) AS b
+    	ON a.stock_code = b.stock_code;
+	</select>
+	
 </mapper>

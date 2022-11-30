@@ -23,6 +23,8 @@ import org.springframework.stereotype.Service;
 
 import com.data.stock.crawling.realtime.RealtimeComponent;
 import com.data.stock.crawling.realtime.dto.RealtimePriceDto;
+import com.search.result.SearchResultDto;
+import com.search.viewCntRank.SearchViewCntRankMapper;
 import com.user.info.UserInfoSessionDto;
 
 @Service
@@ -36,30 +38,70 @@ public class StockRecommendService {
 
 	@Autowired
 	private RealtimeComponent realtimeComponent;
-
+	
+	@Autowired
+	SearchViewCntRankMapper viewCntRankMapper;
+	
 	public Map<String, Object> getRecommendStock() {
 		Map<String, Object> resultMap = new HashMap<>();
 		Map<String, Object> contents = new HashMap<>();
+		
+		if (userInfoSessionDto.getUser_num() == null || userInfoSessionDto == null) {
+			contents = getPopularStock();
 
-		String user_num = userInfoSessionDto.getUser_num();
-
-		Set<String> stockSet = new HashSet<>(stockRecommendMapper.selectUserStockHolding(user_num));
-		stockSet.addAll(stockRecommendMapper.selectUserWishlist(user_num));
-
-		List<String> stockList = new ArrayList<>(stockSet);
-
-		int numberOfUsers = stockRecommendMapper.selectNumberOfUsers();
-
-		// 보유 및 관심 주식 3개 이상이고, 사용자 10명 미만 - 관련 주식 중 랜덤
-		if (stockSet.size() >= 3 && numberOfUsers < 10) {
-			contents = getRelatedStock(stockList);
+		} else {
+			String user_num = userInfoSessionDto.getUser_num();
+			
+			Set<String> stockSet = new HashSet<>(stockRecommendMapper.selectUserStockHolding(user_num));
+			stockSet.addAll(stockRecommendMapper.selectUserWishlist(user_num));
+			
+			if (stockSet.size() < 3) {
+				contents = getPopularStock();
+				
+			} else { // 보유 및 관심 주식 3개 이상
+				int numberOfUsers = stockRecommendMapper.selectNumberOfUsers();
+				
+				if (numberOfUsers < 10) { // 사용자 10명 미만 - 관련 주식 중 랜덤
+					List<String> stockList = new ArrayList<>(stockSet);
+					contents = getRelatedStock(stockList);
+				}
+			}		
 		}
-
+		
 		resultMap.put("response", "success_get_recommend_stock");
 		resultMap.put("contents", contents);
 
 		return resultMap;
 
+	}
+
+	private Map<String, Object> getPopularStock() {
+		Map<String, Object> realtime = new HashMap<String, Object>();
+		
+		// 보유 및 관심 주식이 있는 사용자 수
+		int userSize = stockRecommendMapper.selectUserHaveHoldingWish();
+		List<SearchResultDto> searchResultDtoList;
+		
+		if (userSize < 10) {
+			searchResultDtoList = viewCntRankMapper.selectViewCntTop5Stock();
+		} else {
+			searchResultDtoList = stockRecommendMapper.selectStockPopular();
+		}
+		Random random = new Random();
+		
+		int idx = random.nextInt(searchResultDtoList.size());
+		SearchResultDto searchResultDto = searchResultDtoList.get(idx);
+		
+		String code = searchResultDto.getStock_code();
+		
+		RealtimePriceDto realtimePriceDto = realtimeComponent.getRealtimePrice(code);
+		realtime.put("now", realtimePriceDto.getNow());
+		realtime.put("diff", realtimePriceDto.getDiff());
+		realtime.put("rate", realtimePriceDto.getRate());
+		realtime.put("stock_code", code);
+		realtime.put("name", searchResultDto.getCompany_name());
+		
+		return realtime;
 	}
 
 	// 관련 주식 중 랜덤으로 가져오기

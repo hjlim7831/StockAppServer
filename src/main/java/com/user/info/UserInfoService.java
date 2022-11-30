@@ -37,162 +37,198 @@ public class UserInfoService {
 
 		HashMap<String, Object> resultMap = new HashMap<>();
 		
-		String response = "";
-		String contents = "";
+		Map<String, String> contents = new HashMap<>();
+		int totalCheck = 0;
 		
-		// 필수 입력값(id, password, name, nick_name, email, phone_number) 중 하나라도 없는 경우
-		if (id == null || id.equals("") || password == null || password.equals("") || name == null || name.equals("") || nick_name == null || nick_name.equals("") || email == null || email.equals("") || phone_number == null || phone_number.equals("")) {
-			response = "failure_empty_some";
-			contents = "아이디, 비밀번호, 이름, 닉네임, 이메일, 전화번호를 모두 입력해 주세요.";
-		}
-		
-		// id (1)5~20글자 영문자 + 숫자 (2)중복 확인 
-		else if (!Pattern.matches("^(?=.*[a-zA-z])(?=.*[0-9])(?!.*[^a-zA-z0-9]).{5,20}$", id)) {
-			response = "failure_wrong_format_id";
-			contents = "아이디는 5~20자 영문자, 숫자를 모두 포함해 입력해 주세요.";
+		// id 확인하기
+		if (id == null || id.equals("")) {
+			// 필수 입력 사항
+			contents.put("id", "아이디는 필수 입력 사항입니다.");
+		} else if (!Pattern.matches("^(?=.*[a-zA-z])(?=.*[0-9])(?!.*[^a-zA-z0-9]).{5,20}$", id)) {
+			// 5~20글자 영문자 + 숫자
+			contents.put("id", "아이디는 5~20자 영문자, 숫자를 모두 포함해 입력해 주세요.");
 		} else if (userInfoMapper.selectId(id) != null) {
-			response = "failure_duplicate_id";
-			contents = "이미 사용 중인 아이디입니다.";
+			// 중복 불가능
+			contents.put("id", "이미 사용 중인 아이디입니다.");
+		} else {
+			contents.put("id", "");
+			totalCheck++;
 		}
 		
-		// password (1)8~15글자, 영문자 + 숫자 + 특수문자 (2)password와 password_confirm 동일
-		else if (!Pattern.matches("^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[`~!@$!%*#^?&\\(\\)\\-_=+])(?!.*[^a-zA-z0-9`~!@$!%*#^?&\\(\\)\\-_=+]).{8,15}$", password)) {
-			response = "failure_wrong_format_pwd";
-			contents = "비밀번호는 8~15자 영문자, 숫자, 특수문자를 모두 포함해 입력해 주세요.";
+		// password 확인하기
+		if (password == null || password.equals("")) {
+			// 필수 입력 사항
+			contents.put("password", "비밀번호는 필수 입력 사항입니다.");
+		} else if (!Pattern.matches("^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[`~!@$!%*#^?&\\(\\)\\-_=+])(?!.*[^a-zA-z0-9`~!@$!%*#^?&\\(\\)\\-_=+]).{8,15}$", password)) {
+			// 8~15글자, 영문자 + 숫자 + 특수문자
+			contents.put("password", "비밀번호는 8~15자 영문자, 숫자, 특수문자를 모두 포함해 입력해 주세요.");
 		} else if (!password.equals(password_confirm)) {
-			response = "failure_different_pwd";
-			contents = "입력하신 두 비밀번호가 다릅니다.";
+			// 비밀번호 확인
+			contents.put("password", "입력하신 두 비밀번호가 다릅니다.");
+		} else {
+			contents.put("password", "");
+			totalCheck++;
 		}
 		
-		// simple_pwd 완료  (1)6자리, 숫자
-		else if (!Pattern.matches("^[0-9]{6}$", simple_pwd)) {
-			response = "failure_wrong_format_simple_pwd";
-			contents = "핀번호는 숫자 6자리로 입력해 주세요.";
+		// name 확인하기
+		if (name == null || name.equals("")) {
+			// 필수 입력 사항
+			contents.put("name", "이름은 필수 입력 사항입니다.");
+		} else if (!Pattern.matches("^[가-힣|a-z|A-Z]{2,10}$", name)) {
+			// 2~10글자, 문자
+			contents.put("name", "이름은 문자 2~10자로 입력해 주세요.");
+		} else {
+			contents.put("name", "");
+			totalCheck++;
 		}
 		
-		// name (1)2~10글자, 문자
-		else if (!Pattern.matches("^[가-힣|a-z|A-Z]{2,10}$", name)) {
-			response = "failure_wrong_format_name";
-			contents = "이름은 문자 2~10자로 입력해 주세요.";
-		}
-		
-		// nickname (1)1~8글자, 문자, 숫자 (2)중복 확인 
-		else if (!Pattern.matches("^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9]{1,8}$", nick_name)) {
-			response = "failure_wrong_format_nick_name";
-			contents = "닉네임은 1~8자 한글, 영어, 숫자로 입력해 주세요.";
+		// nick_name 확인하기
+		if (nick_name == null || nick_name.equals("")) {
+			// 필수 입력 사항
+			contents.put("nick_name", "닉네임은 필수 입력 사항입니다.");
+		} else if (!Pattern.matches("^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9]{1,8}$", nick_name)) {
+			// 1~8글자, 문자, 숫자
+			contents.put("nick_name", "닉네임은 1~8자 한글, 영어, 숫자로 입력해 주세요.");
 		} else if (userInfoMapper.selectNickName(nick_name) != null) {
-			response = "failure_duplicate_nick_name";
-			contents = "이미 사용 중인 닉네임입니다.";
+			// 중복 확인 
+			contents.put("nick_name", "이미 사용 중인 닉네임입니다.");
+		} else {
+			contents.put("nick_name", "");
+			totalCheck++;
 		}
 		
-		// email (1)이메일 형식 (2)중복 확인 
-		else if (!Pattern.matches("^[a-zA-Z0-9+-\\_.]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$", email)) {
-			response = "failure_wrong_format_email";
-			contents = "이메일 형식에 맞춰 입력해 주세요.";
+		// email 확인하기
+		if (email == null || email.equals("")) {
+			// 필수 입력 사항
+			contents.put("email", "이메일은 필수 입력 사항입니다.");
+		} else if (!Pattern.matches("^[a-zA-Z0-9+-\\_.]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$", email)) {
+			// 이메일 형식
+			contents.put("email", "이메일 형식에 맞춰 입력해 주세요.");
 		} else if (userInfoMapper.selectEmail(email) != null) {
-			response = "failure_duplicate_email";
-			contents = "이미 사용 중인 이메일입니다.";
+			// 중복 확인
+			contents.put("email", "이미 사용 중인 이메일입니다.");
+		} else {
+			contents.put("email", "");
+			totalCheck++;
 		}
 		
-		// phone_number (1)10~11자리, 숫자 (2)중복 확인 
-		else if (!Pattern.matches("^[0-9]{10,11}$", phone_number)) {
-			response = "failure_wrong_format_phone_number";
-			contents = "전화번호는 '-' 없이 숫자 11자리로 입력해 주세요.";
+		// phone_number 확인하기
+		if (phone_number == null || phone_number.equals("")) {
+			// 필수 입력 사항
+			contents.put("phone_number", "전화번호는 필수 입력 사항입니다.");
+		} else if (!Pattern.matches("^[0-9]{10,11}$", phone_number)) {
+			// 10~11자리, 숫자
+			contents.put("phone_number", "전화번호는 '-' 없이 숫자 11자리로 입력해 주세요.");
 		} else if (userInfoMapper.selectPhoneNumber(phone_number) != null) {
-			response = "failure_duplicate_phone_number";
-			contents = "이미 사용 중인 전화번호입니다.";
+			// 중복 확인 
+			contents.put("phone_number", "이미 사용 중인 전화번호입니다.");
+		} else {
+			contents.put("phone_number", "");
+			totalCheck++;
+		}
+
+		
+		// simple_pwd 확인하기
+		if (!Pattern.matches("^[0-9]{6}$", simple_pwd)) {
+			// 6자리, 숫자
+			contents.put("simple_pwd", "핀번호는 숫자 6자리로 입력해 주세요.");
+		} else {
+			contents.put("simple_pwd", "");
+			totalCheck++;
 		}
 		
-		// address
-
-		else {
-			// user_num 생성 및 넣기
-			String user_num = UUID.randomUUID().toString().replace("-", "");
-			userInfoDto.setUser_num(user_num);
+		if (totalCheck < 7) {
+			resultMap.put("response", "failure_wrong_format");
+			resultMap.put("contents", contents);
+			return resultMap;
+		}
+		
+		// user_num 생성 및 넣기
+		String user_num = UUID.randomUUID().toString().replace("-", "");
+		userInfoDto.setUser_num(user_num);
+		
+		// DB에 회원 정보 넣기
+		int result_join = userInfoMapper.insertUser(userInfoDto);
+		
+		if (result_join == 1) {
+			// 회원가입 성공 시, 통장 개설하기
+			int result_account = userAccountService.makeAccount(user_num);
 			
-			// DB에 회원 정보 넣기
-			int result_join = userInfoMapper.insertUser(userInfoDto);
-			
-			if (result_join == 1) {
-				// 회원가입 성공 시, 통장 개설하기
-				int result_account = userAccountService.makeAccount(user_num);
-				
-				if (result_account == 1) {
-					response = "success_join";
-					contents = "회원가입이 완료됐습니다.";
-				} else {
-					response = "failure_do_not_make_account";
-					contents = "회원가입은 됐으나, 통장을 생성하지 못했습니다.";
-				}
+			if (result_account == 1) {
+				resultMap.put("response", "success_join");
+				resultMap.put("contents", "회원가입이 완료됐습니다.");
 			} else {
-				response = "failure_join";
-				contents = "회원가입에 실패했습니다.";
+				resultMap.put("response", "failure_do_not_make_account");
+				resultMap.put("contents", "회원가입은 완료됐으나, 통장을 생성하지 못했습니다.");
 			}
+		} else {
+			resultMap.put("response", "failure_join");
+			resultMap.put("contents", "서버상의 문제로 회원가입에 실패했습니다.");
 		}
 
-		resultMap.put("response", response);
-		resultMap.put("contents", contents);
-		
 		return resultMap;
 	}
 	
 	public Map<String, Object> loginUser(String id, String password) { // 로그인
 
 		Map<String, Object> resultMap = new HashMap<>();
+
+		Map<String, Object> contents = new HashMap<>();
+		boolean[] loginData = new boolean[2];
 		
-		String response = "";
-		String contents = "";
-		
-		// id와 password가 모두 빈 상태로 들어왔다.
-		if ((id == null || id.equals("")) && (password == null ||password.equals(""))) {
-			response = "failure_empty_id_pwd";
-			contents = "아이디와 비밀번호를 입력해 주세요.";
+		// id
+		if (id == null || id.equals("")) {
+			contents.put("id", "아이디를 입력해 주세요.");
+			loginData[0] = true;
 		}
 		
-		// id만 빈 상태로 들어왔다.
-		else if (id == null || id.equals("")) {
-			response = "failure_empty_id";
-			contents = "아이디를 입력해 주세요.";
+		// password
+		if (password == null || password.equals("")) {
+			contents.put("password", "비밀번호를 입력해 주세요.");
+			loginData[1] = true;
 		}
 		
-		// password만 빈 상태로 들어왔다.
-		else if (password == null ||password.equals("")) {
-			response = "failure_empty_password";
-			contents = "비밀번호를 입력해 주세요.";
-		}
-		
-		// id와 password 모두 입력된 상태로 들어왔다.
-		else {
-			// DB에서 입력한 id에 해당하는 정보 가져오기
-			UserInfoDto userInfoDto = userInfoMapper.selectUser(id);
+		if (loginData[0] || loginData[1]) {
+			if (!loginData[0]) contents.put("id", "");
+			if (!loginData[1]) contents.put("password", "");
 			
-			// id가 존재하지 않는 경우
-			if (userInfoDto == null) {
-				response = "failure_notExist_id";
-				contents = "존재하지 않는 아이디입니다.";
-			}
+			resultMap.put("response", "failure_no_input_value");
+			resultMap.put("contents", contents);
 			
-			// id가 존재하고, 비밀번호는 틀린 경우
-			else if (!userInfoDto.getPassword().equals(password)) {
-				response = "failure_wrong_password";
-				contents = "잘못된 비밀번호입니다.";
-			}
-			
-			// id가 존재하고, 비밀번호도 맞는 경우
-			else {
-				response = "success_login";
-				contents = "로그인이 완료됐습니다.";
-				
-				// 로그인 정보 Session에 저장
-				userInfoSessionDto.setUser_num(userInfoDto.getUser_num());
-				userInfoSessionDto.setId(userInfoDto.getId());
-				userInfoSessionDto.setNick_name(userInfoDto.getNick_name());
-			}
+			return resultMap;
 		}
+		
+		// DB에서 입력한 id에 해당하는 정보 가져오기
+		UserInfoDto userInfoDto = userInfoMapper.selectUser(id);
+
+		if (userInfoDto == null) {
+			contents.put("id", "존재하지 않는 아이디입니다.");
+			contents.put("password", "");
+			
+			resultMap.put("response", "failure_not_exists_id");
+			resultMap.put("contents", contents);
+			
+			return resultMap;
+		}
+		
+		if (!userInfoDto.getPassword().equals(password)) {
+			contents.put("id", "");
+			contents.put("password", "잘못된 비밀번호입니다.");
+			
+			resultMap.put("response", "failure_wrong_password");
+			resultMap.put("contents", contents);
+			
+			return resultMap;
+		}
+		
+		// 로그인 정보 Session에 저장
+		userInfoSessionDto.setUser_num(userInfoDto.getUser_num());
+		userInfoSessionDto.setId(userInfoDto.getId());
+		userInfoSessionDto.setNick_name(userInfoDto.getNick_name());
 
 		// API로 응답 넘겨주기
-		resultMap.put("response", response);
-		resultMap.put("contents", contents);
+		resultMap.put("response", "success_login");
+		resultMap.put("contents", "로그인이 완료됐습니다.");
 		
 		return resultMap;
 	}

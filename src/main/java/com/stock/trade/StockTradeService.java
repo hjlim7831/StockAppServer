@@ -44,9 +44,15 @@ public class StockTradeService {
 		}
 		
 		double stock_price = stockTradeSessionDto.getStock_price();      // session에 저장해둔 stock_code의 주식 가격 가져오기
+		if (stock_price <= 0) {
+			resultMap.put("response", "failure_must_lookup_price");
+			resultMap.put("contents", "거래창에서 주식 가격 조회 후에, 거래가 가능합니다.");
+			
+			return resultMap;
+		}
+
 		String user_num = userInfoSessionDto.getUser_num();              // session에 저장해둔 사용자 고유번호 가져오기
 		double balance = userAccountMapper.selectBalanceByNum(user_num); // 사용자의 통장 잔고 가져오기
-		
 		
 		if (balance < (stock_price*share)) { // 사고자 하는 주식 합계 금액보다 통장 잔고가 적은 경우
 			resultMap.put("response", "failure_lack_of_balance");
@@ -90,8 +96,16 @@ public class StockTradeService {
 			
 			return resultMap;
 		}
-		double
-		stock_price = stockTradeSessionDto.getStock_price();      // session에 저장해둔 stock_code의 주식 가격 가져오기
+		
+		double stock_price = stockTradeSessionDto.getStock_price();      // session에 저장해둔 stock_code의 주식 가격 가져오기
+		
+		if (stock_price <= 0) {
+			resultMap.put("response", "failure_must_lookup_price");
+			resultMap.put("contents", "거래창에서 주식 가격 조회 후에, 거래가 가능합니다.");
+			
+			return resultMap;
+		}
+		
 		String user_num = userInfoSessionDto.getUser_num();              // session에 저장해둔 사용자 고유번호 가져오기
 		double balance = userAccountMapper.selectBalanceByNum(user_num); // 사용자의 통장 잔고 가져오기
 		
