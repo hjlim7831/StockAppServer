@@ -7,17 +7,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.user.account.UserAccountService;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("user")
-@SessionAttributes("loginUser")
+@Api(tags = {"User Info Controller"}, description = "사용자 정보 관련 API")
 public class UserInfoController {
 
 	@Autowired
@@ -53,6 +53,4 @@ public class UserInfoController {
 	public Map<String, Object> loginCheck() {
 		return userInfoService.loginCheck();
 	}
-	
-	// 중복 확인 id, nickname, email, phone-number
 }

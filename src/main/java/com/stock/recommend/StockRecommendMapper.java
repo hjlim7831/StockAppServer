@@ -5,6 +5,8 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
+import com.search.result.SearchResultDto;
+
 @Mapper
 @Repository
 public interface StockRecommendMapper {
@@ -14,4 +16,8 @@ public interface StockRecommendMapper {
 	List<String> selectUserStockHolding(String user_num);
 	
 	int selectNumberOfUsers();
+	
+	int selectUserHaveHoldingWish();
+	
+	List<SearchResultDto> selectStockPopular();
 }
