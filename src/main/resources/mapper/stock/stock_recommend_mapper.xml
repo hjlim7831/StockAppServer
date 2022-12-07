@@ -6,10 +6,12 @@
 	
 	<select id="selectUserWishlist" parameterType="String" resultType="String">
 		SELECT stock_code FROM wish_list
+		WHERE user_num = #{user_num}
 	</select>
 	
 	<select id="selectUserStockHolding" parameterType="String" resultType="String">
 		SELECT stock_code FROM my_list
+		WHERE user_num = #{user_num}
 	</select>
 	
 	<select id="selectNumberOfUsers" resultType="int">
@@ -36,6 +38,17 @@
     	JOIN
     		(SELECT stock_code, company_name FROM stock_list) AS b
     	ON a.stock_code = b.stock_code;
+	</select>
+	
+	<select id="selectStockCodeListHoldingWish" resultType="com.stock.recommend.SelectedStockDto">
+		SELECT stock_code, user_num FROM my_list
+		UNION
+		SELECT stock_code, user_num FROM wish_list
+	</select>
+	
+	<select id="selectCompanyNameByStockCode" parameterType="String" resultType="String">
+		SELECT company_name FROM stock_list
+		WHERE stock_code = #{stock_code};
 	</select>
 	
 </mapper>

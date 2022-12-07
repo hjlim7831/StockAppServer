@@ -20,4 +20,8 @@ public interface StockRecommendMapper {
 	int selectUserHaveHoldingWish();
 	
 	List<SearchResultDto> selectStockPopular();
+	
+	List<SelectedStockDto> selectStockCodeListHoldingWish();
+	
+	String selectCompanyNameByStockCode(String stock_code);
 }
