@@ -22,4 +22,10 @@
 			BETWEEN DATE_FORMAT(DATE_ADD(NOW(), INTERVAL -3 MONTH), "%Y%m%d") AND DATE_FORMAT(DATE_ADD(NOW(), INTERVAL -2 MONTH), "%Y%m%d");
 	</select>
 	
+	<update id="updateViewCnt" parameterType="String">
+		UPDATE stock_list
+		SET view_cnt = view_cnt + 1
+		WHERE stock_code = #{stock_code}
+	</update>
+	
 </mapper>

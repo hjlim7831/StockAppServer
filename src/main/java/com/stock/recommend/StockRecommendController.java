@@ -18,13 +18,6 @@ public class StockRecommendController {
 	@GetMapping("recommend")
 	public Map<String, Object> getRecommendedStock(){
 		return stockRecommendService.getRecommendStock();
-	}
-	
-//	@GetMapping("test2")
-//	public ResponseEntity<?> test2(){
-		
-//		return ResponseEntity.ok(stockRecommendService.makeStockUserMatrixInfo());
-//	}
-	
+	}	
 	
 }

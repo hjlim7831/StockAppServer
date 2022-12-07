@@ -129,7 +129,11 @@ public class UserInfoService {
 
 		
 		// simple_pwd 확인하기
-		if (!Pattern.matches("^[0-9]{6}$", simple_pwd)) {
+		if (simple_pwd == null || simple_pwd.equals("")) {
+			// 필수 입력 사항
+			contents.put("simple_pwd", "핀번호는 필수 입력 사항입니다.");
+			
+		} else if (!Pattern.matches("^[0-9]{6}$", simple_pwd)) {
 			// 6자리, 숫자
 			contents.put("simple_pwd", "핀번호는 숫자 6자리로 입력해 주세요.");
 		} else {
