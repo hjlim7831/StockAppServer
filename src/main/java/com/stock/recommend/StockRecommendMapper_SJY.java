@@ -9,7 +9,7 @@ import com.search.result.SearchResultDto;
 
 @Mapper
 @Repository
-public interface StockRecommendMapper {
+public interface StockRecommendMapper_SJY {
 	
 	List<String> selectUserWishlist(String user_num);
 	
@@ -25,5 +25,5 @@ public interface StockRecommendMapper {
 	
 	List<String> selectUserStock(String user_num);
 	
-	List<String> selectAllStock();
+	String[] selectAllStock();
 }

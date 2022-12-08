@@ -30,13 +30,13 @@ import com.search.viewCntRank.SearchViewCntRankMapper;
 import com.user.info.UserInfoSessionDto;
 
 @Service
-public class StockRecommendService {
+public class StockRecommendService_SJY {
 
 	@Resource // session에 저장해 둔 로그인 정보 가져오기
 	private UserInfoSessionDto userInfoSessionDto;
 
 	@Autowired
-	private StockRecommendMapper stockRecommendMapper;
+	private StockRecommendMapper_SJY stockRecommendMapper;
 
 	@Autowired
 	private RealtimeComponent realtimeComponent;
@@ -156,20 +156,25 @@ public class StockRecommendService {
 	}
 	
 	public void recommendStock() {
-
-		List<String> allStockCode = stockRecommendMapper.selectAllStock();
 		
+		String[] allStockCode = stockRecommendMapper.selectAllStock();
+		System.out.println();
+		
+		// relation : String 주식 코드, Integer 평가값 0 1
 		Map<String, Integer> relation = new HashMap<>();
 		for (String code : allStockCode) {
 			relation.put(code, 0);
 		}
 		
+		// String 주식 코드 ( )
 		Map<String, Map<String, Double>> oneStock = new HashMap<>();
 		for (String code : allStockCode) {
 			oneStock.put(code, new HashMap<String, Double>());
 		}
 		
+		// String 사용자 고유번호 () 
 		Map<String, Map<String, Integer>> users = new HashMap<>();
+		
 		List<String> allUserNum = stockRecommendMapper.selectAllUserNum();
 		
 		for (String num : allUserNum) {
@@ -188,11 +193,11 @@ public class StockRecommendService {
         //    System.out.println(entrySet.getKey() + " : " + entrySet.getValue());
         //}
 		
-		for (int i=0; i<allStockCode.size(); i++) {
-			String code1 = allStockCode.get(i);
+		for (int i=0; i<allStockCode.length; i++) {
+			String code1 = allStockCode[i];
 			
-			for (int j=i+1; j<allStockCode.size(); j++) {
-				String code2 = allStockCode.get(j);
+			for (int j=i+1; j<allStockCode.length; j++) {
+				String code2 = allStockCode[j];
 				
 				int AproductB = 0;
 				int A = 0;
@@ -262,7 +267,7 @@ public class StockRecommendService {
             System.out.println("Key: " + entry.getKey() + ", " + "Value: " + entry.getValue());
             
             count++;
-            if (count >= 5) break;
+            if (count >= 7) break;
         }
 	}
 }
