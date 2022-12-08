@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- User Rank Data 관련 SQL -->
+<mapper namespace="com.user.rank.UserRankMapper">
+	
+	<select id="selectAllUser" resultType="string">
+		SELECT user_num FROM user
+	</select>
+	
+	<select id="selectUserAccount" parameterType="string" resultType="com.user.rank.dto.UserAccountDto">
+		SELECT balance, us, euro, jpy, yuan FROM account
+		WHERE user_num = #{user_num}
+	</select>
+	
+	<select id="selectUserHoldingStock" parameterType="string" resultType="com.user.rank.dto.UserHoldingStockDto">
+		SELECT stock_code, stock_cnt FROM my_list
+		WHERE user_num = #{user_num}
+	</select>
+	
+	<select id="selectAllHoldingStock" resultType="string">
+		SELECT DISTINCT stock_code FROM my_list
+	</select>
+	
+	<update id="updateRank" parameterType="com.user.rank.dto.UserRankDto">
+		UPDATE user
+		SET mk_rank = #{mk_rank}
+		WHERE user_num = #{user_num}
+	</update>
+	
+	<select id="selectUserRank" parameterType="string" resultType="int">
+		SELECT mk_rank FROM user
+		WHERE user_num = #{user_num}
+	</select>
+</mapper>
