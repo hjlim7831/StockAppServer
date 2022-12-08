@@ -28,13 +28,13 @@ import com.search.viewCntRank.SearchViewCntRankMapper;
 import com.user.info.UserInfoSessionDto;
 
 @Service
-public class StockRecommendService {
+public class StockRecommendService_hjlim {
 
 	@Resource // session에 저장해 둔 로그인 정보 가져오기
 	private UserInfoSessionDto userInfoSessionDto;
 
 	@Autowired
-	private StockRecommendMapper stockRecommendMapper;
+	private StockRecommendMapper_hjlim stockRecommendMapper;
 
 	@Autowired
 	private RealtimeComponent realtimeComponent;
@@ -158,7 +158,7 @@ public class StockRecommendService {
 	}
 
 	public List<String> calculateTanimoto(List<String> stockList) {
-		MatrixInfo matrixInfo = makeStockUserMatrixInfo();
+		MatrixInfo_hjlim matrixInfo = makeStockUserMatrixInfo();
 
 		Set<String> stockSet = new HashSet<>(stockList);
 
@@ -190,7 +190,10 @@ public class StockRecommendService {
 
 				double tmpTani = AdotB / (l2Arr[codeIdx] + l2Arr[i] - AdotB);
 				String code = codeIdxList.get(i);
-
+				
+				// 평균으로 고치기. 평균 순으로 5개 뽑기.
+				// 0으로 나눠지는 경우는 tani 계수를 0으로 처리해버리기
+				// 최저 tani 계수가 XX(일단 0) 이하일 때에는 관련 주식으로 돌려버리기
 				if (!stockSet.contains(code) && tmpTani >= 0.4) {
 					recCodeList.add(code);
 				}
@@ -205,12 +208,12 @@ public class StockRecommendService {
 	 * 
 	 * @return Stock - UserIntegerArray
 	 */
-	private MatrixInfo makeStockUserMatrixInfo() {
-		List<SelectedStockDto> preList = stockRecommendMapper.selectStockCodeListHoldingWish();
+	private MatrixInfo_hjlim makeStockUserMatrixInfo() {
+		List<SelectedStockDto_hjlim> preList = stockRecommendMapper.selectStockCodeListHoldingWish();
 
 		int numOfUsers = stockRecommendMapper.selectUserHaveHoldingWish();
 
-		List<Boolean[]> SUMatrix = new ArrayList<>();
+		List<Boolean[]> SUMatrix = new ArrayList<>();// stock_code X user_num (boolean)
 
 		Map<String, Integer> codeMap = new HashMap<>();
 		List<String> codeIdxList = new ArrayList<>();
@@ -219,12 +222,13 @@ public class StockRecommendService {
 		int cLen = 0;
 		int uLen = 0;
 
-		for (SelectedStockDto s : preList) {
+		for (SelectedStockDto_hjlim s : preList) {
 			String stock_code = s.getStock_code();
 			String user_num = s.getUser_num();
 
 			int sIdx;
 			int uIdx;
+			
 
 			if (codeMap.containsKey(stock_code)) {
 				sIdx = codeMap.get(stock_code);
@@ -244,7 +248,6 @@ public class StockRecommendService {
 
 			SUMatrix.get(sIdx)[uIdx] = true;
 		}
-
 		// calculate L2 Arr (각 어레이의 거듭제곱의 합. 미리 계산해, 그 값만 가져올 수 있도록 하기)
 		double[] l2Arr = new double[cLen];
 		for (int i = 0; i < cLen; i++) {
@@ -256,7 +259,7 @@ public class StockRecommendService {
 			}
 		}
 
-		MatrixInfo info = new MatrixInfo(SUMatrix, codeMap, codeIdxList, l2Arr);
+		MatrixInfo_hjlim info = new MatrixInfo_hjlim(SUMatrix, codeMap, codeIdxList, l2Arr);
 
 		return info;
 

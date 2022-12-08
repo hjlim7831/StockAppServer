@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("stock")
-public class StockRecommendController {
+public class StockRecommendController_hjlim {
 	
 	@Autowired
-	StockRecommendService stockRecommendService;
+	StockRecommendService_hjlim stockRecommendService;
 	
 	@GetMapping("recommend")
 	public Map<String, Object> getRecommendedStock(){

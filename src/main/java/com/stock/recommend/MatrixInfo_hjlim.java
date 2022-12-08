@@ -8,7 +8,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class MatrixInfo {
+public class MatrixInfo_hjlim {
 	private List<Boolean[]> matrix;
 	private Map<String, Integer> codeMap;
 	private List<String> codeIdxList;
