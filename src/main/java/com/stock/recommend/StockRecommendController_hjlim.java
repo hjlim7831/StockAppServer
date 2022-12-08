@@ -15,7 +15,7 @@ public class StockRecommendController_hjlim {
 	@Autowired
 	StockRecommendService_hjlim stockRecommendService;
 	
-	@GetMapping("recommend")
+	@GetMapping("recommend/hjlim")
 	public Map<String, Object> getRecommendedStock(){
 		return stockRecommendService.getRecommendStock();
 	}	
