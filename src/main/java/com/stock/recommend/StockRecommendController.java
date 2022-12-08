@@ -19,4 +19,10 @@ public class StockRecommendController {
 		return stockRecommendService.getRecommendStock();
 	}
 	
+	@GetMapping("test")
+	public void recommendStock() {
+		stockRecommendService.recommendStock();
+		return;
+	}
+	
 }

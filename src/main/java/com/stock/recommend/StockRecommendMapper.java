@@ -20,4 +20,10 @@ public interface StockRecommendMapper {
 	int selectUserHaveHoldingWish();
 	
 	List<SearchResultDto> selectStockPopular();
+	
+	List<String> selectAllUserNum();
+	
+	List<String> selectUserStock(String user_num);
+	
+	List<String> selectAllStock();
 }

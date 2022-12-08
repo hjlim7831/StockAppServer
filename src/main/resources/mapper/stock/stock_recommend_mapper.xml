@@ -38,4 +38,18 @@
     	ON a.stock_code = b.stock_code;
 	</select>
 	
+	<select id="selectAllUserNum" resultType="string">
+		SELECT user_num FROM user
+	</select>
+	
+	<select id="selectUserStock" parameterType="string" resultType="string">
+		SELECT DISTINCT stock_code FROM my_list WHERE user_num = #{user_num}
+		UNION
+		SELECT DISTINCT stock_code FROM wish_list WHERE user_num = #{user_num}
+	</select>
+	
+	<select id="selectAllStock" resultType="string">
+		SELECT stock_code FROM stock_list
+	</select>
+	
 </mapper>

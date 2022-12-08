@@ -5,10 +5,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Set;
 
@@ -43,6 +45,7 @@ public class StockRecommendService {
 	SearchViewCntRankMapper viewCntRankMapper;
 	
 	public Map<String, Object> getRecommendStock() {
+		
 		Map<String, Object> resultMap = new HashMap<>();
 		Map<String, Object> contents = new HashMap<>();
 		
@@ -76,6 +79,7 @@ public class StockRecommendService {
 	}
 
 	private Map<String, Object> getPopularStock() {
+		
 		Map<String, Object> realtime = new HashMap<String, Object>();
 		
 		// 보유 및 관심 주식이 있는 사용자 수
@@ -106,6 +110,7 @@ public class StockRecommendService {
 
 	// 관련 주식 중 랜덤으로 가져오기
 	private Map<String, Object> getRelatedStock(List<String> stockList) {
+		
 		Map<String, Object> realtime = new HashMap<String, Object>();
 
 		Random random = new Random();
@@ -149,5 +154,115 @@ public class StockRecommendService {
 
 		return realtime;
 	}
+	
+	public void recommendStock() {
 
+		List<String> allStockCode = stockRecommendMapper.selectAllStock();
+		
+		Map<String, Integer> relation = new HashMap<>();
+		for (String code : allStockCode) {
+			relation.put(code, 0);
+		}
+		
+		Map<String, Map<String, Double>> oneStock = new HashMap<>();
+		for (String code : allStockCode) {
+			oneStock.put(code, new HashMap<String, Double>());
+		}
+		
+		Map<String, Map<String, Integer>> users = new HashMap<>();
+		List<String> allUserNum = stockRecommendMapper.selectAllUserNum();
+		
+		for (String num : allUserNum) {
+			Map<String, Integer> copyMap = new HashMap<String, Integer>(relation);
+			
+			List<String> myStock = stockRecommendMapper.selectUserStock(num);
+			System.out.println(myStock.toString());
+			for (String code : myStock) {
+				copyMap.put(code, 1);
+			}
+			System.out.println(copyMap.toString());
+			users.put(num, copyMap);
+		}
+		
+		//for (Entry<String, Map<String, Integer>> entrySet : users.entrySet()) {
+        //    System.out.println(entrySet.getKey() + " : " + entrySet.getValue());
+        //}
+		
+		for (int i=0; i<allStockCode.size(); i++) {
+			String code1 = allStockCode.get(i);
+			
+			for (int j=i+1; j<allStockCode.size(); j++) {
+				String code2 = allStockCode.get(j);
+				
+				int AproductB = 0;
+				int A = 0;
+				int B = 0;
+				
+				for (String num : allUserNum) {
+					
+					int a0 = ((Map<String, Integer>) users.get(num)).get(code1);
+					int b0 = ((Map<String, Integer>) users.get(num)).get(code2);
+					//if (a0 > 0) System.out.println(code1 + " " + code2 + " a " + a0);
+					//if (b0 > 0) System.out.println(code1 + " " + code2 + " b " + b0);
+					
+					AproductB += (a0*b0);
+					A += a0;
+					B += b0;
+				}
+				
+				if ((A + B - AproductB) == 0) {
+					((HashMap<String, Double>) oneStock.get(code1)).put(code2, (double) 0);
+					((HashMap<String, Double>) oneStock.get(code2)).put(code1, (double) 0);
+				} else {
+					double tanimoto = AproductB/(A + B - AproductB);
+//					System.out.println("오긴함?2 " + A + " " + B + " " + AproductB);
+					//if(tanimoto > 0) {
+					//	System.out.println(tanimoto);
+					//}
+					((HashMap<String, Double>) oneStock.get(code1)).put(code2, tanimoto);
+					((HashMap<String, Double>) oneStock.get(code2)).put(code1, tanimoto);				
+				}
+			}		
+		}
+		
+		for (Entry<String, Map<String, Double>> entrySet : oneStock.entrySet()) {
+			if (entrySet.getKey().equals("207940")) {
+				System.out.println(entrySet.getKey() + " : " + entrySet.getValue());
+				break;		
+			}
+        }
+		
+		String user_num = userInfoSessionDto.getUser_num();
+		Map<String, Integer> myUserList = users.get(user_num);
+		
+		Map<String, Double> relations = new HashMap<>();
+		for (String code : allStockCode) {
+			relations.put(code, (double) 0);
+		}
+		
+		for (Entry<String, Integer> entrySet : myUserList.entrySet()) {
+			if (entrySet.getValue() == 1) {
+				String stock_code = entrySet.getKey();
+				
+				for (Entry<String, Double> entrySet2 : oneStock.get(stock_code).entrySet()) {
+					String code = entrySet2.getKey();
+					double value = entrySet2.getValue();
+					
+					relations.put(code, relations.get(code) + value);
+				}
+			}
+        }
+		
+        System.out.println();
+        List<Map.Entry<String, Double>> entries = new ArrayList<>(relations.entrySet());
+        entries.sort(Comparator.comparing(Map.Entry::getValue, Comparator.reverseOrder()));
+        
+        int count = 0;
+        for (Entry<String, Double> entry : entries) {
+            System.out.println("Key: " + entry.getKey() + ", " + "Value: " + entry.getValue());
+            
+            count++;
+            if (count >= 5) break;
+        }
+	}
 }

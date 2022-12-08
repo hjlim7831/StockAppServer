@@ -27,6 +27,7 @@ public class UserStockHoldingService {
 	RealtimeComponent realtimeComponent;
 	
 	public Map<String, Object> lookupUserStock(String sorting_method) { // sorting_method에 따른 사용자의 보유 주식 조회
+		
 		Map<String, Object> resultMap = new HashMap<>();
 
 		// session에서 가져온 user_num의 전체 보유 주식 목록을 가져온다.
