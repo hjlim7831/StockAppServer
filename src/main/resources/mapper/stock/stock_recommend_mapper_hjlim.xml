@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!-- Stock Debut Data 관련 SQL -->
-<mapper namespace="com.stock.recommend.StockRecommendMapper">
+<mapper namespace="com.stock.recommend.StockRecommendMapper_hjlim">
 	
 	<select id="selectUserWishlist" parameterType="String" resultType="String">
 		SELECT stock_code FROM wish_list
@@ -40,7 +40,7 @@
     	ON a.stock_code = b.stock_code;
 	</select>
 	
-	<select id="selectStockCodeListHoldingWish" resultType="com.stock.recommend.SelectedStockDto">
+	<select id="selectStockCodeListHoldingWish" resultType="com.stock.recommend.SelectedStockDto_hjlim">
 		SELECT stock_code, user_num FROM my_list
 		UNION
 		SELECT stock_code, user_num FROM wish_list
