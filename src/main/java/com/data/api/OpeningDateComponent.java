@@ -15,6 +15,7 @@ import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Date;
 
@@ -40,6 +41,25 @@ public class OpeningDateComponent {
 
 	Gson gson;
 
+	public boolean isOpen() {
+		// 현재 시각 한국 기준으로 가져오기
+		ZonedDateTime zt = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
+//		ZonedDateTime zt = ZonedDateTime.of(2022, 1, 1, 10, 0, 0, 0, ZoneId.of("Asia/Seoul"));
+		int year = zt.getYear();
+		int mo = zt.getMonthValue();
+		int day = zt.getDayOfMonth();
+		
+		// 매매 가능 시간 : 9:00 - 15:30
+		ZonedDateTime st = ZonedDateTime.of(year, mo, day, 9, 0, 0, 0, ZoneId.of("Asia/Seoul"));
+		ZonedDateTime ed = ZonedDateTime.of(year, mo, day, 15, 30, 0, 0, ZoneId.of("Asia/Seoul"));
+
+		if (isOpeningDate(zt) && zt.isAfter(st) && zt.isBefore(ed)) {
+			return true;
+		}
+		
+		return false;
+	}
+
 	/**
 	 * zt 기준, 개장일인지 여부를 boolean으로 반환
 	 * 
@@ -47,7 +67,7 @@ public class OpeningDateComponent {
 	 * @return
 	 * @throws FileNotFoundException
 	 */
-	public boolean isOpeningDate(ZonedDateTime zt){
+	private boolean isOpeningDate(ZonedDateTime zt) {
 		/*
 		 * 1. 「관공서의 공휴일에 관한 규정」에 따른 공휴일 (일요일 포함) 2. 「근로자의 날 제정에 관한 법률」에 따른 근로자의 날 3. 토요일
 		 * 4. 12월 31일(공휴일 또는 토요일인 경우에는 직전의 매매거래일로 한다) 그 밖에 경제사정의 급격한 변동 또는 급격한 변동이 예상되거나
@@ -117,9 +137,9 @@ public class OpeningDateComponent {
 					.getAsJsonArray("item");
 
 			res = calculateOpeningDateFile(items, year, det);
-			
+
 			urlConnection.disconnect();
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -188,7 +208,7 @@ public class OpeningDateComponent {
 		}
 
 		obj.add("body", body);
-		
+
 		// 읽어들인 정보로 새 파일 작성
 		BufferedWriter writer;
 		try {
@@ -199,7 +219,7 @@ public class OpeningDateComponent {
 			e.printStackTrace();
 		}
 		System.out.println(body);
-		
+
 		// body 정보로 true/false 반환
 		return readOpeningDate(obj, det);
 	}

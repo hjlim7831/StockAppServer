@@ -74,9 +74,9 @@ public class UserInfoService {
 		if (name == null || name.equals("")) {
 			// 필수 입력 사항
 			contents.put("name", "이름은 필수 입력 사항입니다.");
-		} else if (!Pattern.matches("^[가-힣|a-z|A-Z]{2,10}$", name)) {
+		} else if (!Pattern.matches("^[가-힣|a-z|A-Z]{2,15}$", name)) {
 			// 2~10글자, 문자
-			contents.put("name", "이름은 문자 2~10자로 입력해 주세요.");
+			contents.put("name", "이름은 문자 2~15자로 입력해 주세요.");
 		} else {
 			contents.put("name", "");
 			totalCheck++;
@@ -86,7 +86,7 @@ public class UserInfoService {
 		if (nick_name == null || nick_name.equals("")) {
 			// 필수 입력 사항
 			contents.put("nick_name", "닉네임은 필수 입력 사항입니다.");
-		} else if (!Pattern.matches("^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9]{1,8}$", nick_name)) {
+		} else if (!Pattern.matches("^[ㄱ-ㅎ|ㅏ-ㅣ|가-힣|a-z|A-Z|0-9]{1,8}$", nick_name)) {
 			// 1~8글자, 문자, 숫자
 			contents.put("nick_name", "닉네임은 1~8자 한글, 영어, 숫자로 입력해 주세요.");
 		} else if (userInfoMapper.selectNickName(nick_name) != null) {
@@ -129,7 +129,11 @@ public class UserInfoService {
 
 		
 		// simple_pwd 확인하기
-		if (!Pattern.matches("^[0-9]{6}$", simple_pwd)) {
+		if (simple_pwd == null || simple_pwd.equals("")) {
+			// 필수 입력 사항
+			contents.put("simple_pwd", "핀번호는 필수 입력 사항입니다.");
+			
+		} else if (!Pattern.matches("^[0-9]{6}$", simple_pwd)) {
 			// 6자리, 숫자
 			contents.put("simple_pwd", "핀번호는 숫자 6자리로 입력해 주세요.");
 		} else {

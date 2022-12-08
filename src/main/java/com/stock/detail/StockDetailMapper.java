@@ -21,4 +21,11 @@ public interface StockDetailMapper {
 	
 	// stock_code의 한 달치 시가, 종가, 고가, 저가 가져오기
 	List<StockDataDto> selectStockByDate(String stock_code);
+	
+	/**
+	 * 각 주식의 조회수 증가시키는 메서드
+	 * @param stock_code
+	 * @return 조회수가 증가했는지 여부를 int 값으로 리턴
+	 */
+	int updateViewCnt(String stock_code);
 }
