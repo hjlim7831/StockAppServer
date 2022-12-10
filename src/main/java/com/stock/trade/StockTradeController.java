@@ -49,4 +49,9 @@ public class StockTradeController {
 	public Map<String, Object> tradePrice(@PathVariable String stock_code) throws JsonProcessingException {
 		return stockTradeService.tradePrice(stock_code);
 	}
+	
+	@GetMapping("is-close")
+	public Map<String, Object> isClose(){
+		return stockTradeService.isClose();
+	}
 }

@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.data.api.OpeningDateComponent;
 import com.data.stock.crawling.realtime.RealtimeComponent;
 import com.data.stock.crawling.realtime.dto.RealtimePriceDto;
 import com.user.account.UserAccountMapper;
@@ -32,6 +33,9 @@ public class StockTradeService {
 	
 	@Autowired
 	RealtimeComponent realtimeComponent;
+	
+	@Autowired
+	OpeningDateComponent openingDateComponent;
 
 	public Map<String, Object> tradeBuy(String stock_code, int share) {
 		Map<String, Object> resultMap = new HashMap<String, Object>(); // 응답 저장하기
@@ -162,6 +166,18 @@ public class StockTradeService {
 			resultMap.put("contents", priceMap);
 		}
 
+		return resultMap;
+	}
+	
+	public Map<String, Object> isClose(){
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		if (openingDateComponent.isOpen()) {
+			resultMap.put("response", "success_is_open");
+			resultMap.put("contents", "현 시각 주식 장은 열려있습니다.");
+		}else {
+			resultMap.put("response", "success_is_close");
+			resultMap.put("contents", "현 시각 주식 장은 마감되었습니다.");
+		}
 		return resultMap;
 	}
 }

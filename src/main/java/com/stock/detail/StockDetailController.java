@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -39,6 +40,11 @@ public class StockDetailController {
 	@GetMapping("news/{stock_code}")
 	public Map<String, Object> stockDetailNews(@PathVariable String stock_code) {
 		return stockDetailService.stockDetailNews(stock_code);
+	}
+	
+	@PostMapping("vcnt-inc/{stock_code}")
+	public Map<String, Object> increaseViewCount(@PathVariable String stock_code){
+		return stockDetailService.increaseStockViewCnt(stock_code);
 	}
 	
 	

@@ -140,4 +140,18 @@ public class StockDetailService {
 		return resultMap;
 	}
 
+	public Map<String, Object> increaseStockViewCnt(String stock_code) {
+		StringBuilder sb = new StringBuilder();
+		Map<String, Object> resultMap = new HashMap<>();
+		if (stockDetailMapper.updateViewCnt(stock_code) == 1) {
+			sb.append("success_update_view_cnt_").append(stock_code);
+			resultMap.put("response", sb.toString());
+		}else {
+			sb.append("failure_update_view_cnt_").append(stock_code);
+			resultMap.put("response",sb.toString());
+		}
+		return resultMap;
+		
+	}
+
 }

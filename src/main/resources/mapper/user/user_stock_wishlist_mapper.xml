@@ -7,7 +7,7 @@
 	<!-- 사용자의 관심 주식을 전부 SELECT -->
 	<select id="selectWishlist" parameterType="string" resultType="com.user.stock.wishlist.UserStockWishlistDto">
 		SELECT wl.stock_code, sl.company_name, sl.view_cnt
-		FROM (SELECT stock_code FROM wish_list WHERE user_num = "055ebe8af8fa4ec897343560a553ad15") AS wl
+		FROM (SELECT stock_code FROM wish_list WHERE user_num = #{user_num}) AS wl
 		LEFT JOIN stock_list AS sl
 		ON wl.stock_code = sl.stock_code;
 	</select>
@@ -29,5 +29,7 @@
 		DELETE FROM wish_list
 		WHERE user_num = #{user_num} AND stock_code = #{stock_code}
 	</delete>
+	
+
 	
 </mapper>
