@@ -1,4 +1,4 @@
-package com.currency.trade;
+package com.currency.exchange;
 
 import java.io.Serializable;
 
@@ -14,7 +14,7 @@ import lombok.Data;
 @Component
 @Data
 @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
-public class CurrencyTradeSessionDto implements Serializable {
+public class CurrencyExchangeSessionDto implements Serializable {
 	
 	@JsonIgnore
 	static final long serialVersionUID = 1L;

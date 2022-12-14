@@ -1,4 +1,4 @@
-package com.currency.trade;
+package com.currency.exchange;
 
 import java.util.Map;
 
@@ -18,16 +18,16 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping("currency")
 @Api(tags = {"Currency Exchange Controller"}, description = "환전 관련 API")
-public class CurrencyTradeController {
+public class CurrencyExchangeController {
 	
 	@Autowired
-	CurrencyTradeService currencyTradeService;
+	CurrencyExchangeService currencyTradeService;
 	
 	@PostMapping("exchange/{country}")
 	@ApiOperation(value = "원화  → 외화 환전하기")
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "country", value = "외화명(달러 : USD, 엔화 : JPY, 유로 : EUR, 위안 : CNY)", required = true),
-		@ApiImplicitParam(name = "total", value = "환전할 원화 금액", required = true)
+		@ApiImplicitParam(name = "total", value = "환전할 외화 금액", required = true)
 	})
 	public Map<String, Object> tradeCurrency(@PathVariable String country, int total) {
 		return currencyTradeService.tradeCurrency(country, total);

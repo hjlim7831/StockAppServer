@@ -17,6 +17,12 @@ public interface UserAccountMapper {
 	// parameter로 받은 user_num의 원화 잔고 select
 	double selectBalanceByNum(String user_num);
 	
-	// parameter로 받은 stockTradeDto로 원화 잔고 update
-	void updateBalanceByUserNum(@Param("balance") double balance, @Param("user_num") String user_num);
+	// parameter로 받은 값들로 원화 잔고 update
+	int updateBalanceByUserNum(@Param("balance") double balance, @Param("user_num") String user_num);
+	
+	// parameter로 받은 값들로 외화 잔고 update
+	int updateCurrencyByUserNum(@Param("user_num") String user_num, @Param("country_name") String country_name, @Param("total") double total);
+	
+	// 외화 잔고 가져오기
+	double selectOneCurrency(@Param("user_num") String user_num, @Param("country_name") String country_name);
 }
