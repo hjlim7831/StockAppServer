@@ -21,4 +21,10 @@ public class UserRankController {
 	public Map<String, Object> lookupRank() {
 		return userRankService.lookupRank();
 	}
+	
+	@GetMapping("test")
+	public void test() {
+		userRankService.settingRank();
+		return;
+	}
 }

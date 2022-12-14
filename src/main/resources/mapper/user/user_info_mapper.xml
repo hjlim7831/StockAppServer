@@ -6,8 +6,8 @@
 	
 	<!-- 회원가입을 누르면, 입력 받은 회원 데이터를 INSERT -->
 	<insert id="insertUser" parameterType="com.user.info.UserInfoDto">  
-	    insert into user (user_num, name, nick_name, id, password, simple_pwd, email, phone_number, address)
-	    values (#{user_num}, #{name}, #{nick_name}, #{id}, #{password}, #{simple_pwd}, #{email}, #{phone_number}, #{address})
+	    insert into user (user_num, name, nick_name, id, password, simple_pwd, email, phone_number, address, mk_rank, total_asset, total_asset_prev)
+	    values (#{user_num}, #{name}, #{nick_name}, #{id}, #{password}, #{simple_pwd}, #{email}, #{phone_number}, #{address}, 0, 5000000, 5000000)
 	</insert>
 	
 	<!-- 회원가입 시 중복 확인을 위한 기존 데이터 가져오기 -->

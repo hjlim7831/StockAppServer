@@ -23,5 +23,9 @@ public interface UserRankMapper {
 	
 	int updateRank(UserRankDto userRankDto);
 	
-	int selectUserRank(String user_num);
+	UserRankDto selectUserRank(String user_num);
+	
+	int selectUserNumber();
+	
+	double selectTotalAsset(String user_num);
 }

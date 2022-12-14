@@ -1,6 +1,8 @@
 package com.stock.recommend;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +23,12 @@ public class StockRecommendController_SJY {
 	
 	@GetMapping("test")
 	public void recommendStock() {
-		stockRecommendService.recommendStock();
+		stockRecommendService.makeRecommendJson();
+		return;
+	}
+	
+	@GetMapping("test2")
+	public void recommendStock2() {
 		return;
 	}
 	
