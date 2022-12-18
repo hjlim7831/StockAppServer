@@ -5,12 +5,18 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 import javax.annotation.Resource;
 
@@ -43,6 +49,7 @@ public class StockRecommendService_hjlim {
 	SearchViewCntRankMapper viewCntRankMapper;
 
 	public Map<String, Object> getRecommendStock() {
+
 		Map<String, Object> resultMap = new HashMap<>();
 		Map<String, Object> contents = new HashMap<>();
 
@@ -51,16 +58,16 @@ public class StockRecommendService_hjlim {
 
 		} else {
 			String user_num = userInfoSessionDto.getUser_num();
-
 			Set<String> stockSet = new HashSet<>(stockRecommendMapper.selectUserStockHolding(user_num));
 			stockSet.addAll(stockRecommendMapper.selectUserWishlist(user_num));
-
+			System.out.println(stockSet.size());
 			if (stockSet.size() < 3) {
 				contents = getPopularStock();
 
 			} else { // 보유 및 관심 주식 3개 이상
 				int numberOfUsers = stockRecommendMapper.selectNumberOfUsers();
 				List<String> stockList = new ArrayList<>(stockSet);
+				getItemBasedStock(stockList);
 
 				if (numberOfUsers < 10) { // 사용자 10명 미만 - 관련 주식 중 랜덤
 					contents = getRelatedStock(stockList);
@@ -140,18 +147,22 @@ public class StockRecommendService_hjlim {
 
 	// 협업 필터링으로 계산한 추천 주식 가져오기
 	private Map<String, Object> getItemBasedStock(List<String> stockList) {
-		
+		long st = System.currentTimeMillis();
+
 		Random random = new Random();
-		
+
 		// 타니모토 계수로 계산해서, 일정 값 이상이고 보유하고 있지 않은 주식들 목록을 쭉 가져오기
 		List<String> recCodeList = calculateTanimoto(stockList);
-		
+
 		int idx = random.nextInt(recCodeList.size());
-		
+
 		String selCode = recCodeList.get(idx);
-		
+
 		// getRealtimePrice로 실시간 값 가져오기
-		Map<String, Object> content = getRealtimePrice(selCode, stockRecommendMapper.selectCompanyNameByStockCode(selCode));
+		Map<String, Object> content = getRealtimePrice(selCode,
+				stockRecommendMapper.selectCompanyNameByStockCode(selCode));
+		long ed = System.currentTimeMillis();
+		System.out.printf("협업필터링 총 계산 시간: %d 밀리초\n", ed - st);
 
 		return content;
 
@@ -163,11 +174,14 @@ public class StockRecommendService_hjlim {
 		Set<String> stockSet = new HashSet<>(stockList);
 
 		List<Boolean[]> matrix = matrixInfo.getMatrix();
+
+		long st = System.currentTimeMillis();
 		double[] l2Arr = matrixInfo.getL2Arr();
 		Map<String, Integer> codeMap = matrixInfo.getCodeMap();
 		List<String> codeIdxList = matrixInfo.getCodeIdxList();
 
 		List<String> recCodeList = new ArrayList<>();
+		Map<String, Double[]> totTani = new HashMap<>();
 
 		for (String baseStock : stockList) {
 			// 각 주식에 대한 다른 주식들의 타니모토 계수 계산하기
@@ -180,6 +194,12 @@ public class StockRecommendService_hjlim {
 				if (i == codeIdx)
 					continue;
 
+				// 이미 stockSet에 포함된 애면 계산할 필요 없이 넘기기
+				String code = codeIdxList.get(i);
+				if (stockSet.contains(code)) {
+					continue;
+				}
+
 				double AdotB = 0;
 				Boolean[] compArr = matrix.get(i);
 				for (int j = 0; j < baseArr.length; j++) {
@@ -187,20 +207,103 @@ public class StockRecommendService_hjlim {
 						AdotB += 1;
 					}
 				}
-
-				double tmpTani = AdotB / (l2Arr[codeIdx] + l2Arr[i] - AdotB);
-				String code = codeIdxList.get(i);
-				
-				// 평균으로 고치기. 평균 순으로 5개 뽑기.
 				// 0으로 나눠지는 경우는 tani 계수를 0으로 처리해버리기
-				// 최저 tani 계수가 XX(일단 0) 이하일 때에는 관련 주식으로 돌려버리기
-				if (!stockSet.contains(code) && tmpTani >= 0.4) {
-					recCodeList.add(code);
+				double div = l2Arr[codeIdx] + l2Arr[i] - AdotB;
+				double tmpTani;
+				if (div == 0) {
+					tmpTani = 0;
+				} else {
+					tmpTani = AdotB / (l2Arr[codeIdx] + l2Arr[i] - AdotB);
 				}
+
+				if (totTani.containsKey(code)) {
+					double prevTani = totTani.get(code)[0];
+					double prevNum = totTani.get(code)[1];
+					totTani.put(code, new Double[] { prevTani + tmpTani, prevNum + 1 });
+				} else {
+					totTani.put(code, new Double[] { tmpTani, 1.0 });
+				}
+
+				// 평균으로 고치기. 평균 순으로 5개 뽑기.
+				// 최저 tani 계수가 XX(일단 0) 이하일 때에는 관련 주식으로 돌려버리기
+//				if (!stockSet.contains(code) && tmpTani >= 0.4) {
+//					recCodeList.add(code);
+//				}
 			}
 		}
+		SortedSet<Map.Entry<String, Double>> sortedSet = new TreeSet<>(new Comparator<Map.Entry<String, Double>>() {
+			@Override
+			// 원소들의 정렬 순서 및 일치 여부를 결정
+			public int compare(Map.Entry<String, Double> e1, Map.Entry<String, Double> e2) {
+				int comp = -e1.getValue().compareTo(e2.getValue());
+				if (comp == 0) {
+					return e1.getKey().compareTo(e2.getKey());
+				}
+				
+				return comp;
+			}
+		});
+
+		// 평균으로 바꾸기
+		Map<String, Double> totAvgTani = new TreeMap<String, Double>();
+
+		for (String code : totTani.keySet()) {
+			Double[] info = totTani.get(code);
+			totAvgTani.put(code, info[0] / info[1]);
+			
+		}
+		sortedSet.addAll(totAvgTani.entrySet());
+
+		int num = 0;
+		for (Map.Entry<String, Double> ent : sortedSet) {
+			if (num == 5) {
+				break;
+			}
+			System.out.println(ent);
+			String key = ent.getKey();
+			Double value = ent.getValue();
+			if (value == 0) {
+				System.out.println("end");
+				break;
+			}
+			recCodeList.add(key);
+			num++;
+
+		}
+
+		System.out.println(totAvgTani);
+		System.out.println(recCodeList);
+		long ed = System.currentTimeMillis();
+		System.out.printf("타니모토 계수 총 계산 시간: %d 밀리초\n", ed - st);
 		return recCodeList;
 
+	}
+	public static void main(String[] args) {
+		SortedSet<Map.Entry<String, Double>> sortedSet = new TreeSet<>(new Comparator<Map.Entry<String, Double>>() {
+			@Override
+			public int compare(Map.Entry<String, Double> e1, Map.Entry<String, Double> e2) {
+				int comp = -e1.getValue().compareTo(e2.getValue());
+				if (comp == 0) {
+					return e1.getKey().compareTo(e2.getKey());
+				}
+				
+				return comp;
+			}
+		});
+		Map<String, Double> treemap = new TreeMap<>();
+		treemap.put("001", 0.002);
+		treemap.put("002", 0.102);
+		treemap.put("003", 0.023);
+		treemap.put("004", 0.065);
+		treemap.put("005", 0.065);
+		System.out.println(treemap.entrySet());
+		sortedSet.addAll(treemap.entrySet());
+		System.out.println(sortedSet);
+		
+		for(Map.Entry<String, Double> ent: sortedSet) {
+			System.out.println(ent);
+		}
+		
 	}
 
 	/**
@@ -209,6 +312,7 @@ public class StockRecommendService_hjlim {
 	 * @return Stock - UserIntegerArray
 	 */
 	private MatrixInfo_hjlim makeStockUserMatrixInfo() {
+		long st = System.currentTimeMillis();
 		List<SelectedStockDto_hjlim> preList = stockRecommendMapper.selectStockCodeListHoldingWish();
 
 		int numOfUsers = stockRecommendMapper.selectUserHaveHoldingWish();
@@ -228,7 +332,6 @@ public class StockRecommendService_hjlim {
 
 			int sIdx;
 			int uIdx;
-			
 
 			if (codeMap.containsKey(stock_code)) {
 				sIdx = codeMap.get(stock_code);
@@ -260,6 +363,9 @@ public class StockRecommendService_hjlim {
 		}
 
 		MatrixInfo_hjlim info = new MatrixInfo_hjlim(SUMatrix, codeMap, codeIdxList, l2Arr);
+
+		long ed = System.currentTimeMillis();
+		System.out.printf("계수 계산에 필요한 행렬 정보 총 계산 시간: %d밀리초\n", ed - st);
 
 		return info;
 
