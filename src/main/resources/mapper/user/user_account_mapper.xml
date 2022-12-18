@@ -29,4 +29,41 @@
 		WHERE user_num = #{user_num}
 	</update>
 	
+	<update id="updateCurrencyByUserNum" parameterType="map">
+		UPDATE account
+
+		<if test="country_name == 'USD'">
+		SET us = #{total}
+		</if>
+		<if test="country_name == 'JPY'">
+		SET jpy = #{total}
+		</if>
+		<if test="country_name == 'EUR'">
+		SET euro = #{total}
+		</if>
+		<if test="country_name == 'CNY'">
+		SET yuan = #{total}
+		</if>
+		
+		WHERE user_num = #{user_num}
+	</update>
+	
+	<select id="selectOneCurrency" parameterType="string" resultType="double">
+		<if test="country_name == 'USD'">
+		SELECT us
+		</if>
+		<if test="country_name == 'JPY'">
+		SELECT jpy
+		</if>
+		<if test="country_name == 'EUR'">
+		SELECT euro
+		</if>
+		<if test="country_name == 'CNY'">
+		SELECT yuan
+		</if>
+		
+		FROM account
+		WHERE user_num = #{user_num}
+	</select>
+	
 </mapper>

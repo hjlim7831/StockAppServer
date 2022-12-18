@@ -72,6 +72,8 @@ public class UserRankService {
 			UserRankDto userRankDto = new UserRankDto();
 			userRankDto.setUser_num(num);
 			userRankDto.setRate((total-5000000)/5000000);
+			userRankDto.setTotal_asset(total);
+			userRankDto.setTotal_asset_prev(userRankMapper.selectTotalAsset(num));
 			userRankList.add(userRankDto);
 		}
 		
@@ -79,16 +81,24 @@ public class UserRankService {
 		Collections.sort(userRankList, new RateComparator().reversed());
 		
 		int nowRank = 0;
+		int number = 0;
 		double beforeRate = 0;
 		boolean start = true;
 		
 		for (UserRankDto userRankDto : userRankList) {
 			double rate = userRankDto.getRate();
-
 			if (start) {
 				start = false;
+				beforeRate = rate;
 				nowRank++;
-			} else if (beforeRate > rate) nowRank++;
+				number++;
+			} else if (beforeRate == rate) {
+				number++;
+			} else if (beforeRate > rate) {
+				nowRank += number;
+				beforeRate = rate;
+				number = 1;
+			}
 			
 			userRankDto.setMk_rank(nowRank);
 			userRankMapper.updateRank(userRankDto);
@@ -115,10 +125,17 @@ public class UserRankService {
 		Map<String, Object> resultMap = new HashMap<>();
 		
 		String user_num = userInfoSessionDto.getUser_num();
-		int mk_rank = userRankMapper.selectUserRank(user_num);
+		UserRankDto userRankDto = userRankMapper.selectUserRank(user_num);
 		
-		UserRankDto userRankDto = new UserRankDto();
-		userRankDto.setMk_rank(mk_rank);
+		double total_asset = userRankDto.getTotal_asset();
+		double total_asset_prev = userRankDto.getTotal_asset_prev();
+		
+		userRankDto.setRate((total_asset-5000000)/5000000);
+		userRankDto.setCompare_rate((total_asset-total_asset_prev)/total_asset_prev);
+		userRankDto.setCompare_diff(total_asset-total_asset_prev);
+		
+		int userNumber = userRankMapper.selectUserNumber();
+		userRankDto.setPercentage((100/userNumber)*userRankDto.getMk_rank());
 		
 		resultMap.put("response", "success_lookup_rank");
 		resultMap.put("resource", userRankDto);

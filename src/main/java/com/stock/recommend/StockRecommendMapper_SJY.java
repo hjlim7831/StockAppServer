@@ -1,6 +1,7 @@
 package com.stock.recommend;
 
 import java.util.List;
+import java.util.Set;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
@@ -11,9 +12,7 @@ import com.search.result.SearchResultDto;
 @Repository
 public interface StockRecommendMapper_SJY {
 	
-	List<String> selectUserWishlist(String user_num);
-	
-	List<String> selectUserStockHolding(String user_num);
+	int selectAllWishAndHolding();
 	
 	int selectNumberOfUsers();
 	
@@ -21,9 +20,14 @@ public interface StockRecommendMapper_SJY {
 	
 	List<SearchResultDto> selectStockPopular();
 	
-	List<String> selectAllUserNum();
+	// DB에 존재하는 모든 사용자 고유 번호를 가져온다.
+	String[] selectAllUserNum();
 	
-	List<String> selectUserStock(String user_num);
+	// user_num 사용자의 보유 또는 관심 주식에 있는 모든 주식 코드를 가져온다.
+	Set<String> selectUserStock(String user_num);
 	
+	// DB에 있는 모든 주식 코드를 가져온다.
 	String[] selectAllStock();
+	
+	String selectCompanyName(String stock_code);
 }

@@ -24,12 +24,22 @@
 	
 	<update id="updateRank" parameterType="com.user.rank.dto.UserRankDto">
 		UPDATE user
-		SET mk_rank = #{mk_rank}
+		SET mk_rank = #{mk_rank}, total_asset = #{total_asset}, total_asset_prev = #{total_asset_prev}
 		WHERE user_num = #{user_num}
 	</update>
 	
-	<select id="selectUserRank" parameterType="string" resultType="int">
-		SELECT mk_rank FROM user
+	<select id="selectUserRank" parameterType="string" resultType="com.user.rank.dto.UserRankDto">
+		SELECT user_num, mk_rank, total_asset, total_asset_prev FROM user
 		WHERE user_num = #{user_num}
 	</select>
+	
+	<select id="selectUserNumber" resultType="int">
+		SELECT COUNT(*) FROM user
+	</select>
+	
+	<select id="selectTotalAsset" parameterType="string" resultType="double">
+		SELECT total_asset FROM user
+		WHERE user_num = #{user_num}
+	</select>
+	
 </mapper>
