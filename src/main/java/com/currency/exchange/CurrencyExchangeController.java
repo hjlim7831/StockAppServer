@@ -17,34 +17,34 @@ import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("currency")
-@Api(tags = {"Currency Exchange Controller"}, description = "환전 관련 API")
+@Api(tags = {"Exchange Controller"}, description = "환전 관련 API")
 public class CurrencyExchangeController {
 	
 	@Autowired
 	CurrencyExchangeService currencyTradeService;
 	
 	@PostMapping("exchange/{country}")
-	@ApiOperation(value = "원화  → 외화 환전하기")
+	@ApiOperation(value = "원화  → 외화 환전")
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "country", value = "외화명(달러 : USD, 엔화 : JPY, 유로 : EUR, 위안 : CNY)", required = true),
-		@ApiImplicitParam(name = "total", value = "환전할 외화 금액", required = true)
+		@ApiImplicitParam(name = "total", value = "환전할 외화 금액", dataType = "int", example = "0", required = true)
 	})
 	public Map<String, Object> tradeCurrency(@PathVariable String country, int total) {
 		return currencyTradeService.tradeCurrency(country, total);
 	}
 	
 	@PutMapping("exchange/{country}")
-	@ApiOperation(value = "외화  → 원화 환전하기")
+	@ApiOperation(value = "외화  → 원화 환전")
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "country", value = "외화명(달러 : USD, 엔화 : JPY, 유로 : EUR, 위안 : CNY)", required = true),
-		@ApiImplicitParam(name = "total", value = "환전할 외화 금액", required = true)
+		@ApiImplicitParam(name = "total", value = "환전할 외화 금액", dataType = "int", example = "0", required = true)
 	})
 	public Map<String, Object> tradeWon(@PathVariable String country, int total) {
 		return currencyTradeService.tradeWon(country, total);
 	}
 	
 	@GetMapping("price/{country}")
-	@ApiOperation(value = "외화 가격 조회하기")
+	@ApiOperation(value = "외화 가격 조회")
 	@ApiImplicitParam(name = "country", value = "외화명(달러 : USD, 엔화 : JPY, 유로 : EUR, 위안 : CNY)", required = true)
 	public Map<String, Object> tradePrice(@PathVariable String country) {
 		return currencyTradeService.tradePrice(country);

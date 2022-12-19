@@ -65,10 +65,10 @@ public class UserStockHoldingService {
 			if (sorting_method.equals("cnt_desc")) Collections.sort(userStockHoldingDtoList, new CntComparator().reversed());
 			
 			// 수익률 기준으로 내림차순 정렬
-			else if (sorting_method.equals("ratio_desc")) Collections.sort(userStockHoldingDtoList, new RatioComparator().reversed());
+			else if (sorting_method.equals("rate_desc")) Collections.sort(userStockHoldingDtoList, new RatioComparator().reversed());
 			
 			// 수익률 기준으로 오름차순 정렬
-			else if (sorting_method.equals("ratio_asc")) Collections.sort(userStockHoldingDtoList, new RatioComparator());
+			else if (sorting_method.equals("rate_asc")) Collections.sort(userStockHoldingDtoList, new RatioComparator());
 			
 			// 현재 가치 기준으로 오름차순 정렬
 			else if (sorting_method.equals("price_desc")) Collections.sort(userStockHoldingDtoList, new PriceComparator().reversed());
@@ -110,7 +110,7 @@ public class UserStockHoldingService {
 		// DB에서 user_num의 stock_code 보유량 가져오기
 		UserStockHoldingDto userStockHoldingDto = userStockHoldingMapper.selectOneUserStock(userInfoSessionDto.getUser_num(), stock_code);
 		
-		if (userStockHoldingDto == null) response = "success_get_holding_this_stock";  // 보유량이 없는 경우
+		if (userStockHoldingDto == null) response = "failure_holding_zero";  // 보유량이 없는 경우
 		else contents = userStockHoldingDto.getStock_cnt();   // user_num의 stock_code 보유량을 contents에 저장
 
 		resultMap.put("response", response);
