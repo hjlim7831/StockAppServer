@@ -138,7 +138,7 @@ public class UserRankService {
 		userRankDto.setPercentage((100/userNumber)*userRankDto.getMk_rank());
 		
 		resultMap.put("response", "success_lookup_rank");
-		resultMap.put("resource", userRankDto);
+		resultMap.put("contents", userRankDto);
 		
 		return resultMap;
 	}

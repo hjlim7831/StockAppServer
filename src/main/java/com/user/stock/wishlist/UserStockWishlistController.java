@@ -10,11 +10,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("user/stock")
+@Api(tags = {"Wishlist Controller"}, description = "사용자 관심 주식 관련 API")
 public class UserStockWishlistController {
 	
 	@Autowired

@@ -12,12 +12,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("stock")
+@Api(tags = {"Trade Controller"}, description = "주식 매매 관련 API")
 public class StockTradeController {
 	
 	@Autowired
@@ -27,7 +29,7 @@ public class StockTradeController {
 	@ApiOperation(value = "stock_code 매수")
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "stock_code", value = "주식 종목 코드", required = true),
-		@ApiImplicitParam(name = "share", value = "거래할 주식 수", required = true)
+		@ApiImplicitParam(name = "share", value = "거래할 주식 수", dataType = "int", example = "0", required = true)
 	})
 	public Map<String, Object> tradeBuy(@PathVariable String stock_code, int share) {
 		return stockTradeService.tradeBuy(stock_code, share);
@@ -37,7 +39,7 @@ public class StockTradeController {
 	@ApiOperation(value = "stock_code 매도")
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "stock_code", value = "주식 종목 코드", required = true),
-		@ApiImplicitParam(name = "share", value = "거래할 주식 수", required = true)
+		@ApiImplicitParam(name = "share", value = "거래할 주식 수", dataType = "int", example = "0", required = true)
 	})
 	public Map<String, Object> tradeSell(@PathVariable String stock_code, int share) {
 		return stockTradeService.tradeSell(stock_code, share);

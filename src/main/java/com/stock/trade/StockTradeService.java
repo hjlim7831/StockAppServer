@@ -38,19 +38,22 @@ public class StockTradeService {
 	OpeningDateComponent openingDateComponent;
 
 	public Map<String, Object> tradeBuy(String stock_code, int share) {
+		
 		Map<String, Object> resultMap = new HashMap<String, Object>(); // 응답 저장하기
-
-		if (share <= 0) { // 만약 매매하고자 하는 주식 수가 0이하 경우
-			resultMap.put("response", "failure_zero_trade");
-			resultMap.put("contents", "거래할 주식의 수를 0 이상으로 입력해 주세요.");
+		
+		double stock_price = stockTradeSessionDto.getStock_price();      // session에 저장해둔 stock_code의 주식 가격 가져오기
+		String code = stockTradeSessionDto.getStock_code();
+		
+		if (!code.equals(stock_code) || code == null) {
+			resultMap.put("response", "failure_please_lookup_price");
+			resultMap.put("contents", "조회한 주식과 입력한 주식 코드가 다릅니다.");
 			
 			return resultMap;
 		}
-		
-		double stock_price = stockTradeSessionDto.getStock_price();      // session에 저장해둔 stock_code의 주식 가격 가져오기
-		if (stock_price <= 0) {
-			resultMap.put("response", "failure_must_lookup_price");
-			resultMap.put("contents", "거래창에서 주식 가격 조회 후에, 거래가 가능합니다.");
+
+		if (share <= 0) { // 만약 매매하고자 하는 주식 수가 0이하 경우
+			resultMap.put("response", "failure_zero_trade");
+			resultMap.put("contents", "거래할 주식의 수를 1 이상으로 입력해 주세요.");
 			
 			return resultMap;
 		}
@@ -93,19 +96,20 @@ public class StockTradeService {
 	
 	public Map<String, Object> tradeSell(String stock_code, int share) {
 		Map<String, Object> resultMap = new HashMap<String, Object>(); // 응답 저장하기
-
-		if (share <= 0) { // 만약 매매하고자 하는 주식 수가 0이하 경우
-			resultMap.put("response", "failure_zero_trade");
-			resultMap.put("contents", "거래할 주식의 수를 0 이상으로 입력해 주세요.");
+		
+		double stock_price = stockTradeSessionDto.getStock_price();      // session에 저장해둔 stock_code의 주식 가격 가져오기
+		String code = stockTradeSessionDto.getStock_code();
+		
+		if (!code.equals(stock_code) || code == null) {
+			resultMap.put("response", "failure_please_lookup_price");
+			resultMap.put("contents", "조회한 주식과 입력한 주식 코드가 다릅니다.");
 			
 			return resultMap;
 		}
-		
-		double stock_price = stockTradeSessionDto.getStock_price();      // session에 저장해둔 stock_code의 주식 가격 가져오기
-		
-		if (stock_price <= 0) {
-			resultMap.put("response", "failure_must_lookup_price");
-			resultMap.put("contents", "거래창에서 주식 가격 조회 후에, 거래가 가능합니다.");
+
+		if (share <= 0) { // 만약 매매하고자 하는 주식 수가 0이하 경우
+			resultMap.put("response", "failure_zero_trade");
+			resultMap.put("contents", "거래할 주식의 수를 1 이상으로 입력해 주세요.");
 			
 			return resultMap;
 		}

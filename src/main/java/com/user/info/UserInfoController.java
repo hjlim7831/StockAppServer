@@ -17,7 +17,7 @@ import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("user")
-@Api(tags = {"User Info Controller"}, description = "사용자 정보 관련 API")
+@Api(tags = {"User Controller"}, description = "사용자 정보 관련 API")
 public class UserInfoController {
 
 	@Autowired

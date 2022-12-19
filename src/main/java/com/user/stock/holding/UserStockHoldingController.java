@@ -8,11 +8,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("user/stock")
+@Api(tags = {"Holding Stock Controller"}, description = "사용자 보유 주식 관련 API")
 public class UserStockHoldingController {
 	
 	@Autowired
