@@ -140,7 +140,7 @@ public class StockTradeService {
 		}
 		
 		// balance 반영
-		userAccountMapper.updateBalanceByUserNum(balance - (stock_price*share), user_num);
+		userAccountMapper.updateBalanceByUserNum(balance + (stock_price*share), user_num);
 		
 		resultMap.put("response", "success_to_sell");
 		resultMap.put("contents", "매도가 완료됐습니다.");

@@ -80,8 +80,8 @@ public class StockDetailService {
 
 		List<StockDataDto> stockDataDtoList = stockDetailMapper.selectStockByDate(stock_code);
 
-		if (stockDataDtoList == null) {
-			resultMap.put("response", "failure_not_exist_stock");
+		if (stockDataDtoList == null || stockDataDtoList.size() <= 0) {
+			resultMap.put("response", "failure_to_find_stock");
 			resultMap.put("contents", "존재하지 않는 주식 종목입니다.");
 		} else {
 			resultMap.put("response", "success_get_stock_graph_data");

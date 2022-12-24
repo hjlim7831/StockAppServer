@@ -14,10 +14,10 @@ public class StockDataDto {
 	 * **/
 	private String stock_code;
 	private String stock_date;
-	private String open_price;
-	private String high_price;
-	private String low_price;
-	private String close_price;
-	private String amount;
-	private String percentage_of_foreigners;
+	private long open_price;
+	private long high_price;
+	private long low_price;
+	private long close_price;
+	private long amount;
+	private double percentage_of_foreigners;
 }
