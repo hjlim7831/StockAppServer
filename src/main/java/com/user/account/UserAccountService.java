@@ -63,4 +63,20 @@ public class UserAccountService {
 
 		return resultMap;
 	}
+
+	public Map<String, Object> addBalance() {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		
+		String response;
+		int det = userAccountMapper.updateBalanceByNum(userInfoSessionDto.getUser_num());
+		if (det == 1) {
+			response = "success_add_balance";
+		}else {
+			response = "fail_add_balance";
+		}
+		
+		resultMap.put("response", response);
+		
+		return resultMap;
+	}
 }

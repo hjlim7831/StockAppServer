@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,4 +30,11 @@ public class UserAccountController {
 	public Map<String, Object> lookupBalance() {
 		return userAccountService.lookupBalance();
 	}
+	
+	@PutMapping("balance")
+	@ApiOperation(value = "통장 잔고 채우기")
+	public Map<String, Object> addBalanceValue(){
+		return userAccountService.addBalance();
+	}
+	
 }

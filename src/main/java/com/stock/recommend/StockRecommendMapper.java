@@ -10,7 +10,7 @@ import com.search.result.SearchResultDto;
 
 @Mapper
 @Repository
-public interface StockRecommendMapper_SJY {
+public interface StockRecommendMapper {
 	
 	int selectAllWishAndHolding();
 	
@@ -29,5 +29,8 @@ public interface StockRecommendMapper_SJY {
 	// DB에 있는 모든 주식 코드를 가져온다.
 	String[] selectAllStock();
 	
-	String selectCompanyName(String stock_code);
+	String selectCompanyNameByStockCode(String stock_code);
+		
+	List<SelectedStockDto> selectStockCodeListHoldingWish();
+
 }

@@ -258,4 +258,19 @@ public class UserInfoService {
 		
 		return resultMap;
 	}
+
+	public Map<String, Object> signOutUser() {
+		Map<String, Object> resultMap = new HashMap<>();
+		String user_num = userInfoSessionDto.getUser_num();
+		String id = userInfoSessionDto.getId();
+		// user_num이 들어가는 모든 정보 삭제하기
+		
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append("success_sign_out_").append(id);
+		
+		resultMap.put("response", sb.toString());
+		
+		return resultMap;
+	}
 }
