@@ -61,6 +61,7 @@ public class StockRecommendService {
 
 		// 로그아웃 상태라면
 		if (userInfoSessionDto.getUser_num() == null || userInfoSessionDto == null) {
+			System.out.println("로그아웃 상태");
 			contents = getPopularStock();
 		}
 
@@ -75,6 +76,7 @@ public class StockRecommendService {
 
 			// 만약 사용자의 관심 및 보유 주식이 3개 미만이라면 로그아웃 상태와 동일하게 처리
 			if (stockSet.size() < 3) {
+				System.out.println("관심/보유 주식 3개 미만");
 				contents = getPopularStock();
 			}
 
@@ -93,7 +95,7 @@ public class StockRecommendService {
 				// 보유 및 관심 주식이 있는 사용자 수가 10명 미만, 보유 및 관심 주식 수가 10개 미만, 전체 사용자 수가 20명 미만 중 하나라도
 				// 충족한다면
 				if (userSize < 10 || stockSize < 10 || numberOfUsers < 20) {
-
+					System.out.println("조건 1 만족");
 					// 보유 및 관심 주식 중에 관련 주식을 가져오기
 					List<String> stockList = new ArrayList<>(stockSet);
 					contents = getRelatedStock(stockList);
@@ -105,24 +107,35 @@ public class StockRecommendService {
 
 					// 현재 장이 열려있다면 (현재 값에서 읽어오기)
 					if (openingDateComponent.isOpen()) {
+						System.out.println("장 열림");
 						List<String> stockList = new ArrayList<>(stockSet);
-						contents = getItemBasedStock(stockList);
+						List<String> resultList = getItemBasedStock(stockList);
+						if (resultList.size() == 0) {
+							contents = getRelatedStock(stockList);
+						}else {
+							Random random = new Random();
+							int idx = random.nextInt(resultList.size());
+							String code = resultList.get(idx);
+							contents = getRealtimePrice(code, stockRecommendMapper.selectCompanyNameByStockCode(code));
+						}
+						
 					}
 					// 장이 닫혀있다면 (JSON에서 읽어오기)
 					else {
+						System.out.println("장 닫힘");
 						List<Entry<String, Double>> similarityTop5 = getCollaborativeFiltering();
 
 						// 만약 추천 주식으로 걸러낸 주식이 없다면
 						if (similarityTop5 == null) {
-
 							// 보유 및 관심 주식 중에 관련 주식을 가져오기
+							System.out.println("관련 주식 가져오기");
 							List<String> stockList = new ArrayList<>(stockSet);
 							contents = getRelatedStock(stockList);
 						}
 
 						// 추천 주식 5개가 있다면 그 중에서 랜덤으로 하나 선택하기
 						else {
-
+							System.out.println("랜덤 선택");
 							Random random = new Random();
 
 							int idx = random.nextInt(similarityTop5.size());
@@ -147,6 +160,7 @@ public class StockRecommendService {
 	}
 
 	private Map<String, Object> getPopularStock() {
+		System.out.println("PopularStock 실행");
 
 		// 보유 및 관심 주식이 있는 사용자 수
 		int userSize = stockRecommendMapper.selectUserHaveHoldingWish();
@@ -168,6 +182,8 @@ public class StockRecommendService {
 	}
 
 	private Map<String, Object> getRealtimePrice(String stock_code, String name) {
+		System.out.println("RealTimePrice 실행");
+		
 		Map<String, Object> realtime = new HashMap<String, Object>();
 
 		RealtimePriceDto realtimePriceDto = realtimeComponent.getRealtimePrice(stock_code);
@@ -183,6 +199,7 @@ public class StockRecommendService {
 
 	// 관련 주식 중 랜덤으로 가져오기
 	private Map<String, Object> getRelatedStock(List<String> stockList) {
+		System.out.println("관련 주식 실행");
 
 		Map<String, Object> realtime = new HashMap<String, Object>();
 
@@ -222,6 +239,7 @@ public class StockRecommendService {
 
 	// 콘텐츠 기반 협업 필터링
 	private List<Entry<String, Double>> getCollaborativeFiltering() {
+		System.out.println("협업 필터링(JSON 읽어오기) 실행");
 
 		// 사용자 정보 가져오기
 		String user_num = userInfoSessionDto.getUser_num();
@@ -285,6 +303,7 @@ public class StockRecommendService {
 	
 	@Scheduled(cron = "0 20 15 * * *")
 	public void makeRecommendJson() {
+		System.out.println("JSON 만들기 실행");
 		// 장이 열리는 날이 아니라면, JSON 업데이트 하지 않기
 		if (!openingDateComponent.isOpen()) {
 			return;
@@ -377,7 +396,7 @@ public class StockRecommendService {
 
 		// 유사도를 내림차순으로 정렬해 상위 10개만을 json 파일에 넣어준다.
 		Map<String, Map<String, Double>> jsonStocks = new HashMap<>();
-
+		
 		for (Entry<String, Map<String, Double>> entrySet : stocks.entrySet()) {
 
 			String code = entrySet.getKey();
@@ -414,7 +433,8 @@ public class StockRecommendService {
 	}
 	
 	// 협업 필터링으로 계산한 추천 주식 가져오기
-	private Map<String, Object> getItemBasedStock(List<String> stockList) {
+	private List<String> getItemBasedStock(List<String> stockList) {
+		System.out.println("실시간 협업 필터링 실행");
 		long st = System.currentTimeMillis();
 
 		Random random = new Random();
@@ -422,21 +442,22 @@ public class StockRecommendService {
 		// 타니모토 계수로 계산해서, 일정 값 이상이고 보유하고 있지 않은 주식들 목록을 쭉 가져오기
 		List<String> recCodeList = calculateTanimoto(stockList);
 
-		int idx = random.nextInt(recCodeList.size());
+//		int idx = random.nextInt(recCodeList.size());
+//
+//		String selCode = recCodeList.get(idx);
+//
+//		// getRealtimePrice로 실시간 값 가져오기
+//		Map<String, Object> content = getRealtimePrice(selCode,
+//				stockRecommendMapper.selectCompanyNameByStockCode(selCode));
+//		long ed = System.currentTimeMillis();
+//		System.out.printf("협업필터링 총 계산 시간: %d 밀리초\n", ed - st);
 
-		String selCode = recCodeList.get(idx);
-
-		// getRealtimePrice로 실시간 값 가져오기
-		Map<String, Object> content = getRealtimePrice(selCode,
-				stockRecommendMapper.selectCompanyNameByStockCode(selCode));
-		long ed = System.currentTimeMillis();
-		System.out.printf("협업필터링 총 계산 시간: %d 밀리초\n", ed - st);
-
-		return content;
+		return recCodeList;
 
 	}
 	
 	public List<String> calculateTanimoto(List<String> stockList) {
+		System.out.println("타니모토 계수 계산하기");
 		MatrixInfo matrixInfo = makeStockUserMatrixInfo();
 
 		Set<String> stockSet = new HashSet<>(stockList);

@@ -18,12 +18,13 @@ public class StockCloseInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-		if (openingDateComponent.isOpen()) {
-			return true;
-		}
-
-		response.sendRedirect("/api/error/stock-close");
-		return false;
+//		if (openingDateComponent.isOpen()) {
+//			return true;
+//		}
+//
+//		response.sendRedirect("/api/error/stock-close");
+//		return false;
+		return true;
 
 	}
 
