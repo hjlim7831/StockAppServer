@@ -278,6 +278,9 @@ public class UserInfoService {
 			StringBuilder sb = new StringBuilder();
 			sb.append("success_sign_out_").append(id);
 			
+			userInfoSessionDto.setId(null);
+			userInfoSessionDto.setUser_num(null);
+			
 			resultMap.put("response", sb.toString());
 		}
 		
