@@ -25,6 +25,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.data.api.OpeningDateComponent;
@@ -281,8 +282,13 @@ public class StockRecommendService {
 
 		return null;
 	}
-
+	
+	@Scheduled(cron = "0 20 15 * * *")
 	public void makeRecommendJson() {
+		// 장이 열리는 날이 아니라면, JSON 업데이트 하지 않기
+		if (!openingDateComponent.isOpen()) {
+			return;
+		}
 
 		// DB에 존재하는 전체 주식 코드를 배열로 불러오기
 		String[] allStockCode = stockRecommendMapper.selectAllStock();
