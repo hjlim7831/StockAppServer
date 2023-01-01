@@ -157,7 +157,7 @@ public class CurrencyExchangeService {
 			
 			// 외화명에 해당하는 환율 가져오고, session에 넣어주기
 			RealtimeExchangeDto realtimeExchangeDto = realtimeComponent.getRealtimeExchange(country)[0];
-			currencyTradeSessionDto.setCurrency_price(realtimeExchangeDto.getBasePrice());
+			currencyTradeSessionDto.setCurrency_price(realtimeExchangeDto.getBasePrice()/realtimeExchangeDto.getCurrencyUnit());
 			
 			Map<String, Object> currencyMap = new HashMap<String, Object>();
 			currencyMap.put("country", country);
