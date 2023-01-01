@@ -63,17 +63,17 @@ public class CurrencyExchangeService {
 		String name = currencyTradeSessionDto.getCountry_name();
 		
 		// 만약 외화로 환전 시 최소 금액을 충족하지 못하는 경우
-		if (trade == 0 && (country.equals("USD") || total < 100)) { // 달러
+		if (trade == 0 && (country.equals("USD") && total < 100)) { // 달러
 			resultMap.put("response", "failure_less_than_100_USD");
 			resultMap.put("contents", "최소 환전 금액은 100 달러입니다.");
-		} else if (trade == 0 && (country.equals("JPY") || total < 13500)) { // 엔화
+		} else if (trade == 0 && (country.equals("JPY") && total < 13500)) { // 엔화
 			resultMap.put("response", "failure_less_than_13500_JPY");
 			resultMap.put("contents", "최소 환전 금액은 13500 엔화입니다.");
-		} else if (trade == 0 && (country.equals("EUR") || total < 100)) { // 유로
+		} else if (trade == 0 && (country.equals("EUR") && total < 100)) { // 유로
 			resultMap.put("response", "failure_less_than_100_EUR");
 			resultMap.put("contents", "최소 환전 금액은 100 유로입니다.");
-		} else if (trade == 0 && (country.equals("CNY") || total < 700)) { // 위안
-			resultMap.put("response", "failure_less_than_700");
+		} else if (trade == 0 && (country.equals("CNY") && total < 700)) { // 위안
+			resultMap.put("response", "failure_less_than_700_CNY");
 			resultMap.put("contents", "최소 환전 금액은 700 위안입니다.");
 		} else if (trade == 1 && total <= 0) {
 			resultMap.put("response", "failure_exchange_zero");
