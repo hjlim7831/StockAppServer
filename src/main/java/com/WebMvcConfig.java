@@ -18,10 +18,10 @@ public class WebMvcConfig implements WebMvcConfigurer{
 	
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(stockCloseInterceptor())
+		//registry.addInterceptor(stockCloseInterceptor())
 				
 				// 주식 매매 창
-				.addPathPatterns("/stock/trade/*", "/stock/price/*");
+				//.addPathPatterns("/stock/trade/*", "/stock/price/*");
 		
 		registry.addInterceptor(new LoginInterceptor())
 				.addPathPatterns("/**")
