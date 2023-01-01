@@ -57,10 +57,10 @@ public class UserRankService {
 			// 통장 정보 가져와 환율 정보와 합쳐
 			UserAccountDto userAccountDto = userRankMapper.selectUserAccount(num);
 			total += userAccountDto.getBalance();
-			total += userAccountDto.getUs()*realtimeExchangeDto[0].getBasePrice();
-			total += userAccountDto.getJpy()*realtimeExchangeDto[1].getBasePrice();
-			total += userAccountDto.getEuro()*realtimeExchangeDto[2].getBasePrice();
-			total += userAccountDto.getYuan()*realtimeExchangeDto[3].getBasePrice();
+			total += userAccountDto.getUs()*(realtimeExchangeDto[0].getBasePrice()/realtimeExchangeDto[0].getCurrencyUnit());
+			total += userAccountDto.getJpy()*(realtimeExchangeDto[1].getBasePrice()/realtimeExchangeDto[1].getCurrencyUnit());
+			total += userAccountDto.getEuro()*(realtimeExchangeDto[2].getBasePrice()/realtimeExchangeDto[2].getCurrencyUnit());
+			total += userAccountDto.getYuan()*(realtimeExchangeDto[3].getBasePrice()/realtimeExchangeDto[3].getCurrencyUnit());
 			
 			// 보유 주식 정보 가져와 현재 가격 계산
 			List<UserHoldingStockDto> userHoldingStockDtoList = userRankMapper.selectUserHoldingStock(num);
