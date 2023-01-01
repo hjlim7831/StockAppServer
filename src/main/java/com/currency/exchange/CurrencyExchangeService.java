@@ -26,9 +26,6 @@ public class CurrencyExchangeService {
 	RealtimeComponent realtimeComponent;
 	
 	@Autowired
-	CurrencyExchangeMapper currencyTradeMapper;
-	
-	@Autowired
 	UserAccountMapper userAccountMapper;
 	
 	
