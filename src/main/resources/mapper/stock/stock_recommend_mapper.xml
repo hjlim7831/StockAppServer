@@ -59,7 +59,7 @@
 		WHERE stock_code = #{stock_code}
 	</select>
 	
-	<select id="selectStockCodeListHoldingWish" resultType="com.stock.recommend.SelectedStockDto_hjlim">
+	<select id="selectStockCodeListHoldingWish" resultType="com.stock.recommend.SelectedStockDto">
 		SELECT stock_code, user_num FROM my_list
 		UNION
 		SELECT stock_code, user_num FROM wish_list

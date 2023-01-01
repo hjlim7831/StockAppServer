@@ -45,5 +45,30 @@
         from user
         where id = #{id}
 	</select>
+	
+	<!-- 회원탈퇴 시 탈퇴하는 회원의 회원정보 삭제 -->
+	<delete id="deleteUserByUUID" parameterType="string">
+		DELETE FROM user
+		WHERE user_num = #{user_num}
+	</delete>
+
+	<!-- 회원탈퇴 시 탈퇴하는 회원의 계정정보 삭제 -->	
+	<delete id="deleteAccountByUUID" parameterType="string">
+		DELETE FROM account
+		WHERE user_num = #{user_num}
+	</delete>
+
+	<!-- 회원탈퇴 시 탈퇴하는 회원의 관심 리스트 삭제 -->
+	<delete id="deleteWishListByUUID" parameterType="string">
+		DELETE FROM wish_list
+		WHERE user_num = #{user_num}
+	</delete>
+
+	<!-- 회원탈퇴 시 탈퇴하는 회원의 보유 주식 리스트 삭제 -->
+	<delete id="deleteMyListByUUID" parameterType="string">
+		DELETE FROM my_list
+		WHERE user_num = #{user_num}
+	</delete>
+
 
 </mapper>
