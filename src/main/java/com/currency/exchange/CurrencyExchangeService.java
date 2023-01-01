@@ -81,7 +81,7 @@ public class CurrencyExchangeService {
 		}
 		
 		// session에 저장해 둔 외화와 거래하려는 외화가 다른 경우
-		else if (name == null || name.equals(country)) {
+		else if (!(name == null) && name.equals(country)) {
 			
 			// session에 저장해 둔 로그인 정보 가져오기
 			String user_num = userInfoSessionDto.getUser_num();
