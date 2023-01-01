@@ -161,7 +161,7 @@ public class CurrencyExchangeService {
 			
 			Map<String, Object> currencyMap = new HashMap<String, Object>();
 			currencyMap.put("country", country);
-			currencyMap.put("currency", realtimeExchangeDto.getBasePrice());
+			currencyMap.put("currency", currencyTradeSessionDto.getCurrency_price());
 			
 			resultMap.put("response", "success_get_trade_price");
 			resultMap.put("contents", currencyMap);
