@@ -26,9 +26,6 @@ public class CurrencyExchangeService {
 	RealtimeComponent realtimeComponent;
 	
 	@Autowired
-	CurrencyExchangeMapper currencyTradeMapper;
-	
-	@Autowired
 	UserAccountMapper userAccountMapper;
 	
 	
@@ -66,17 +63,17 @@ public class CurrencyExchangeService {
 		String name = currencyTradeSessionDto.getCountry_name();
 		
 		// 만약 외화로 환전 시 최소 금액을 충족하지 못하는 경우
-		if (trade == 0 && (country.equals("USD") || total < 100)) { // 달러
+		if (trade == 0 && (country.equals("USD") && total < 100)) { // 달러
 			resultMap.put("response", "failure_less_than_100_USD");
 			resultMap.put("contents", "최소 환전 금액은 100 달러입니다.");
-		} else if (trade == 0 && (country.equals("JPY") || total < 13500)) { // 엔화
+		} else if (trade == 0 && (country.equals("JPY") && total < 13500)) { // 엔화
 			resultMap.put("response", "failure_less_than_13500_JPY");
 			resultMap.put("contents", "최소 환전 금액은 13500 엔화입니다.");
-		} else if (trade == 0 && (country.equals("EUR") || total < 100)) { // 유로
+		} else if (trade == 0 && (country.equals("EUR") && total < 100)) { // 유로
 			resultMap.put("response", "failure_less_than_100_EUR");
 			resultMap.put("contents", "최소 환전 금액은 100 유로입니다.");
-		} else if (trade == 0 && (country.equals("CNY") || total < 700)) { // 위안
-			resultMap.put("response", "failure_less_than_700");
+		} else if (trade == 0 && (country.equals("CNY") && total < 700)) { // 위안
+			resultMap.put("response", "failure_less_than_700_CNY");
 			resultMap.put("contents", "최소 환전 금액은 700 위안입니다.");
 		} else if (trade == 1 && total <= 0) {
 			resultMap.put("response", "failure_exchange_zero");
@@ -84,7 +81,7 @@ public class CurrencyExchangeService {
 		}
 		
 		// session에 저장해 둔 외화와 거래하려는 외화가 다른 경우
-		else if (name == null || name.equals(country)) {
+		else if (!(name == null) && name.equals(country)) {
 			
 			// session에 저장해 둔 로그인 정보 가져오기
 			String user_num = userInfoSessionDto.getUser_num();
@@ -160,11 +157,11 @@ public class CurrencyExchangeService {
 			
 			// 외화명에 해당하는 환율 가져오고, session에 넣어주기
 			RealtimeExchangeDto realtimeExchangeDto = realtimeComponent.getRealtimeExchange(country)[0];
-			currencyTradeSessionDto.setCurrency_price(realtimeExchangeDto.getBasePrice());
+			currencyTradeSessionDto.setCurrency_price(realtimeExchangeDto.getBasePrice()/realtimeExchangeDto.getCurrencyUnit());
 			
 			Map<String, Object> currencyMap = new HashMap<String, Object>();
 			currencyMap.put("country", country);
-			currencyMap.put("currency", realtimeExchangeDto.getBasePrice());
+			currencyMap.put("currency", currencyTradeSessionDto.getCurrency_price());
 			
 			resultMap.put("response", "success_get_trade_price");
 			resultMap.put("contents", currencyMap);

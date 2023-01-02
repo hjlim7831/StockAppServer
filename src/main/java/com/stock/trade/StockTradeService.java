@@ -44,7 +44,7 @@ public class StockTradeService {
 		double stock_price = stockTradeSessionDto.getStock_price();      // session에 저장해둔 stock_code의 주식 가격 가져오기
 		String code = stockTradeSessionDto.getStock_code();
 		
-		if (!code.equals(stock_code) || code == null) {
+		if (code == null || !code.equals(stock_code)) {
 			resultMap.put("response", "failure_please_lookup_price");
 			resultMap.put("contents", "조회한 주식과 입력한 주식 코드가 다릅니다.");
 			
@@ -100,7 +100,7 @@ public class StockTradeService {
 		double stock_price = stockTradeSessionDto.getStock_price();      // session에 저장해둔 stock_code의 주식 가격 가져오기
 		String code = stockTradeSessionDto.getStock_code();
 		
-		if (!code.equals(stock_code) || code == null) {
+		if (code == null || !code.equals(stock_code)) {
 			resultMap.put("response", "failure_please_lookup_price");
 			resultMap.put("contents", "조회한 주식과 입력한 주식 코드가 다릅니다.");
 			
@@ -140,7 +140,7 @@ public class StockTradeService {
 		}
 		
 		// balance 반영
-		userAccountMapper.updateBalanceByUserNum(balance - (stock_price*share), user_num);
+		userAccountMapper.updateBalanceByUserNum(balance + (stock_price*share), user_num);
 		
 		resultMap.put("response", "success_to_sell");
 		resultMap.put("contents", "매도가 완료됐습니다.");
