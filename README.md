@@ -12,3 +12,7 @@
 - 관련 뉴스 크롤링
 - 주식 및 외환 매매
 - 주식 종목 추천 알고리즘
+
+## API 설계
+- RESTful API
+- [API Docs](https://keen-tarsal-f3c.notion.site/API-Docs-4dcd35b711d74b60ab57dbf51159a565)
