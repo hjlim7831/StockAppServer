@@ -1,4 +1,4 @@
-# Stock App Backend
+# Stock App &#128200; Backend
 
 ## 개발 환경
 - Spring Boot 2.7.4
