@@ -29,6 +29,7 @@
 		WHERE user_num = #{user_num}
 	</update>
 	
+	
 	<update id="updateCurrencyByUserNum" parameterType="map">
 		UPDATE account
 
@@ -65,5 +66,11 @@
 		FROM account
 		WHERE user_num = #{user_num}
 	</select>
+	
+	<update id="updateBalanceByNum" parameterType="string">
+		UPDATE account
+		SET balance = balance + 5000000
+		WHERE user_num = #{user_num}
+	</update>
 	
 </mapper>

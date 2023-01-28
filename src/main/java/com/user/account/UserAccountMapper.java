@@ -25,4 +25,6 @@ public interface UserAccountMapper {
 	
 	// 외화 잔고 가져오기
 	double selectOneCurrency(@Param("user_num") String user_num, @Param("country_name") String country_name);
+
+	int updateBalanceByNum(String user_num);
 }
