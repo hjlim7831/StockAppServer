@@ -5,6 +5,7 @@
 2. [Backend 팀원](#Backend-팀원)
 3. [주요 기능](#주요-기능)
 4. [API 설계](#API-설계)
+5. [스프링 부트 폴더 구조](#스프링-부트-폴더-구조)
 5. [세부 구현 내용](#세부-구현-내용)
 
 ## 개발 환경
@@ -48,6 +49,39 @@
 ## API 설계
 - RESTful API
 - [API Docs](https://keen-tarsal-f3c.notion.site/API-Docs-4dcd35b711d74b60ab57dbf51159a565)
+
+## 스프링 부트 폴더 구조
+```
+com
+├─ currency
+ |	└─ exchange
+├─ data
+ |	├─ api
+ |	└─ stock
+ |		├─ crawling
+ |		 |	├─ news
+ |		 |	└─ realtime
+ |		└─ relations
+├─ search
+ |	├─ recentRecord
+ |	├─ result
+ |	└─ viewCntRank
+├─ stock
+ |	├─ category
+ |	├─ debut
+ |	├─ detail
+ |	├─ majorIndex
+ |	├─ recommend
+ |	└─ trade
+├─ user
+ |	├─ account
+ |	├─ info
+ |	├─ rank
+ |	└─ stock
+ |		├─ holding
+ |		└─ wish
+└─ interceptor
+```
 
 ## 세부 구현 내용
 
