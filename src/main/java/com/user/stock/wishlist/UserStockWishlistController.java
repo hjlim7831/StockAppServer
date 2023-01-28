@@ -36,7 +36,7 @@ public class UserStockWishlistController {
 		return userStockWishlistService.addWishlist(stock_code);
 	}
 	
-	@DeleteMapping("wishlist/{stock_code}/")
+	@DeleteMapping("wishlist/{stock_code}")
 	@ApiOperation(value = "사용자의 wishlist에 해당 주식 종목 삭제")
 	@ApiImplicitParam(name = "stock_code", value = "주식 종목 코드 (숫자 6자리)", required = true)
 	public Map<String, Object> removeWishlist(@PathVariable String stock_code) {

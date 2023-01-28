@@ -6,11 +6,16 @@ import java.util.Map;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping("error")
+@Api(tags = {"Interceptor Controller"}, description = "인터셉터 API")
 public class InterceptorController {
 
 	@RequestMapping("no-login")
+	@ApiOperation(value = "로그인이 돼 있지 않은 경우")
 	public Map<String, Object> noLogin() {
 		Map<String, Object> resultMap = new HashMap<>();
 
@@ -21,6 +26,7 @@ public class InterceptorController {
 	}
 
 	@RequestMapping("stock-close")
+	@ApiOperation(value = "주식 장이 열려 있지 않은 경우")
 	public Map<String, Object> stockClose() {
 		Map<String,Object> resultMap = new HashMap<>();
 		
