@@ -15,6 +15,12 @@
 - MySQL 8.0.21
 - Swagger2 2.9.2
 
+## Backend 팀원
+- 임혜진 ([hjlim7831](https://github.com/hjlim7831))
+    1. 추천 알고리즘 구현
+- 서지윤 ([Jeeyoun-S](https://github.com/Jeeyoun-S))
+    1. 추천 알고리즘 구현
+
 ## 주요 기능
 
 #### 기본 기능
