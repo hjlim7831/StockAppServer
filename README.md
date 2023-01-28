@@ -54,32 +54,32 @@
 ```
 com
 ├─ currency
- |	└─ exchange
+|	└─ exchange
 ├─ data
- |	├─ api
- |	└─ stock
- |		├─ crawling
- |		 |	├─ news
- |		 |	└─ realtime
- |		└─ relations
+|	├─ api
+|	└─ stock
+|		├─ crawling
+|		|	├─ news
+|		|	└─ realtime
+|		└─ relations
 ├─ search
- |	├─ recentRecord
- |	├─ result
- |	└─ viewCntRank
+|	├─ recentRecord
+|	├─ result
+|	└─ viewCntRank
 ├─ stock
- |	├─ category
- |	├─ debut
- |	├─ detail
- |	├─ majorIndex
- |	├─ recommend
- |	└─ trade
+|	├─ category
+|	├─ debut
+|	├─ detail
+|	├─ majorIndex
+|	├─ recommend
+|	└─ trade
 ├─ user
- |	├─ account
- |	├─ info
- |	├─ rank
- |	└─ stock
- |		├─ holding
- |		└─ wish
+|	├─ account
+|	├─ info
+|	├─ rank
+|	└─ stock
+|		├─ holding
+|		└─ wish
 └─ interceptor
 ```
 
