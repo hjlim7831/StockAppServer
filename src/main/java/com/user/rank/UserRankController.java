@@ -25,6 +25,7 @@ public class UserRankController {
 	}
 	
 	@GetMapping("test")
+	@ApiOperation(value = "관리자용 DB rank 업데이트")
 	public void test() {
 		userRankService.settingRank();
 		return;

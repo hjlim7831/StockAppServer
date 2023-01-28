@@ -13,8 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.search.recentRecord.SearchRecordDto;
 import com.search.recentRecord.SearchRecordService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping("search")
+@Api(tags = {"Search Controller"}, description = "검색 관련 API")
 public class SearchResultController {
 
 	@Autowired
@@ -24,6 +28,7 @@ public class SearchResultController {
 	SearchRecordService searchRecordService;
 
 	@GetMapping("result")
+	@ApiOperation(value = "키워드 검색 결과 조회")
 	public Map<String, Object> searchResult(Model model, String keyWord) {
 		if (keyWord != null && !keyWord.equals("")) {
 			searchRecordService

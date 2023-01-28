@@ -53,6 +53,7 @@ public class StockTradeController {
 	}
 	
 	@GetMapping("is-close")
+	@ApiOperation(value = "주식 개장 여부")
 	public Map<String, Object> isClose(){
 		return stockTradeService.isClose();
 	}

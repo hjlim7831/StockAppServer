@@ -15,7 +15,7 @@
 		SELECT stock_code, company_name, cartegory as category, product FROM stock_list
 	</select>
 	
-	<!-- 수정 필요 -->
+	<!-- 최근 한 달 간의 주식 데이터 SELECT -->
 	<select id="selectStockByDate" parameterType="string" resultType="com.stock.detail.dto.StockDataDto">
 		SELECT stock_date, open_price, high_price, low_price, close_price FROM stock_data_prev
 		WHERE stock_code = #{stock_code} AND stock_date 

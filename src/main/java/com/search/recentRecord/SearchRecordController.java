@@ -10,14 +10,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping("search")
+@Api(tags = {"Search Controller"}, description = "검색 관련 API")
 public class SearchRecordController {
 
 	@Resource
 	private SearchRecordSessionDto searchRecordSessionDto;
 
 	@GetMapping("record") // 최근 검색 목록 조회
+	@ApiOperation(value = "최근 검색 목록 조회")
 	public Map<String, Object> searchRecordLookup() {
 		Map<String, Object> resultMap = new HashMap<>();
 		
