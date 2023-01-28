@@ -2,9 +2,10 @@
 
 ## 목차
 1. [개발 환경](#개발-환경)
-2. [주요 기능](#주요-기능)
-3. [API 설계](#API-설계)
-4. [세부 구현 내용](#세부-구현-내용)
+2. [Backend 팀원](#Backend-팀원)
+3. [주요 기능](#주요-기능)
+4. [API 설계](#API-설계)
+5. [세부 구현 내용](#세부-구현-내용)
 
 ## 개발 환경
 - Spring Boot 2.7.4
@@ -16,9 +17,9 @@
 - Swagger2 2.9.2
 
 ## Backend 팀원
-- 임혜진 ([hjlim7831](https://github.com/hjlim7831))
+- 임혜진 [hjlim7831](https://github.com/hjlim7831)
     1. 추천 알고리즘 구현
-- 서지윤 ([Jeeyoun-S](https://github.com/Jeeyoun-S))
+- 서지윤 [Jeeyoun-S](https://github.com/Jeeyoun-S)
     1. 추천 알고리즘 구현
 
 ## 주요 기능
