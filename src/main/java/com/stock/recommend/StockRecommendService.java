@@ -442,15 +442,15 @@ public class StockRecommendService {
 		// 타니모토 계수로 계산해서, 일정 값 이상이고 보유하고 있지 않은 주식들 목록을 쭉 가져오기
 		List<String> recCodeList = calculateTanimoto(stockList);
 
-//		int idx = random.nextInt(recCodeList.size());
-//
-//		String selCode = recCodeList.get(idx);
-//
-//		// getRealtimePrice로 실시간 값 가져오기
-//		Map<String, Object> content = getRealtimePrice(selCode,
-//				stockRecommendMapper.selectCompanyNameByStockCode(selCode));
-//		long ed = System.currentTimeMillis();
-//		System.out.printf("협업필터링 총 계산 시간: %d 밀리초\n", ed - st);
+		int idx = random.nextInt(recCodeList.size());
+
+		String selCode = recCodeList.get(idx);
+
+		// getRealtimePrice로 실시간 값 가져오기
+		Map<String, Object> content = getRealtimePrice(selCode,
+				stockRecommendMapper.selectCompanyNameByStockCode(selCode));
+		long ed = System.currentTimeMillis();
+		System.out.printf("협업필터링 총 계산 시간: %d 밀리초\n", ed - st);
 
 		return recCodeList;
 
