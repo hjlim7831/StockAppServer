@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!-- Stock Debut Data 관련 SQL -->
-<mapper namespace="com.stock.recommend.StockRecommendMapper_SJY">
+<mapper namespace="com.stock.recommend.StockRecommendMapper">
 	
 	<select id="selectAllWishAndHolding" resultType="int">
 		SELECT COUNT(stock_code)
@@ -54,9 +54,17 @@
 		SELECT stock_code FROM stock_list
 	</select>
 	
-	<select id="selectCompanyName" parameterType="string" resultType="string">
+	<select id="selectCompanyNameByStockCode" parameterType="string" resultType="string">
 		SELECT company_name FROM stock_list
 		WHERE stock_code = #{stock_code}
 	</select>
+	
+	<select id="selectStockCodeListHoldingWish" resultType="com.stock.recommend.SelectedStockDto">
+		SELECT stock_code, user_num FROM my_list
+		UNION
+		SELECT stock_code, user_num FROM wish_list
+	</select>
+	
+	
 	
 </mapper>

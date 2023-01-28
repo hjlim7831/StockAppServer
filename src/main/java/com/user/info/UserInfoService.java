@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.user.account.UserAccountService;
 
@@ -255,6 +256,34 @@ public class UserInfoService {
 
 		resultMap.put("response", "success_have_login_data");
 		resultMap.put("contents", new UserInfoDto(userInfoSessionDto.getId(), userInfoSessionDto.getUser_num(), userInfoSessionDto.getNick_name()));
+		
+		return resultMap;
+	}
+	
+	@Transactional
+	public Map<String, Object> signOutUser() {
+		Map<String, Object> resultMap = new HashMap<>();
+		String user_num = userInfoSessionDto.getUser_num();
+		String id = userInfoSessionDto.getId();
+		
+		if (user_num == null || user_num.equals("")) {
+			resultMap.put("response", "fail_no_login_info");
+		}else {
+			// user_num이 들어가는 모든 정보 삭제하기
+			userInfoMapper.deleteWishListByUUID(user_num);
+			userInfoMapper.deleteMyListByUUID(user_num);
+			userInfoMapper.deleteAccountByUUID(user_num);
+			userInfoMapper.deleteUserByUUID(user_num);
+			
+			StringBuilder sb = new StringBuilder();
+			sb.append("success_sign_out_").append(id);
+			
+			userInfoSessionDto.setId(null);
+			userInfoSessionDto.setUser_num(null);
+			
+			resultMap.put("response", sb.toString());
+		}
+		
 		
 		return resultMap;
 	}

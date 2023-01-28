@@ -1,12 +1,18 @@
-# StockAppServer
+# Stock App &#128200; Backend
 
-## Update Record
-### update221016 by Jeeyoun-S(branch)
-- 폴더 및 git 문제로 프로젝트 전체 삭제 후 재업로드
-- Jython 오류로 build.gradle에서 Jython과 Gson 삭제
-- `MapperScan(value = "com")` 불가능
-- `MapperScan(value = "com.user, com.main")`처럼 사용
+## 개발 환경
+- Spring Boot 2.7.4
+- Spring Tools 4 for Eclipse
+- Java 8
+- MyBatis
+- Gradle
 
-### update221018 by updateMakeAccount(branch)
-- User 패키지 내의 info, account 분류
-- 회원가입 시 통장 생성 기능 구현 (미완)
+## 주요 구현 내용
+- 실시간 주가, 환율 정보 조회
+- 관련 뉴스 크롤링
+- 주식 및 외환 매매
+- 주식 종목 추천 알고리즘
+
+## API 설계
+- RESTful API
+- [API Docs](https://keen-tarsal-f3c.notion.site/API-Docs-4dcd35b711d74b60ab57dbf51159a565)

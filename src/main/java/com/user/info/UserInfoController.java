@@ -3,6 +3,7 @@ package com.user.info;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,5 +53,11 @@ public class UserInfoController {
 	@ApiOperation(value = "로그인 정보 확인")
 	public Map<String, Object> loginCheck() {
 		return userInfoService.loginCheck();
+	}
+	
+	@DeleteMapping("sign-out")
+	@ApiOperation(value = "회원탈퇴")
+	public Map<String, Object> signOutUser(){
+		return userInfoService.signOutUser();
 	}
 }
